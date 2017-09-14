@@ -1,0 +1,144 @@
+.conversation-container {
+  width: 60%;
+  margin: 10px;
+  height: 500px;
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+
+.conversation-header {
+  display: flex;
+  flex-direction: row;
+  height: 63px;
+  border-bottom: 1px solid #DFDBD1;
+}
+
+.conversation-avatar {
+  width: 40px;
+  height: 40px;
+  align-self: center;
+  border-radius: 50%;
+  margin-left: 20px;
+  object-fit: cover;
+}
+
+.conversation-name {
+  font-size: 18px;
+  font-family: 'Nexa-Bold';
+  align-self: center;
+  margin-left: 10px;
+}
+
+.conversation-messages-container {
+  display: flex;
+  flex-direction: column;
+  height: 400px;
+  overflow-y: auto;
+}
+
+.conversation-empty {
+  padding: 40px;
+}
+
+.conversation-me {
+  color: white;
+  align-self: flex-end;
+  border-radius: 10px;
+  background: #9F8A62;
+  padding: 10px;
+  margin: 20px;
+  width: 50%;
+}
+
+.conversation-them {
+  color: #242020;
+  background: #DFDBD1;
+  border-radius: 10px;
+  width: 50%;
+  padding: 10px;
+  margin: 20px;
+}
+
+.conversation-input-container {
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+  border-top: 1px solid #9F8A62;
+  justify-content: space-between;
+}
+
+.conversation-input {
+  width: 70%;
+  overflow: hidden;
+  height: 40px;
+  resize: none;
+  border: none;
+  justify-self: center;
+  font-size: 14px;
+  padding-left: 15px;
+  padding-top: 10px;
+  box-sizing: border-box;
+}
+
+.conversation-send-container {
+  cursor: pointer;
+  width: 83px;
+  margin-right: 10px;
+  height: 28px;
+  border-radius: 2px;
+  background-color: #fcc824;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  align-self: center;
+  display: flex;
+  justify-content: center;
+}
+
+.conversation-send-text {
+  font-family: 'Nexa-Regular';
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #ffffff;
+  align-self: center;
+  padding-top: 5px;
+}
+
+textarea:hover,
+input:hover,
+textarea:active,
+input:active,
+textarea:focus,
+input:focus,
+button:focus,
+button:active,
+button:hover,
+label:focus,
+.btn:active,
+.btn.active {
+  outline: 0px !important;
+  -webkit-appearance: none;
+}
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+  color: #E0E0E0;
+}
+
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color: #E0E0E0;
+  opacity: 1;
+}
+
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color: #E0E0E0;
+  opacity: 1;
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: #E0E0E0;
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: #E0E0E0;
+}
+

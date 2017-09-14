@@ -1,0 +1,21 @@
+{
+  "name": "gilded",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/index.js",
+  "repository": "git@github.com:jakewilson801/gilded.git",
+  "author": "jakewilson801 <jacob.grant.wilson.801@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "massive": "^3.0.0",
+    "request": "^2.81.0",
+    "csv": "^1.1.1",
+    "async": "^2.5.0"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "heroku-postbuild": "cd src/client/ && npm install --only=dev && npm install && npm run build"
+  }
+}

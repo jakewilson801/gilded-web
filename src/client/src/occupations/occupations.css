@@ -1,0 +1,97 @@
+.card {
+  flex-shrink: 0;
+  margin: 0 50px 50px 5px;
+  width: 185px;
+  height: 215px;
+  background-color: #FFFFFF;
+  text-align: center;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  border-radius: 5px;
+}
+
+.cardImage {
+  border-radius: 5px 5px 0 0;
+  width: 185px;
+  height: 120px;
+  margin-bottom: 10px;
+}
+
+.slider {
+  margin-left: 20px;
+}
+
+
+.cardsList {
+  margin: 5px;
+  display: flex;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: hidden;
+}
+
+.cardsList::-webkit-scrollbar {
+  display: none;
+}
+
+.container-occupations {
+  border-radius: 5px;
+  background-color: white;
+  overflow: hidden;
+  margin: 10px;
+}
+
+.container-occupations::-webkit-scrollbar {
+  display: none;
+}
+
+@media screen and (max-width: 750px) and (min-width: 200px){
+  .container-occupations {
+    background-color: #DFDBD1;
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  .nav-container {
+    width: 100%;
+    margin: 0;
+  }
+
+  .nav-content {
+    width: 100%;
+    margin: 0;
+  }
+
+  .field-title {
+    font-weight: bold;
+  }
+
+  .slider {
+    margin-left: 0;
+  }
+
+  .card {
+    margin-right: 15px;
+    margin-bottom: 5px;
+  }
+  .field-title {
+    font-size: 24px;
+    padding-top: 0px;
+    padding-left: 0px;
+    margin: 0px;
+  }
+}
+
+.field-title {
+  font-size: 24px;
+  padding-top: 20px;
+  padding-left: 10px;
+  margin: 10px;
+}
+
+.occupation-title {
+  font-family: 'Nexa-Bold';
+  margin-bottom: 10px;
+  overflow:hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  position: relative;
+}

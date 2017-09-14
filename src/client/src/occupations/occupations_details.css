@@ -1,0 +1,121 @@
+.imageBanner {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  margin: 0 auto;
+  background-color: white;
+  /*border-radius: 5px;*/
+}
+
+.description {
+  padding: 15px;
+}
+
+.odd-row {
+  display: flex;
+  justify-content: space-between;
+  height: 30px;
+  width: auto;
+  margin: 15px;
+  background-color: #dfdbd1;
+}
+
+.even-row {
+  display: flex;
+  justify-content: space-between;
+  height: 30px;
+  width: auto;
+  margin: 15px;
+}
+
+.meta-label {
+  padding: 10px;
+  width: 200px;
+  height: 18px;
+  font-family: 'Nexa-Regular';
+  font-size: 14px;
+  font-weight: bold;
+  color: #242020;
+}
+
+.meta-value {
+  padding: 10px;
+  font-family: 'Nexa-Regular';
+  float: right;
+  font-size: 14px;
+  color: #242020;
+}
+
+.occupation-provider {
+  width: 170px;
+  height: 40px;
+  border-radius: 2px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  border: solid 1px #cca224;
+  align-self: center;
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+}
+
+.occupation-employer {
+  width: 175px;
+  margin-right: 10px;
+  height: 40px;
+  border-radius: 2px;
+  background-color: #fcc824;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  align-self: center;
+  display: flex;
+  justify-content: center;
+}
+
+.occupation-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.occupation-option-container {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.occupation-find-providers {
+  font-family: 'Nexa-Regular';
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #cca224;
+  align-self: center;
+}
+
+.occupation-find-employers {
+  font-family: 'Nexa-Regular';
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #ffffff;
+  align-self: center;
+}
+
+.occupation-detail-container {
+  border-radius: 5px;
+  margin-top: 20px;
+  background-color: white;
+}
+
+.occupation-nav-link {
+  font-size: 18px;
+  margin-left: 15px;
+}
+
+.occupation-video {
+  max-width: 640px;
+  max-height: 390px;
+  margin-right: auto;
+  margin-left: auto;
+
+}

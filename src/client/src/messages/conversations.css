@@ -1,0 +1,53 @@
+.conversations-container {
+  width: 40%;
+  background: white;
+  min-height: 400px;
+  margin: 10px;
+}
+
+.conversations-header {
+  margin-left: 20px;
+}
+
+.conversations-item {
+  height: 60px;
+  display: flex;
+}
+
+.conversations-avatar {
+  align-self: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-left: 10px;
+  object-fit: cover;
+}
+
+.conversations-sender {
+  font-family: 'Nexa-Bold';
+  font-weight: bold;
+}
+
+.conversations-message {
+  font-family: 'Nexa-Regular';
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 60%;
+}
+
+.conversations-sender-container {
+  color: black;
+  margin-left: 5px;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.conversations-item:nth-child(even) {
+  border-bottom: 1px solid #DFDBD1;
+}
+
+.conversations-item:nth-child(odd) {
+  border-top: 1px solid #DFDBD1;
+}

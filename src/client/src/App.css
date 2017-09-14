@@ -1,0 +1,150 @@
+.App {
+  overflow: hidden;
+}
+
+.logo {
+  align-self: center;
+  height: 32px;
+}
+
+.signUp {
+  cursor: pointer;
+  justify-content: center;
+  align-self: center;
+  color: #FCC824;
+}
+
+.name {
+  color: #FCC824;
+  align-self: center;
+}
+
+.avatar {
+  border-radius: 2px;
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+  align-self: center;
+}
+
+.user-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 80%;
+  margin: 0 auto;
+  align-self: center;
+}
+
+.header {
+  display: flex;
+  background-color: #9F8A62;
+  height: 62px;
+  width: auto;
+}
+
+.Modal {
+  cursor: hand;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  background: white;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.Modal:focus {
+  outline: 0;
+}
+
+.Overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.signup-dialog {
+  padding: 10px;
+}
+
+.signup-header {
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 20px;
+}
+
+.nav-container {
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.nav-sidebar {
+  align-items: center;
+  width: 20%;
+  margin: 0 auto;
+}
+
+.nav-content {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.avatar-large {
+  margin-top: 20px;
+  border-radius: 5px;
+  width: 170px;
+  height: 170px;
+}
+
+.nav-list {
+  list-style: none;
+}
+
+.nav-link {
+  color: black;
+}
+
+.nav-item {
+  margin: 5px;
+}
+
+.logout-message-container {
+  cursor: pointer;
+  width: 120px;
+  margin-right: 50px;
+  margin-top: 10px;
+  height: 28px;
+  border-radius: 2px;
+  background-color: #fcc824;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+}
+
+.logout-message-text {
+  padding-top: 3px;
+  font-family: 'Nexa-Regular';
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  color: #ffffff;
+  text-align: center;
+  align-self: center;
+}
