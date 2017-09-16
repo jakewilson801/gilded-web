@@ -10,7 +10,7 @@ import MessagesComponent from "./messages/MessagesComponent"
 import {Route, Link, withRouter, Redirect} from 'react-router-dom'
 import EmployersComponent from "./employers/EmployersComponent";
 import ReactModal from 'react-modal';
-import FacebookLogin from 'react-facebook-login';
+import FacebookLogin from './fb_login/facebook';
 
 // const PrivateRoute = ({component: Component, ...rest}) => (
 //   <Route {...rest} render={props => (
@@ -66,6 +66,7 @@ class App extends Component {
   }
 
   logout() {
+
     localStorage.clear();
     window.location.replace("/");
     this.setState({userData: null});
@@ -78,6 +79,7 @@ class App extends Component {
 
   //TODO https://reacttraining.com/react-router/web/example/auth-workflow
   //https://stackoverflow.com/questions/31079081/programmatically-navigate-using-react-router
+  //auth_type=rerequest
   render() {
     return (
       <div>
@@ -93,9 +95,10 @@ class App extends Component {
             </div>
             <h2>To connect with Schools and Employers please make an account.</h2>
             <FacebookLogin
-              appId={this.FB_PROD}
+              appId={this.FB_DEV}
+              reRequest={true}
               fields="name,email,picture"
-              scope="public_profile,user_friends"
+              scope="public_profile,user_friends,email"
               callback={this.responseFacebook}
             />
           </div>
