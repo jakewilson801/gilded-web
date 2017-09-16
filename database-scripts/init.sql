@@ -161,6 +161,10 @@ create table if not exists gilded_public.SchoolProgramLocations(
 
 create table if not exists gilded_private.Accounts(
   id serial primary key,
+  full_name text,
+  email text,
+  avatar_url text,
+  fb_user_id text,
   account_fb_info json
 );
 

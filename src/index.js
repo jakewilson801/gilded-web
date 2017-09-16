@@ -4,9 +4,7 @@ const massive = require('massive');
 const app = express();
 const bodyParser = require('body-parser');
 const _ = require('lodash');
-const jwt = require('jsonwebtoken');
 const morgan = require('morgan');
-const secret = process.env.SECRET || '1337hackers';
 
 let connectionInfo = process.env.DATABASE_URL || {
   host: process.env.DATABASE_URL || '127.0.0.1',
@@ -17,8 +15,6 @@ let connectionInfo = process.env.DATABASE_URL || {
 };
 
 massive(connectionInfo).then(instance => {
-  const authRoutes = express.Router();
-
   app.set('db', instance);
 
   // Serve static files from the React app
@@ -27,8 +23,8 @@ massive(connectionInfo).then(instance => {
   app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
   }));
-  app.use(morgan('dev'));
 
+  app.use(morgan('dev'));
 
   app.get('/api/v1/fields', (req, res) => {
     req.app.get('db').run('select * from gilded_public.fields').then(result => res.json(result));
@@ -102,40 +98,23 @@ massive(connectionInfo).then(instance => {
     });
   });
 
-  authRoutes.use(function(req, res, next) {
-
-    // check header or url parameters or post parameters for token
-    var token = req.body.token || req.param('token') || req.headers['x-access-token'];
-
-    // decode token
-    if (token) {
-
-      // verifies secret and checks exp
-      jwt.verify(token, secret, function(err, decoded) {
-        if (err) {
-          return res.status(403).send({ success: false, message: 'Failed to authenticate token.' });
-        } else {
-          // if everything is good, save to request for use in other routes
-          req.decoded = decoded;
-          next();
-        }
-      });
-
-    } else {
-
-      // if there is no token
-      // return an error
-      return res.status(403).send({
-        success: false,
-        message: 'No token provided.'
-      });
-
-    }
-
-  });
-
   app.post('/api/v1/accounts/facebook', (req, res) => {
-
+    req.app.get('db').gilded_private.accounts.findOne({fb_user_id: req.body.userID}).then(values => {
+      if (!values) {
+        req.app.get('db').gilded_private.accounts.insert({
+          full_name: req.body.name,
+          email: req.body.email,
+          avatar_url: req.body.picture.data.url,
+          fb_user_id: req.body.userID,
+          account_fb_info: req.body
+        }).then(result => {
+            res.status(201).send(result);
+          }
+        )
+      } else {
+        res.status(200).send("GTG");
+      }
+    });
   });
 
   app.get('*', (req, res) => {
