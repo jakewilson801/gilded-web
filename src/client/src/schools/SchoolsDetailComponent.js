@@ -5,7 +5,8 @@ import React, {Component} from 'react';
 import './schools_detail.css'
 import {Link} from 'react-router-dom';
 import ReactModal from 'react-modal';
-import FacebookLogin from 'react-facebook-login';
+import FacebookLogin from '../fb_login/facebook';
+
 import SchoolsProgramComponent from './SchoolsProgramComponent'
 
 class SchoolsDetailComponent extends Component {

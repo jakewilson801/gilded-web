@@ -4,6 +4,7 @@ const massive = require('massive');
 const app = express();
 const bodyParser = require('body-parser');
 const _ = require('lodash');
+const morgan = require('morgan');
 
 let connectionInfo = process.env.DATABASE_URL || {
   host: process.env.DATABASE_URL || '127.0.0.1',
@@ -22,6 +23,8 @@ massive(connectionInfo).then(instance => {
   app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
   }));
+
+  app.use(morgan('dev'));
 
   app.get('/api/v1/fields', (req, res) => {
     req.app.get('db').run('select * from gilded_public.fields').then(result => res.json(result));
@@ -96,7 +99,22 @@ massive(connectionInfo).then(instance => {
   });
 
   app.post('/api/v1/accounts/facebook', (req, res) => {
-    //TODO Implement FB sign up in DB
+    req.app.get('db').gilded_private.accounts.findOne({fb_user_id: req.body.userID}).then(values => {
+      if (!values) {
+        req.app.get('db').gilded_private.accounts.insert({
+          full_name: req.body.name,
+          email: req.body.email,
+          avatar_url: req.body.picture.data.url,
+          fb_user_id: req.body.userID,
+          account_fb_info: req.body
+        }).then(result => {
+            res.status(201).send(result);
+          }
+        )
+      } else {
+        res.status(200).send("GTG");
+      }
+    });
   });
 
   app.get('*', (req, res) => {

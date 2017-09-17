@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './employers_detail.css'
 import {Link} from 'react-router-dom';
 import ReactModal from 'react-modal';
-import FacebookLogin from 'react-facebook-login';
+import FacebookLogin from '../fb_login/facebook';
 
 class EmployersDetailComponent extends Component {
   state = {employer: {}, showModal: false};

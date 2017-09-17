@@ -7,12 +7,14 @@
   "author": "jakewilson801 <jacob.grant.wilson.801@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "async": "^2.5.0",
     "body-parser": "^1.17.2",
-    "express": "^4.15.3",
-    "massive": "^3.0.0",
-    "request": "^2.81.0",
     "csv": "^1.1.1",
-    "async": "^2.5.0"
+    "express": "^4.15.3",
+    "jsonwebtoken": "^8.0.1",
+    "massive": "^3.0.0",
+    "morgan": "^1.8.2",
+    "request": "^2.81.0"
   },
   "scripts": {
     "start": "node src/index.js",

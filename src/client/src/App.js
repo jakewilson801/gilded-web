@@ -10,7 +10,7 @@ import MessagesComponent from "./messages/MessagesComponent"
 import {Route, Link, withRouter, Redirect} from 'react-router-dom'
 import EmployersComponent from "./employers/EmployersComponent";
 import ReactModal from 'react-modal';
-import FacebookLogin from 'react-facebook-login';
+import FacebookLogin from './fb_login/facebook';
 
 // const PrivateRoute = ({component: Component, ...rest}) => (
 //   <Route {...rest} render={props => (
@@ -52,17 +52,20 @@ class App extends Component {
   }
 
   responseFacebook(response) {
-    localStorage.setItem("fb_info", JSON.stringify(response));
-    fetch('/api/v1/accounts/facebook', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(response)
-    });
-
-    this.handleCloseModal(response);
+    if (response.email) {
+      localStorage.setItem("fb_info", JSON.stringify(response));
+      fetch('/api/v1/accounts/facebook', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(response)
+      });
+      this.handleCloseModal(response);
+    } else {
+      this.setState({showModal: true});
+    }
   }
 
   logout() {
@@ -75,7 +78,6 @@ class App extends Component {
     this.setState({showModal: false});
   }
 
-
   //TODO https://reacttraining.com/react-router/web/example/auth-workflow
   //https://stackoverflow.com/questions/31079081/programmatically-navigate-using-react-router
   render() {
@@ -87,15 +89,15 @@ class App extends Component {
           className="Modal"
           overlayClassName="Overlay">
           <div className="signup-dialog">
-
             <div className="signup-header"><h1>Welcome to Gilded!</h1>
               <div onClick={this.closeModal}>X</div>
             </div>
             <h2>To connect with Schools and Employers please make an account.</h2>
             <FacebookLogin
-              appId={this.FB_PROD}
+              appId={this.FB_DEV}
+              reRequest={true}
               fields="name,email,picture"
-              scope="public_profile,user_friends"
+              scope="public_profile,user_friends,email"
               callback={this.responseFacebook}
             />
           </div>
