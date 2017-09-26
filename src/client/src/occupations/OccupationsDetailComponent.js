@@ -9,38 +9,49 @@ import YouTube from 'react-youtube'
 
 class OccupationsDetailComponent extends Component {
   state = {
-    details: {}, opts: {
+    details: {},
+    opts: {
       height: '390',
       width: '640',
       playerVars: { // https://developers.google.com/youtube/player_parameters
         autoplay: 0
       }
-    }
+    },
+    showProviders: false,
+    showEmployers: false,
+    socCode: ""
   };
-
 
   componentDidMount() {
     fetch(`/api/v1/occupations/${this.props.match.params.id}/details`)
       .then(res => res.json())
-      .then(details => {
-        console.log(details.video_url);
-        details.video_url = new URL(details.video_url).searchParams.get("v");
-        this.setState({details})
-      })
+      .then(results => {
+        results.video_url = new URL(results.video_url).searchParams.get("v");
+        this.setState({details: results, socCode: `${results.field_id}-${results.soc_detailed_id}`});
+        fetch(`/api/v1/programs?socCode=${this.state.socCode}`)
+          .then(res => res.json())
+          .then(results => {
+            if (results.length > 0)
+              this.setState({showProviders: true});
+          }).catch(error => console.log(error));
+      });
   }
 
   render() {
     return <div className="occupation-detail-container">
       <div className="occupation-header">
-        <Link to={`/occupations/${this.state.details.field_id}`}><h2
+        <Link to={`/`}><h2
           className="occupation-nav-link">{`< ${this.state.details.title}`}</h2></Link>
         <div className="occupation-option-container">
-          <Link to={`/schools/occupations/${this.state.details.id}`} className="occupation-provider">
-            <div className="occupation-find-providers">Find Providers</div>
-          </Link>
-          <Link to={`/employers/occupations/${this.state.details.id}`} className="occupation-employer">
-            <div className="occupation-find-employers">Find Employers</div>
-          </Link>
+          {this.state.showProviders ?
+            <Link to={`/schools/occupations/${this.state.details.field_id}-${this.state.details.soc_detailed_id}`}
+                  className="occupation-provider">
+              <div className="occupation-find-providers">Find Providers</div>
+            </Link> : null}
+          {this.state.showEmployers ?
+            <Link to={`/employers/occupations/${this.state.details.id}`} className="occupation-employer">
+              <div className="occupation-find-employers">Find Employers</div>
+            </Link> : null}
         </div>
       </div>
       <img className="imageBanner" src={this.state.details.image_avatar_url}/>
@@ -58,7 +69,7 @@ class OccupationsDetailComponent extends Component {
           Projected Growth by 2024
         </div>
         <div className="meta-value">
-          {`%${this.state.details.project_growth_2024}`}
+          {`${this.state.details.project_growth_2024}%`}
         </div>
       </div>
       <div className="odd-row">
@@ -71,11 +82,11 @@ class OccupationsDetailComponent extends Component {
       </div>
       <br/>
       <div className="occupation-video">
-      <YouTube
-        videoId={this.state.details.video_url}
-        opts={this.state.opts}
-        onReady={this._onReady}
-      />
+        <YouTube
+          videoId={this.state.details.video_url}
+          opts={this.state.opts}
+          onReady={this._onReady}
+        />
       </div>
     </div>
   }

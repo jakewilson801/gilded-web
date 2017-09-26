@@ -10,9 +10,12 @@ class SchoolsComponent extends Component {
   state = {schools: []};
 
   componentDidMount() {
-    fetch('/api/v1/schools')
+    console.log(this.props);
+    fetch(`/api/v1/schools?socCode=${this.props.match.params.id}`)
       .then(res => res.json())
-      .then(schools => this.setState({schools}))
+      .then(result => {this.setState({schools: result})})
+      .catch(error => console.log("ERRRoR"));
+
   }
 
   render() {
@@ -22,12 +25,12 @@ class SchoolsComponent extends Component {
         <div className="school-card-list">
           {this.state.schools.map(e => <div key={e.id}
                                             className="school-card">
-            <img className="school-banner" src={e.image_background_url}/>
+            <img className="school-banner" src={`/assets/${e.image_background_url}`}/>
             <div className="school-card-inner">
-              <img className="school-avatar" src={e.image_avatar_url}/>
+              <img className="school-avatar" src={`/assets/${e.image_avatar_url}`}/>
               <div className="school-outer">
                 <div className="school-name">{e.title}</div>
-                <Link className="school-view-more" to={`/schools/${e.id}/details`}>View More</Link>
+                <Link className="school-view-more" to={`/schools/${this.props.match.params.id}/details/${e.id}`}>View More</Link>
               </div>
             </div>
           </div>)}
