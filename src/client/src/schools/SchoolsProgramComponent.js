@@ -4,26 +4,24 @@ class SchoolsProgramComponent extends Component {
   state = {programs: []};
 
   componentDidMount() {
-    let schoolLocationIds = this.props.school_locations.map(location => location.id);
-    fetch(`/api/v1/programs?school_location_ids=${schoolLocationIds.join(',')}`)
+    fetch(`/api/v1/programs/${this.props.soc_id}/${this.props.school_id}`)
       .then(res => res.json())
       .then(programs => {
-        console.log(programs);
         this.setState({programs})
       });
-
   }
 
   render() {
     if (this.state.programs) {
       let programs = this.state.programs.map(p =>
-        <div key={this.state.programs.indexOf(p)}><h1>{p.school_name}</h1>
-          <div>{p.program_list.map(po => <div key={po.id}>
-            <h2>{po.title}</h2>
-            <div>Cost: ${po.cost_in_state}</div>
-            <br/>
-            <div>Length: {po.length} Months</div>
-          </div>)}</div>
+        <div key={this.state.programs.indexOf(p)}><h1>{p.title}</h1>
+          <div>Cost: ${p.cost_in_state}</div>
+          <br/>
+          <div>Length: {p.length_months} Months</div>
+          <br/>
+          <div>{p.flexible_schedule ? "Flexible/Competency Based" : "Semester Based"}</div>
+          <br/>
+          <div>Credential {p.credential}</div>
         </div>);
       return <div>{programs}</div>;
     } else {

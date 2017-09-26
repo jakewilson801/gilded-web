@@ -65,15 +65,35 @@ massive(connectionInfo).then(instance => {
   });
 
   app.get('/api/v1/schools', (req, res) => {
-    req.app.get('db').run('select * from gilded_public.schools').then(result => res.json(result));
+    if (req.query.socCode) {
+      let ids = [];
+      ids.push(req.query.socCode.split('-')[0]);
+      ids.push(req.query.socCode.split('-')[1]);
+      req.app.get('db').run(`select distinct schools.* from gilded_public.occupationprograms programsMap, gilded_public.programs programs, gilded_public.schools schools  where programsMap.program_id = programs.id and schools.id = programs.school_id and field_id =$1  and soc_id =$2;`, ids)
+        .then(result => {
+          if (result) {
+            res.json(result);
+          } else {
+            res.status(404);
+            res.send("Couldn't find school sorry");
+          }
+        }).catch(error => {
+        console.log(error);
+        res.status(400);
+        res.send("ERROR");
+      });
+    }
   });
 
-  app.get('/api/v1/schools/:school_id/details', (req, res) => {
+  app.get('/api/v1/schools/:id/details/:school_id', (req, res) => {
+    let ids = [];
+    ids.push(req.params.id.split("-")[0]);
+    ids.push(req.params.id.split("-")[1]);
     let queries = [];
     queries.push(req.app.get('db').gilded_public.schools.findOne({id: req.params.school_id}));
-    queries.push(req.app.get('db').gilded_public.schoollocations.find({school_id: req.params.school_id}));
+    queries.push(req.app.get('db').run('select * from gilded_public.occupationprograms programsMap, gilded_public.programs programs where programsMap.program_id = programs.id and programsMap.field_id = $1 and programsMap.soc_id = $2', ids));
     Promise.all(queries).then(values => {
-      res.json(Object.assign({}, values[0], {school_locations: values[1]}));
+      res.json(Object.assign({}, values[0], {programs: values[1]}));
     });
   });
 
@@ -84,18 +104,38 @@ massive(connectionInfo).then(instance => {
   });
 
   app.get('/api/v1/programs', (req, res) => {
-    let schoolLocationIds = req.query.school_location_ids.split(',').map(location => parseInt(location));
-    req.app.get('db').run('select programs.*, schoollocations.title as campus_name, schoollocations.id as school_location_id ' +
-      'from gilded_public.schoolprogramlocations ' +
-      'locations inner join gilded_public.programs programs on locations.program_id=programs.id ' +
-      'inner join gilded_public.schoollocations on locations.school_location_id=gilded_public.schoollocations.id ' +
-      'where school_location_id in (1,2)', schoolLocationIds).then(values => {
-      res.json(schoolLocationIds.map(i => {
-        let title = _.find(values, (o) => i === o.school_location_id).campus_name;
-        let programs = _.filter(values, (o) => i === o.school_location_id);
-        return {school_name: title, program_list: programs};
-      }));
-    });
+    let ids = [];
+    let socField = req.query.socCode.split('-')[0];
+    let socDetail = req.query.socCode.split('-')[1];
+    ids.push(socField);
+    ids.push(socDetail);
+    req.app.get('db').run('select * from gilded_public.programs where id in (select program_id from gilded_public.occupationprograms where field_id = $1 and soc_id = $2)', ids)
+      .then(result => {
+        res.json(result);
+      })
+      .catch(error => error => {
+        console.log(`ERROR ${error}`);
+        res.status(400);
+        res.send("BAD REQUEST");
+      });
+  });
+
+  app.get('/api/v1/programs/:socCode/:school_id', (req, res) => {
+    let ids = [];
+    let socField = req.params.socCode.split('-')[0];
+    let socDetail = req.params.socCode.split('-')[1];
+    ids.push(socField);
+    ids.push(socDetail);
+    ids.push(req.params.school_id);
+    req.app.get('db').run('select programs.* from gilded_public.occupationprograms programsMap, gilded_public.programs programs where programsMap.program_id = programs.id and programsMap.field_id = $1 and programsMap.soc_id = $2 and programs.school_id = $3', ids)
+      .then(result => {
+        res.json(result);
+      })
+      .catch(error => error => {
+        console.log(`ERROR ${error}`);
+        res.status(400);
+        res.send("BAD REQUEST");
+      });
   });
 
   app.post('/api/v1/accounts/facebook', (req, res) => {

@@ -19,7 +19,6 @@ class OccupationsComponent extends Component {
     }
   }
 
-
   render() {
     let title;
     let occupationsFromServerOrProps = [];
@@ -34,7 +33,6 @@ class OccupationsComponent extends Component {
     } else if (this.props.occupations) {
       occupationsFromServerOrProps = this.props.occupations;
     }
-
 
     if (this.state.error === "") {
       return <div className="container-occupations">
