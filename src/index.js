@@ -10,8 +10,8 @@ let connectionInfo = process.env.DATABASE_URL || {
   host: process.env.DATABASE_URL || '127.0.0.1',
   port: 5432,
   database: process.env.DB_NAME || 'gilded',
-  user: process.env.DB_USER || '',
-  password: process.env.DB_PASSWORD || ''
+  user: process.env.DB_USER || (process.platform === 'win32' ? 'postgres' : ''),
+  password: process.env.DB_PASSWORD || (process.platform === 'win32' ? 'password' : '')
 };
 
 massive(connectionInfo).then(instance => {
