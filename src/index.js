@@ -75,7 +75,7 @@ massive(connectionInfo).then(instance => {
             res.json(result);
           } else {
             res.status(404);
-            res.send("Couldn't find school sorry");
+            res.send("Couldn't find a school sorry");
           }
         }).catch(error => {
         console.log(error);
