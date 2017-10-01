@@ -34,6 +34,13 @@ class OccupationsDetailComponent extends Component {
             if (results.length > 0)
               this.setState({showProviders: true});
           }).catch(error => console.log(error));
+
+        fetch(`/api/v1/employers?socCode=${this.state.socCode}`)
+          .then(res => res.json())
+          .then(results => {
+            if (results.length > 0)
+              this.setState({showEmployers: true});
+          }).catch(error => console.log(error));
       });
   }
 
@@ -49,7 +56,7 @@ class OccupationsDetailComponent extends Component {
               <div className="occupation-find-providers">Find Providers</div>
             </Link> : null}
           {this.state.showEmployers ?
-            <Link to={`/employers/occupations/${this.state.details.id}`} className="occupation-employer">
+            <Link to={`/employers/occupations/${this.state.details.field_id}-${this.state.details.soc_detailed_id}`} className="occupation-employer">
               <div className="occupation-find-employers">Find Employers</div>
             </Link> : null}
         </div>
