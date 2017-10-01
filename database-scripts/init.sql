@@ -14,8 +14,8 @@ drop table if exists gilded_public.SchoolLocations CASCADE;
 drop table if exists gilded_public.EmployerLocations CASCADE;
 drop table if exists gilded_public.SchoolType CASCADE;
 drop table if exists gilded_public.SchoolCampusSetting CASCADE;
-drop table if exists gilded_public.EmployerBenefits CASCADE;
-drop table if exists gilded_public.EmployerPositions CASCADE;
+--drop table if exists gilded_public.EmployerBenefits CASCADE;
+--drop table if exists gilded_public.EmployerPositions CASCADE;
 drop table if exists gilded_public.OccupationPrograms CASCADE;
 drop table if exists gilded_public.bls_series CASCADE;
 drop table if exists gilded_private.Accounts CASCADE;
@@ -55,12 +55,10 @@ create table if not exists gilded_public.Occupations(
   unique(field_id, soc_detailed_id)
 );
 
-
 create table if not exists gilded_public.SchoolType(
   id serial primary key,
   title text
  );
-
 
 create table if not exists gilded_public.SchoolCampusSetting(
   id serial primary key,
@@ -84,33 +82,34 @@ create table if not exists gilded_public.Employers(
   id    serial primary key,
   title text not null,
   image_avatar_url text not null,
-  image_background_url text,
-  phone text,
-  about text,
-  address text
+  address text not null,
+  city text not null,
+  state text not null,
+  zipcode text not null,
+  email text,
+  overview_link text not null
 );
 
-create table if not exists gilded_public.EmployerBenefits(
-  id serial primary key,
-  title text,
-  medical boolean,
-  dental boolean,
-  vision boolean,
-  retirement_account boolean,
-  vacation_days integer,
-  on_the_job_training boolean,
-  tuition_reimbursement boolean,
-  additional_details text
-);
+--create table if not exists gilded_public.EmployerBenefits(
+--  id serial primary key,
+--  title text,
+--  medical boolean,
+--  dental boolean,
+--  vision boolean,
+--  retirement_account boolean,
+--  vacation_days integer,
+--  on_the_job_training boolean,
+--  tuition_reimbursement boolean,
+--  additional_details text
+--);
 
-create table if not exists gilded_public.EmployerPositions(
-  id  serial primary key,
-  benefits_id integer references gilded_public.EmployerBenefits(id),
-  occupation_id integer references gilded_public.Occupations(id),
-  employer_id integer references gilded_public.Employers(id),
-  additional_details text
-);
-
+--create table if not exists gilded_public.EmployerPositions(
+--  id  serial primary key,
+--  benefits_id integer references gilded_public.EmployerBenefits(id),
+--  occupation_id integer references gilded_public.Occupations(id),
+--  employer_id integer references gilded_public.Employers(id),
+--  additional_details text
+--);
 
 CREATE TYPE credential_type AS ENUM ('Associate''s', 'Bachelor''s', 'Certificate');
 
@@ -132,6 +131,14 @@ create table if not exists gilded_public.OccupationPrograms(
   program_id integer not null references gilded_public.programs(id)
 );
 
+create table if not exists gilded_public.EmployerOccupations(
+  id serial primary key,
+  field_id integer not null,
+  soc_id integer not null,
+  foreign key (field_id, soc_id) references gilded_public.occupations(field_id, soc_detailed_id),
+  employer_id integer not null references gilded_public.employers(id)
+);
+
 create table if not exists gilded_public.SchoolLocations(
   id    serial primary key,
   school_id integer not null references gilded_public.Schools(id),
@@ -149,8 +156,6 @@ create table if not exists gilded_public.SchoolProgramLocations(
   school_location_id integer not null references gilded_public.SchoolLocations(id),
   primary key(program_id, school_location_id)
 );
-
-
 
 create table if not exists gilded_private.Accounts(
   id serial primary key,
