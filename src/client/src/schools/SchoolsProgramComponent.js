@@ -15,7 +15,7 @@ class SchoolsProgramComponent extends Component {
     if (this.state.programs) {
       let programs = this.state.programs.map(p =>
         <div key={this.state.programs.indexOf(p)}><h1>{p.title}</h1>
-          <div>Cost: ${p.cost_in_state}</div>
+          <div>Cost: ${parseInt(p.cost_in_state)}</div>
           <br/>
           <div>Length: {p.length_months} Months</div>
           <br/>
