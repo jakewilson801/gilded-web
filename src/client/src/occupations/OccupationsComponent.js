@@ -18,14 +18,18 @@ class OccupationsComponent extends Component {
         });
     }
   }
-
+  //Needs to be refactored to redux this code sucks
   render() {
     let title;
     let occupationsFromServerOrProps = [];
     if (this.state.title !== "") {
       title = this.state.title;
     } else {
-      title = this.props.fieldTitle;
+      if(this.props.fieldTitle) {
+        title = this.props.fieldTitle;
+      } else {
+        title = "";
+      }
     }
 
     if (this.state.occupations.length > 0) {

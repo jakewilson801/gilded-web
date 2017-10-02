@@ -1,15 +1,19 @@
 import React, {Component} from 'react';
-import './employers_detail.css'
+import './employers_detail.css';
+import '../occupations/OccupationsComponent';
+import OccupationsComponent from "../occupations/OccupationsComponent";
 
 class EmployersDetailComponent extends Component {
-  state = {employer: {}, showModal: false, occupations: [], summary: {}};
+  state = {employer: {}, showModal: false, occupations: [], summary: null};
 
   componentDidMount() {
     fetch(`/api/v1/employers/${this.props.match.params.id}/details`)
       .then(res => res.json())
-      .then(employer => {
-        this.setState({employer});
-        fetch(`/api/v1/mercury?url=${employer.overview_link}`).then(res => res.json()).then(json => this.setState({summary: JSON.parse(json.body).content}));
+      .then(data => {
+        console.log(data.employers);
+        console.log(data.occupations);
+        this.setState({employer: data.employer, occupations: data.occupations});
+        fetch(`/api/v1/mercury?url=${data.employer.overview_link}`).then(res => res.json()).then(json => this.setState({summary: JSON.parse(json.body).content}));
       });
   }
 
@@ -31,8 +35,9 @@ class EmployersDetailComponent extends Component {
       </div>
       <div className="employers-about">
         <h2>About</h2>
-        {this.state.summary !== {} ? <div dangerouslySetInnerHTML={{__html: this.state.summary}}/> : null}
+        {this.state.summary ? <div dangerouslySetInnerHTML={{__html: this.state.summary}}/> : <div>Loading...</div>}
         <a target={'blank'} href={this.state.employer.overview_link}>Overview</a>
+        {this.state.occupations.length > 0 ? <OccupationsComponent occupations={this.state.occupations} fieldTitle={"employs these types of careers"}/> : null}
       </div>
     </div>
   }

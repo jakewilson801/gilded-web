@@ -104,18 +104,26 @@ massive(connectionInfo).then(instance => {
   });
 
   app.get('/api/v1/employers/:employer_id/details', (req, res) => {
-    req.app.get('db').gilded_public.employers.findOne({id: req.params.employer_id}).then(values => {
-      res.json(values)
+    let queries = [];
+    queries.push(req.app.get('db').run(`select occs.* from gilded_public.occupations occs where (CONCAT(occs.field_id , '-' , occs.soc_detailed_id)) in (SELECT CONCAT(empMap.field_id, '-' , empMap.soc_id) from gilded_public.employeroccupations empMap where empMap.employer_id = $1)`, req.params.employer_id));
+    queries.push(req.app.get('db').gilded_public.employers.findOne({id: req.params.employer_id}));
+    Promise.all(queries).then(data => {
+      if(data[1] && data[0]) {
+        res.json({employer: data[1], occupations: data[0]});
+      } else {
+        res.status(404);
+        res.send("Whoops didn't find that employer");
+      }
+    }).catch(error => {
+      console.log(error);
+      res.status(400);
+      res.send("ERROR");
     });
   });
 
-
-  // let headers = new Headers();
-  // headers.append('x-api-key', 'S79Q41Lw3H3S5JSgNT9Gztcz2zYwJBJtHGPUlKtK');
-  // fetch(``, headers).then(data => data.json()).then(json => console.log(json));
   app.get('/api/v1/mercury', (req, res) => {
     if (req.query.url) {
-      var options = {
+      let options = {
         url: `https://mercury.postlight.com/parser?url=${req.query.url}`,
         headers: {
           'x-api-key': 'S79Q41Lw3H3S5JSgNT9Gztcz2zYwJBJtHGPUlKtK'
