@@ -8,13 +8,13 @@ PROGRAMS=programs.sql
 INIT_SCRIPT=init.sql
 
 if [ ! -f ${INIT_SCRIPT} ]; then
+  INIT_SCRIPT=database-scripts/init.sql
   FIELDS_SCRIPT=database-scripts/fields.sql
   FIELD_IMAGES_SCRIPT=database-scripts/fieldImages.sql
   OCCUPATIONS_SCRIPT=database-scripts/occupations.sql
   OCCUPATIONS_IMAGES_SCRIPT=database-scripts/occupationImages.sql
   SCHOOLS_SCRIPT=database-scripts/schools.sql
   PROGRAMS_SCRIPT=database-scripts/programs.sql
-  INIT_SCRIPT=database-scripts/init.sql
 fi
 
 psql postgres://gknkukyparucvq:ba78c3f16fa4ef2b3f4a38fef55392a196c3611df973cfc91c4aeeb8f17f6733@ec2-50-17-236-15.compute-1.amazonaws.com:5432/d5cedv3sq38d55 -f ${INIT_SCRIPT} d5cedv3sq38d55
