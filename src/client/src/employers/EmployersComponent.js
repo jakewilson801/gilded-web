@@ -3,10 +3,10 @@ import './employers_card.css';
 import {Link} from 'react-router-dom';
 
 class EmployersComponent extends Component {
-  state = {employers: []}
+  state = {employers: []};
 
   componentDidMount() {
-    fetch('/api/v1/employers')
+    fetch(`/api/v1/employers?socCode=${this.props.match.params.id}`)
       .then(res => res.json())
       .then(employers => this.setState({employers}));
   }
@@ -18,9 +18,9 @@ class EmployersComponent extends Component {
         <div className="employer-card-list">
           {this.state.employers.map(e => <div key={e.id}
                                               className="employer-card">
-            <img className="employer-banner" src={e.image_background_url}/>
+            <div className="employer-banner"/>
             <div className="employer-card-inner">
-              <img className="employer-avatar" src={e.image_avatar_url}/>
+              <img className="employer-avatar" src={`/assets/${e.image_avatar_url}`}/>
               <div className="employer-outer">
                 <div className="employer-name">{e.title}</div>
                 <Link className="employer-view-more" to={`/employers/${e.id}/details`}>View More</Link>

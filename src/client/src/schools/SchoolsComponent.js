@@ -10,12 +10,10 @@ class SchoolsComponent extends Component {
   state = {schools: []};
 
   componentDidMount() {
-    console.log(this.props);
     fetch(`/api/v1/schools?socCode=${this.props.match.params.id}`)
       .then(res => res.json())
       .then(result => {this.setState({schools: result})})
       .catch(error => console.log("ERRRoR"));
-
   }
 
   render() {
