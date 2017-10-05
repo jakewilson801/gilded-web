@@ -135,8 +135,10 @@ class App extends Component {
             </div>
             <div className="nav-content">
               <div>
-                {/*<Route exact path="/" component={LandingScreenComponent}/>*/}
                 <Route exact path="/" component={SearchComponent}/>
+              </div>
+              <div>
+                <Route exact path="/feed" component={LandingScreenComponent}/>
               </div>
               <div>
                 <Route exact path="/occupations/:id" component={OccupationsComponent}/>

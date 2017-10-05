@@ -6,8 +6,8 @@
     "lodash": "^4.17.4",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
+    "react-input-range": "^1.2.1",
     "react-modal": "^2.2.2",
-    "react-rangeslider": "^2.2.0",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
     "react-youtube": "^7.4.0"

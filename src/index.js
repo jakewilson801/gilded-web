@@ -31,7 +31,21 @@ massive(connectionInfo).then(instance => {
     req.app.get('db').run('select * from gilded_public.fields').then(result => res.json(result));
   });
 
+  // app.get('/api/v1/feed', (req, res) => {
+  //   let queries = [];
+  //   queries.push(req.app.get('db').run('select * from gilded_public.fields'));
+  //   queries.push(req.app.get('db').run('select * from gilded_public.occupations'));
+  //   Promise.all(queries).then(values => res.json({
+  //     fields: values[0],
+  //     occupations: values[1]
+  //   })).catch(error => console.log(error));
+  // });
+
   app.get('/api/v1/feed', (req, res) => {
+    // select distinct programs.* from gilded_public.programs programs, gilded_public.occupationprograms occMap, gilded_public.occupations occs where programs.cost_in_state <= 5000 and programs.length_months <= 36 and occs.annual_pct10 >= 40000;
+    let t = req.query.tuition;// max
+    let s = req.query.salary;// min
+    let y = req.query.years;// max
     let queries = [];
     queries.push(req.app.get('db').run('select * from gilded_public.fields'));
     queries.push(req.app.get('db').run('select * from gilded_public.occupations'));
