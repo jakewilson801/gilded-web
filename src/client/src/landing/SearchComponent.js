@@ -15,7 +15,8 @@ class SearchComponent extends Component {
       <div style={{marginLeft: '10px'}}>What's the most amount of school you could do?(years)</div>
       <br/>
       <InputRange
-        maxValue={3}
+        step={.5}
+        maxValue={4}
         minValue={0}
         value={this.state.years}
         onChange={value => this.setState({years: value})}/>

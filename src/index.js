@@ -31,24 +31,19 @@ massive(connectionInfo).then(instance => {
     req.app.get('db').run('select * from gilded_public.fields').then(result => res.json(result));
   });
 
-  // app.get('/api/v1/feed', (req, res) => {
-  //   let queries = [];
-  //   queries.push(req.app.get('db').run('select * from gilded_public.fields'));
-  //   queries.push(req.app.get('db').run('select * from gilded_public.occupations'));
-  //   Promise.all(queries).then(values => res.json({
-  //     fields: values[0],
-  //     occupations: values[1]
-  //   })).catch(error => console.log(error));
-  // });
-
   app.get('/api/v1/feed', (req, res) => {
-    // select distinct programs.* from gilded_public.programs programs, gilded_public.occupationprograms occMap, gilded_public.occupations occs where programs.cost_in_state <= 5000 and programs.length_months <= 36 and occs.annual_pct10 >= 40000;
-    let t = req.query.tuition;// max
-    let s = req.query.salary;// min
-    let y = req.query.years;// max
+    let t = req.query.tuition;
+    let y = req.query.years * 12;
+    let s = req.query.salary;
+    console.log(y);
+    let query = `select distinct occs.* from gilded_public.programs progs, gilded_public.occupationprograms occMap, gilded_public.occupations occs where progs.cost_in_state <= $1 and progs.length_months <= $2 and occs.annual_pct10 >= $3 and occMap.field_id = occs.field_id and occMap.soc_id = occs.soc_detailed_id and progs.id = occMap.program_id`;
     let queries = [];
     queries.push(req.app.get('db').run('select * from gilded_public.fields'));
-    queries.push(req.app.get('db').run('select * from gilded_public.occupations'));
+    if (req.query) {
+      queries.push(req.app.get('db').run(query, [t, y, s]));
+    } else {
+      queries.push(req.app.get('db').run('select * from gilded_public.occupations '));
+    }
     Promise.all(queries).then(values => res.json({
       fields: values[0],
       occupations: values[1]
@@ -122,7 +117,7 @@ massive(connectionInfo).then(instance => {
     queries.push(req.app.get('db').run(`select occs.* from gilded_public.occupations occs where (CONCAT(occs.field_id , '-' , occs.soc_detailed_id)) in (SELECT CONCAT(empMap.field_id, '-' , empMap.soc_id) from gilded_public.employeroccupations empMap where empMap.employer_id = $1)`, req.params.employer_id));
     queries.push(req.app.get('db').gilded_public.employers.findOne({id: req.params.employer_id}));
     Promise.all(queries).then(data => {
-      if(data[1] && data[0]) {
+      if (data[1] && data[0]) {
         res.json({employer: data[1], occupations: data[0]});
       } else {
         res.status(404);
