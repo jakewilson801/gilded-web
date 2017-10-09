@@ -5,7 +5,7 @@ let columns = ['Employer_ID', 'Employer', 'Occupation_ID', 'Avatar_Image', 'Addr
 
 fs.readFile(filePath, "utf8", function (err, data) {
     //Windows BS
-    data.split('\r\n').forEach(d => {
+    data.split('\n').forEach(d => {
         let row = d.split('\t');
         let emailVal = row[columns.indexOf('Email')];
         let email = `'${emailVal !== undefined && emailVal.length > 0 ? emailVal : ""}'`;

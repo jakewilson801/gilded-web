@@ -33,6 +33,7 @@ class SchoolsDetailComponent extends Component {
             </div>
           </div>
           <div className="schools-about">
+
             <h2>About</h2>
             <h3>Find your next career in today!</h3>
             {this.state.school.phone}
@@ -42,6 +43,7 @@ class SchoolsDetailComponent extends Component {
           </div>
         </div>
         : <div>Loading...</div>}
+        <br/>
     </div>;
   }
 }

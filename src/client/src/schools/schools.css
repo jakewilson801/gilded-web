@@ -24,8 +24,11 @@
   margin: 5px;
   display: flex;
   -webkit-overflow-scrolling: touch;
-  overflow-x: auto;
   overflow-y: hidden;
+}
+
+.school-card-list::-webkit-scrollbar {
+  display: none;
 }
 
 .school-banner {
@@ -73,4 +76,41 @@
   padding-top: 20px;
   padding-left: 10px;
   margin: 20px;
+}
+
+@media screen and (max-width: 750px) and (min-width: 200px){
+  .school-container {
+    background-color: #DFDBD1;
+    border-radius: 0;
+    overflow: hidden;
+  }
+
+  .nav-container {
+    width: 100%;
+    margin: 0;
+  }
+
+  .nav-content {
+    width: 100%;
+    margin: 0;
+  }
+
+  .school-title {
+    font-weight: bold;
+  }
+
+  .school-slider {
+    margin-left: 0;
+  }
+
+  .school-card {
+    margin-right: 15px;
+    margin-bottom: 5px;
+  }
+  .school-title {
+    font-size: 24px;
+    padding-top: 10px;
+    padding-left: 20px;
+    margin: 10px;
+  }
 }

@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
 import './App.css';
-import OccupationsComponent from './occupations/OccupationsComponent'
-import OccupationsDetailComponent from './occupations/OccupationsDetailComponent'
-import LandingScreenComponent from './landing/LandingScreenComponent'
-import SchoolsDetailComponent from "./schools/SchoolsDetailComponent"
+import OccupationsComponent from './occupations/OccupationsComponent';
+import OccupationsDetailComponent from './occupations/OccupationsDetailComponent';
+import LandingScreenComponent from './landing/LandingScreenComponent';
+import SchoolsDetailComponent from "./schools/SchoolsDetailComponent";
 import EmployersDetailComponent from "./employers/EmployersDetailComponent";
-import SchoolsComponent from "./schools/SchoolsComponent"
-import MessagesComponent from "./messages/MessagesComponent"
-import {Route, Link, withRouter, Redirect} from 'react-router-dom'
+import SchoolsComponent from "./schools/SchoolsComponent";
+import MessagesComponent from "./messages/MessagesComponent";
+import {Route, Link, withRouter, Redirect} from 'react-router-dom';
 import EmployersComponent from "./employers/EmployersComponent";
 import ReactModal from 'react-modal';
 import FacebookLogin from './fb_login/facebook';
-
+import SearchComponent from "./landing/SearchComponent";
+import MediaQuery from 'react-responsive';
 // const PrivateRoute = ({component: Component, ...rest}) => (
 //   <Route {...rest} render={props => (
 //     localStorage.getItem('fb_info') || localStorage.getItem('fb_info') !== "{}" ? (
@@ -134,7 +135,10 @@ class App extends Component {
             </div>
             <div className="nav-content">
               <div>
-                <Route exact path="/" component={LandingScreenComponent}/>
+                <Route exact path="/" component={SearchComponent}/>
+              </div>
+              <div>
+                <Route exact path="/feed" component={LandingScreenComponent}/>
               </div>
               <div>
                 <Route exact path="/occupations/:id" component={OccupationsComponent}/>
