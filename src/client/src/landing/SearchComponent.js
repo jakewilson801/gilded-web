@@ -6,13 +6,17 @@ import {Link} from 'react-router-dom';
 class SearchComponent extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {years: 0, salary: 10000, tuition: 1000};
+    this.state = {
+      years: localStorage.getItem('years') || 0,
+      salary: localStorage.getItem('salary') || 10000,
+      tuition: localStorage.getItem('tuition') || 1000
+    };
   }
 
   render() {
-    return <div style={{backgroundColor: '#FFFFFF', margin: '10px'}}>
+    return <div className="search-container" style={{backgroundColor: '#FFFFFF', margin: '10px'}}>
       <h2 style={{margin: '10px', paddingTop: '10px'}}>Find the program that fits your goals</h2>
-      <div style={{marginLeft: '10px'}}>What's the most amount of school you could do?(years)</div>
+      <div style={{margin: '10px'}}>What's the most amount of school you could do?(years)</div>
       <br/>
       <InputRange
         step={.5}
@@ -29,9 +33,9 @@ class SearchComponent extends Component {
           currency: 'USD',
           minimumFractionDigits: 0
         })}
-        step={1000}
+        step={5000}
         maxValue={100000}
-        minValue={10000}
+        minValue={0}
         value={this.state.salary}
         onChange={value => this.setState({salary: value})}/>
       <br/>
@@ -43,16 +47,16 @@ class SearchComponent extends Component {
           currency: 'USD',
           minimumFractionDigits: 0
         })}
-        step={100}
+        step={2500}
         maxValue={25000}
-        minValue={1000}
+        minValue={0}
         value={this.state.tuition}
         onChange={value => this.setState({tuition: value})}/>
       <br/>
       <br/>
       <Link to={`/feed?years=${this.state.years}&salary=${this.state.salary}&tuition=${this.state.tuition}`}
             className="search-provider">
-        <div className="search-find-providers">Find Schools</div>
+        <div className="search-find-providers">Find Careers</div>
       </Link>
       <br/>
     </div>

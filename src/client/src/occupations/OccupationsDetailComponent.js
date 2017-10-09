@@ -3,24 +3,35 @@
  */
 
 import React, {Component} from 'react';
-import './occupations_details.css'
+import './occupations_details.css';
 import {Link} from 'react-router-dom';
-import YouTube from 'react-youtube'
+import YouTube from 'react-youtube';
+import MediaQuery from 'react-responsive';
 
 class OccupationsDetailComponent extends Component {
+  desktopVideo = {
+    height: '390',
+    width: '640',
+    playerVars: { // https://developers.google.com/youtube/player_parameters
+      autoplay: 0
+    }
+  };
+
+  mobileVideo = {
+    height: '200',
+    width: '300',
+    playerVars: { // https://developers.google.com/youtube/player_parameters
+      autoplay: 0
+    }
+  };
+
   state = {
     details: null,
-    opts: {
-      height: '390',
-      width: '640',
-      playerVars: { // https://developers.google.com/youtube/player_parameters
-        autoplay: 0
-      }
-    },
     showProviders: false,
     showEmployers: false,
     socCode: ""
   };
+
 
   componentDidMount() {
     fetch(`/api/v1/occupations/${this.props.match.params.id}/details`)
@@ -49,23 +60,59 @@ class OccupationsDetailComponent extends Component {
       {this.state.details ?
         <div className="occupation-detail-container">
           <div className="occupation-header">
-            <Link to={`/`}><h2
-              className="occupation-nav-link">{`< ${this.state.details.title}`}</h2></Link>
+            <Link
+              to={`/feed?years=${localStorage.getItem('years')}&salary=${localStorage.getItem('salary')}&tuition=${localStorage.getItem('tuition')}`}>
+              <MediaQuery minWidth={1224}>
+              <h2
+                className="occupation-nav-link">{`< ${this.state.details.title}`}</h2>
+              </MediaQuery>
+              <MediaQuery maxWidth={1224}>
+                <h2
+                  className="occupation-nav-link">{`< Back`}</h2>
+              </MediaQuery>
+            </Link>
+
             <div className="occupation-option-container">
-              {this.state.showProviders ?
-                <Link to={`/schools/occupations/${this.state.details.field_id}-${this.state.details.soc_detailed_id}`}
-                      className="occupation-provider">
-                  <div className="occupation-find-providers">Find Providers</div>
-                </Link> : null}
-              {this.state.showEmployers ?
-                <Link to={`/employers/occupations/${this.state.details.field_id}-${this.state.details.soc_detailed_id}`}
-                      className="occupation-employer">
-                  <div className="occupation-find-employers">Find Employers</div>
-                </Link> : null}
+              <MediaQuery maxWidth={1224}>
+                {this.state.showProviders ?
+                  <Link to={`/schools/occupations/${this.state.details.field_id}-${this.state.details.soc_detailed_id}`}
+                        className="occupation-provider-mobile">
+                    <div className="occupation-find-providers-mobile">Schools</div>
+                  </Link> : null}
+              </MediaQuery>
+              <MediaQuery minWidth={1224}>
+                {this.state.showProviders ?
+                  <Link to={`/schools/occupations/${this.state.details.field_id}-${this.state.details.soc_detailed_id}`}
+                        className="occupation-provider">
+                    <div className="occupation-find-providers">Find Schools</div>
+                  </Link> : null}
+              </MediaQuery>
+              <MediaQuery maxWidth={1224}>
+                {this.state.showEmployers ?
+                  <Link
+                    to={`/employers/occupations/${this.state.details.field_id}-${this.state.details.soc_detailed_id}`}
+                    className="occupation-employer-mobile">
+                    <div className="occupation-find-employers-mobile">Employers</div>
+                  </Link> : null}
+              </MediaQuery>
+              <MediaQuery minWidth={1224}>
+                {this.state.showEmployers ?
+                  <Link
+                    to={`/employers/occupations/${this.state.details.field_id}-${this.state.details.soc_detailed_id}`}
+                    className="occupation-employer">
+                    <div className="occupation-find-employers">Find Employers</div>
+                  </Link> : null}
+              </MediaQuery>
             </div>
           </div>
-          <img className="imageBanner" src={this.state.details.image_avatar_url}/>
-          <p className="description">{this.state.details.description}</p>
+          <MediaQuery minWidth={1224}>
+            <img className="imageBanner" src={this.state.details.image_avatar_url}/>
+            <p className="description">{this.state.details.description}</p>
+          </MediaQuery>
+          <MediaQuery maxWidth={1224}>
+            <img className="imageBanner-mobile" src={this.state.details.image_avatar_url}/>
+            <p className="description-mobile">{this.state.details.description}</p>
+          </MediaQuery>
           <div className="odd-row">
             <div className="meta-label">
               Median Hourly Wage
@@ -76,7 +123,7 @@ class OccupationsDetailComponent extends Component {
           </div>
           <div className="even-row">
             <div className="meta-label">
-              Projected Growth by 2024
+              Ten year growth
             </div>
             <div className="meta-value">
               {`${parseInt(this.state.details.project_growth_2024)}%`}
@@ -91,13 +138,24 @@ class OccupationsDetailComponent extends Component {
             </div>
           </div>
           <br/>
-          <div className="occupation-video">
-            <YouTube
-              videoId={this.state.details.video_url}
-              opts={this.state.opts}
-              onReady={this._onReady}
-            />
-          </div>
+          <MediaQuery maxWidth={1224}>
+            <div className="occupation-video-mobile">
+              <YouTube
+                videoId={this.state.details.video_url}
+                opts={this.mobileVideo}
+                onReady={this._onReady}
+              />
+            </div>
+          </MediaQuery>
+          <MediaQuery minWidth={1224}>
+            <div className="occupation-video">
+              <YouTube
+                videoId={this.state.details.video_url}
+                opts={this.desktopVideo}
+                onReady={this._onReady}
+              />
+            </div>
+          </MediaQuery>
           <br/>
         </div> : <div>Loading...</div>}
     </div>

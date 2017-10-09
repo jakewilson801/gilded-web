@@ -11,6 +11,11 @@ class LandingScreenComponent extends Component {
     let t = URLUtils.getParameterByName('tuition');
     let y = URLUtils.getParameterByName('years');
     let s = URLUtils.getParameterByName('salary');
+
+    localStorage.setItem('years', y);
+    localStorage.setItem('salary', s);
+    localStorage.setItem('tuition', t);
+
     fetch(`/api/v1/feed?tuition=${t}&years=${y}&salary=${s}`)
       .then(res => res.json())
       .then(feed => {

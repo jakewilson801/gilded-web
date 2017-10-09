@@ -12,7 +12,7 @@ import EmployersComponent from "./employers/EmployersComponent";
 import ReactModal from 'react-modal';
 import FacebookLogin from './fb_login/facebook';
 import SearchComponent from "./landing/SearchComponent";
-
+import MediaQuery from 'react-responsive';
 // const PrivateRoute = ({component: Component, ...rest}) => (
 //   <Route {...rest} render={props => (
 //     localStorage.getItem('fb_info') || localStorage.getItem('fb_info') !== "{}" ? (
