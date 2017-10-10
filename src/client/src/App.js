@@ -116,6 +116,7 @@ class App extends Component {
             </div>
           </div>
           <div className="nav-container">
+            <MediaQuery minWidth={1224}>
             <div className="nav-sidebar"
                  style={{display: this.state.userData && localStorage.getItem('fb_info') !== "{}" ? 'inline' : 'none'}}>
               <img
@@ -133,6 +134,7 @@ class App extends Component {
                 </div>
               </div>
             </div>
+            </MediaQuery>
             <div className="nav-content">
               <div>
                 <Route exact path="/" component={SearchComponent}/>
