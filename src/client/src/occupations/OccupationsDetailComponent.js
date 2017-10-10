@@ -63,8 +63,8 @@ class OccupationsDetailComponent extends Component {
             <Link
               to={`/feed?years=${localStorage.getItem('years')}&salary=${localStorage.getItem('salary')}&tuition=${localStorage.getItem('tuition')}`}>
               <MediaQuery minWidth={1224}>
-              <h2
-                className="occupation-nav-link">{`< ${this.state.details.title}`}</h2>
+                <h2
+                  className="occupation-nav-link">{`< ${this.state.details.title}`}</h2>
               </MediaQuery>
               <MediaQuery maxWidth={1224}>
                 <h2
@@ -110,8 +110,10 @@ class OccupationsDetailComponent extends Component {
             <p className="description">{this.state.details.description}</p>
           </MediaQuery>
           <MediaQuery maxWidth={1224}>
-            <img className="imageBanner-mobile" src={this.state.details.image_avatar_url}/>
-            <p className="description-mobile">{this.state.details.description}</p>
+            <div className="imageBanner-mobile-container">
+              <h2 className="imageBanner-mobile-title">{this.state.details.title}</h2>
+              <img className="imageBanner-mobile" src={this.state.details.image_avatar_url}/>
+            </div>
           </MediaQuery>
           <div className="odd-row">
             <div className="meta-label">
