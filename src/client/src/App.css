@@ -7,6 +7,11 @@
   height: 32px;
 }
 
+.feed-filter {
+  align-self: center;
+  color: #FCC824;
+}
+
 .signUp {
   cursor: pointer;
   justify-content: center;
