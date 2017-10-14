@@ -107,15 +107,29 @@ class App extends Component {
           <div className="header">
             <div className="nav">
               <Link className="logo" to="/"><img src="/logo.svg"/></Link>
+              <Link className="feed-filter" to="/search">
+                <MediaQuery minWidth={1224}>
+                  <b>Can't find what you're looking for?</b>
+                </MediaQuery>
+                <MediaQuery maxWidth={1224}>
+                  <b>Narrow occupations?</b>
+                </MediaQuery>
+              </Link>
               {this.state.userData && localStorage.getItem('fb_info') !== "{}" ?
                 <div className="user-container">
                   <img className="avatar" src={this.state.userData.picture.data.url}/>
-                  <div className="name">{this.state.userData.name}</div>
+                  <MediaQuery minWidth={1224}>
+                    <div className="name">{this.state.userData.name}</div>
+                  </MediaQuery>
+                  <MediaQuery maxWidth={1224}>
+                    <div className="name">{this.state.userData.name.split(" ")[0]}</div>
+                  </MediaQuery>
                 </div> :
                 <div className="signUp" onClick={this.handleOpenModal}>Sign Up</div>}
             </div>
           </div>
           <div className="nav-container">
+            <MediaQuery minWidth={1224}>
             <div className="nav-sidebar"
                  style={{display: this.state.userData && localStorage.getItem('fb_info') !== "{}" ? 'inline' : 'none'}}>
               <img
@@ -133,12 +147,13 @@ class App extends Component {
                 </div>
               </div>
             </div>
+            </MediaQuery>
             <div className="nav-content">
               <div>
-                <Route exact path="/" component={SearchComponent}/>
+                <Route exact path="/" component={LandingScreenComponent}/>
               </div>
               <div>
-                <Route exact path="/feed" component={LandingScreenComponent}/>
+                <Route exact path="/search" component={SearchComponent}/>
               </div>
               <div>
                 <Route exact path="/occupations/:id" component={OccupationsComponent}/>

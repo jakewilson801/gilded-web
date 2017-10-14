@@ -7,9 +7,9 @@ class SearchComponent extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      years: localStorage.getItem('years') || 0,
-      salary: localStorage.getItem('salary') || 10000,
-      tuition: localStorage.getItem('tuition') || 1000
+      years: parseFloat(localStorage.getItem('years')) || 0,
+      salary: parseInt(localStorage.getItem('salary')) || 10000,
+      tuition: parseInt(localStorage.getItem('tuition')) || 1000
     };
   }
 
@@ -54,7 +54,7 @@ class SearchComponent extends Component {
         onChange={value => this.setState({tuition: value})}/>
       <br/>
       <br/>
-      <Link to={`/feed?years=${this.state.years}&salary=${this.state.salary}&tuition=${this.state.tuition}`}
+      <Link to={`/?years=${this.state.years}&salary=${this.state.salary}&tuition=${this.state.tuition}`}
             className="search-provider">
         <div className="search-find-providers">Find Careers</div>
       </Link>

@@ -11,12 +11,17 @@ class LandingScreenComponent extends Component {
     let t = URLUtils.getParameterByName('tuition');
     let y = URLUtils.getParameterByName('years');
     let s = URLUtils.getParameterByName('salary');
+    let request;
+    if (t && y && s) {
+      localStorage.setItem('years', y);
+      localStorage.setItem('salary', s);
+      localStorage.setItem('tuition', t);
+      request = `/api/v1/feed?tuition=${t}&years=${y}&salary=${s}`;
+    } else {
+      request = `/api/v1/feed`;
+    }
 
-    localStorage.setItem('years', y);
-    localStorage.setItem('salary', s);
-    localStorage.setItem('tuition', t);
-
-    fetch(`/api/v1/feed?tuition=${t}&years=${y}&salary=${s}`)
+    fetch(request)
       .then(res => res.json())
       .then(feed => {
         let combinedResults = feed.fields.map(f => {
@@ -31,13 +36,14 @@ class LandingScreenComponent extends Component {
     if (!this.state.feed) {
       return <div>Loading...</div>
     } else {
-      if(this.state.feed.length > 0) {
+      if (this.state.feed.length > 0) {
         return <div>
           {this.state.feed.map((row, index) => <OccupationsComponent key={index} fieldId={row.id} fieldTitle={row.title}
                                                                      occupations={row.occupations}/>)}
         </div>
       } else {
-        return <div style={{margin: '10px'}}>No results for given salary, time and tuition <Link to={"/"}>Try again?</Link></div>
+        return <div style={{margin: '10px'}}>No results for given salary, time and tuition <Link to={"/"}>Try
+          again?</Link></div>
       }
     }
   }
