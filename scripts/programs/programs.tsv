@@ -1,0 +1,109 @@
+School ID	Name	Cost	Time in Months	Creds(1= Bachelor's, 2 = Associate's 3 = Certificate)	Occupation ID (SOC Code Comma Delimted)	Flexible	Link
+2	CNC Machining	$4,655	11	3	51-4011,51-4012	y	https://www.davistech.edu/machine
+2	Automation Technology	$3,949	10	3	17-3029,49-9041	y	https://www.davistech.edu/automation
+2	Plastic Injection Molding Technology	$3,212	10	3	17-3029	y	http://www.davistech.edu/injection-molding
+2	Welding	$6,000	13	3	51-4121	y	http://www.davistech.edu/welding
+2	Software Development	$3,268	13	3	15-1134	y	https://www.davistech.edu/sdev
+1	Manual Machinist	$1,407	6	3	51-4041,51-4081	y	https://www.slcc.edu/satts/programs/manual-machinist.aspx
+1	Welding	$3,468	12	3	51-4121	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3630
+3	Machinist Level I	$3,595	8	3	51-4034,51-4032,51-4041	y	http://www.owatc.edu/training/manufacturing/machinist/
+3	Machinist Level II	$4,240	11	3	51-4034,51-4032,51-4041	y	http://www.owatc.edu/training/manufacturing/machinist-ii/
+3	Machinist Level III	$5,073	14	3	51-4034,51-4032,51-4041	y	http://www.owatc.edu/training/manufacturing/machinist-iii/
+3	Computer Aided Design	$3,949	11	3	17-3011	y	http://www.owatc.edu/training/construction/computer-aided-design-technology/
+3	Welder Metal Fabricator	$2,535	10	3	51-4121,51-4122	y	http://www.owatc.edu/training/manufacturing/metal-fabricator/
+4	Precision Machining	$5,236	10.5	3	51-4041	y	https://mlatc.edu/programs/precision-machining/
+4	Web Programming&Development	$3,800	13	3	15-1134	n	https://mtec.edu/programs/web-programming-development/
+8	Welding Technician II	$2,776	11	3	51-4121	y	http://tatc.edu/training-programs/manufacturing/welding-technician-ii/
+8	Medical Billing and Coding	$1,793	7	3	29-2071	y	http://tooeletech.edu/training-programs/healthcare/medical-billing-and-coding/
+8	Industrial Maintenance Technician	$2,624	10	3	49-9041,49-9043	y	http://tooeletech.edu/training-programs/manufacturing/industrial-maintenance-technician/
+5	Machining Technology - Conventional	$3,420	10	3	51-4041	y	http://btech.edu/programs/machining-technology/
+5	Machining Technology - CNC	$5,130	15	3	51-4041,51-4012,5-4011	y	http://btech.edu/programs/machining-technology/
+5	Web and Mobile Development	$2,480	10	3	15-1134	n	https://mtec.edu/programs/web-programming-development/
+9	Machine Tool Technology	$6,965	24	2	51-2041,51-4011,51-4033,51-4041,51-4081,51-4191,51-4192,51-4194,51-4199	n	https://www.snow.edu/academics/bat/mtt/index.html
+9	Computer Information Technology - Advanced Networking	$8,884	24	3	15-1142,15-1143,15-1152	n	https://www.snow.edu/offices/advisement/downloads/Certificate%20of%20Proficiency-Networking%20Technology.pdf
+9	Computer Information Technology - Networking	$4,442	12	3	15-1142,15-1152,15-1151	n	https://www.snow.edu/offices/advisement/downloads/Certificate%20of%20Proficiency%20Advanced%20Networking.pdf
+9	Computer Information Technology - Server Administration	$4,442	12	3	15-1151,15-1142	n	https://www.snow.edu/academics/bat/cis/index.html
+9	Computer Information Technology - Advanced Server Administration	$4,442	12	3	15-1151,15-1142	n	https://www.snow.edu/academics/bat/cis/index.html
+6	Manufacturing Engineering Technology: Production Operations & Controls Emphasis	$12,624	20	2	51-4011,51-4012	n	http://catalog.weber.edu/preview_program.php?catoid=current&poid=5874
+6	Manufacturing Engineering Technology: Production Operations & Controls Emphasis	$25,248	44	1	51-4011,51-4012	n	http://catalog.weber.edu/preview_program.php?catoid=current&poid=5499
+6	Manufacturing Engineering Technology: Welding Emphasis	$12,624	20	2	51-4121	n	http://catalog.weber.edu/preview_program.php?catoid=current&poid=5875
+6	Manufacturing Engineering Technology: Welding Emphasis	$25,248	44	1	51-4121	n	http://catalog.weber.edu/preview_program.php?catoid=current&poid=5877
+6	Mechanical Engineering Technology	$12,624	20	2	17-3026,17-3027,17-3029	n	http://catalog.weber.edu/preview_program.php?catoid=current&poid=5504
+6	Mechanical Engineering Technology	$25,248	44	1	17-3026,17-3027,17-3029	n	http://catalog.weber.edu/preview_program.php?catoid=current&poid=5505
+6	Electronics Engineering Technology	$12,624	20	2	17-3023,17-3024	n	http://catalog.weber.edu/preview_program.php?catoid=current&poid=5590
+6	Electronics Engineering Technology	$25,248	44	1	17-3023,17-3024	n	http://catalog.weber.edu/preview_program.php?catoid=current&poid=5591
+6	Controls Technology	$12,624	20	2	17-3026	n	https://www.weber.edu/et/control_technology.html
+6	Associate of Applied Science in Computer Science	$12,624	20	2	15-1134	n	http://www.weber.edu/Majors/computer_science.html
+1	Automotive Technician	$13,400	20	2	49-3023,49-3022	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3441
+1	Automotive Collision Repair and Refinishing	$12,881	20	2	49-3021,49-3022	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3440
+1	Automotive Collision Repair and Refinishing	$5,928	8	3	49-3021,49-3022	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3443
+1	Welding Fabrication	$12,225	20	2	51-4022,51-4121	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3629
+1	Welding Technology	$6,800	8	3	51-4022,51-4121	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3630
+1	Welding (KWLD)	$3,900	6	3	51-4121	y	https://www.slcc.edu/satts/programs/welding.aspx
+1	Clinical Lab Assistant	$1,550	3	3	29-2012,29-2011	y	https://www.slcc.edu/satts/programs/clinical-lab-assistant.aspx
+1	Air Conditioning / Heating / Refrigeration (KACC)	$3,592	6	3	49-9021	y	https://www.slcc.edu/satts/programs/air-conditioning-heating-refrigeration.aspx
+1	Diesel Systems Technolog	$19,526	20	2	49-3031	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3507
+1	Electromechanical Assembly Technician (KEM2)	$1,947	3	3	17-3024,51-2023	y	https://www.slcc.edu/satts/programs/electromechanical-assembly-technician.aspx
+1	Automation & Instrumentation Technician (KAIT)	$4,577	7	3	17-3024,17-3023,49-2094,49-9012,49-9071,49-9099	y	https://www.slcc.edu/satts/programs/automation-instrumentation-technician.aspx
+1	Electronics Communications Technician (KEC3)	$3,985	7	3	17-3023,49-2093	y	https://www.slcc.edu/satts/programs/electronics-communications-technician.aspx
+1	Electronics Engineering Technician (KEET)	$3,237	7	3	17-3023	y	https://www.slcc.edu/satts/programs/electronics-engineering-technician.aspx
+1	Electronics Technician (KET2)	$2,977	6	3	49-2093,17-3023	y	http://www.slcc.edu/satts/programs/electronics-technician.aspx
+1	Manual Machinist (KMAT)	$1,429	3	3	51-4041,51-4081	y	https://www.slcc.edu/satts/programs/manual-machinist.aspx
+1	Medical Coding & Billing (KMC2)	$3,557	6	3	29-2071,43-3021,43-6013	y	https://www.slcc.edu/satts/programs/medical-coding-billing.aspx
+1	Network Systems: AAS (CTE)	$11,061	20	2	15-1142,15-1143	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3484&returnto=770
+3	Web Development	$4,541	12	3	15-1134	y	http://www.owatc.edu/training/business-it/web-development/
+10	Database Certificate	$8,190	12	3	15-1141	y	http://www.liberty.edu/media/1270/CTDB-CRT-D.pdf
+1	Engineering Design / Drafting Technology (AAS)	$12,225	20	2	17-3022,17-3011	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3534
+6	Design Engineering Technology (AAS)	$12,624	20	2	17-3022,17-3011	n	http://catalog.weber.edu/preview_program.php?catoid=current&poid=5507
+1	Civil/Environmental Engineering: APE(CTE)	$19,526	24	2	17-3022,17-3025	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3523
+9	Civil and Environmental Engineering (APE)	$8,844	24	2	17-3022,17-3025	n	https://www.snow.edu/offices/advisement/downloads/Civil%20and%20Environmental%20Engr.%20Combined.pdf
+6	Radiologic Technology (AAS)	$12,624	24	2	29-2034	n	http://www.weber.edu/RadSci/associate.html
+1	Network Engineer: CP (Competency-Based)(CTE)	$12,225	20	2	15-1142,15-1151,15-1152	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3479&returnto=770
+1	Respiratory Therapy: AAS (CTE)	$15,625	20	2	29-1126	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3913&returnto=770
+1	Aerospace/Aviation Technology Maintence (AAS)	$16,302	20	2	17-3021	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3405
+11	Aircraft Maintenance Technician- Airframe & Powerplant - AAS	$12,624	20	2	17-3021	n	http://catalog.usu.edu/preview_program.php?catoid=12&poid=10434
+1	Radiologic Technology: AAS (CTE)	$13,875	24	2	29-1124,29-2034	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3606
+6	 Radiologic Technology: AAS 	$21,478	36	2	29-1124	n	http://www.weber.edu/CHP/College_Pages/Radiology_Technology.html
+6	Respiratory Therapy, Pre-Professional (AAS)	$15,913	24	2	29-1126	n	http://catalog.weber.edu/preview_program.php?catoid=current&poid=5840
+1	Registered Nurse (AAS)	$12,765	28	2	29-1141	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3598
+6	Registered Nurse (ADN)	$19,130	24	2	29-1141	n	http://catalog.weber.edu/preview_program.php?catoid=12&poid=5884
+6	Medical Laboratory Sciences (AAS)	$14,275	20	2	29-2011,29-2012	n	http://catalog.weber.edu/preview_program.php?catoid=12&poid=5880&returnto=portfolio&in_portfolio=1
+8	Clinical Lab Assistant	$2,776	5	3	29-2012	y	http://tooeletech.edu/training-programs/healthcare/clinical-medical-assistant/
+1	Dential Hygiene 	$23,000	28	2	29-2021	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3506
+6	Dential Hygiene 	$21,000	24	2	29-2021	n	http://www.weber.edu/DentalHygiene/AS.html
+1	EMT	$1,937	3	3	29-2041	n	http://www.slcc.edu/satts/programs/emt.aspx
+2	EMT	$766	7	3	29-2041	n	https://www.davistech.edu/emt
+3	Pharmacy Technician	$2,170	8	3	29-2052	y	http://www.owatc.edu/training/health/pharmacy-technician/
+2	Pharmacy Technician	$2,729	9	3	29-2052	y	https://www.davistech.edu/pharmacy
+1	Respiratory Therapy: AAS (CTE)	$17,265	24	2	29-2054	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3913
+6	Respiratory Therapy: AAS Pre-Professional	$15,940	24	2	29-2054	n	http://catalog.weber.edu/preview_program.php?catoid=12&poid=5840&returnto=2969
+1	Surgical Technology (CC)	$7,220	16	3	29-2055	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3612
+2	Surgical Technology	$4,745	18	3	29-2055	n	https://www.davistech.edu/surgical
+5	Veterinarian Assistant/Pre-Vet Tech	$1,380	10	3	29-2056	y	http://btech.edu/certificate/animal-sciences/
+12	Veterinary Assistant 	$15,800	12	2	29-2056	n	http://broadviewuniversity.edu/campus/veterinary-technology-associate-degrees/
+7	Engineering Technology: CAD/CAM Technology (AAS)	$16,551	24	2	17-3011	n	https://www.suu.edu/programs/engineering-cadcam-associate-degree.html
+9	Nutrition	$10,184	24	2	29-2051	n	https://www.snow.edu/offices/advisement/downloads/Nutrition.pdf
+9	Industrial Mechanics AAS	$10,184	24	2	49-9081,49-9044	n	https://www.snow.edu/offices/advisement/downloads/Industrial%20Mechanics%20AAS.pdf
+9	Industrial Mechanics Certificate of Completion	$5,092	12	3	49-9081,49-9044	n	https://www.snow.edu/offices/advisement/downloads/Certificate%20of%20Completion%20Industrial%20Mechanics.pdf
+11	Agricultural Machinery Technology AAS, Cert	$16,064	24	2	49-3041	n	http://catalog.usu.edu/preview_program.php?catoid=12&poid=9272&returnto=3800
+11	Agricultural Machinery Technology Cert only	$8,032	12	3	49-3041	n	http://catalog.usu.edu/preview_program.php?catoid=12&poid=9271&returnto=3800
+11	Diesel and Heavy Equipment Mechanics - AAS	$16,064	23	2	49-3031	n	http://catalog.usu.edu/preview_program.php?catoid=12&poid=9384&returnto=3800
+1	Dental Hygiene AAS (CTE)	$24,990	36	2	29-2021	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3506&returnto=774
+6	Dental Hygiene AS	$20,736	36	2	29-2021	n	http://www.weber.edu/Majors/dentalhygiene.html
+1	Apprenticeship Electrical Independent Technology: AAS (CTE)	$14,760	24	2	47-2111	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3426&returnto=770
+2	Electrician Apprentice	$3,531	48	3	47-2111	y	https://www.davistech.edu/electrician
+6	Nuclear Medicine	$27,648	48	1	29-2033	n	http://catalog.weber.edu/preview_program.php?catoid=12&poid=5857
+1	COMPUTER SCIENCES AND INFORMATION SYSTEMS: AS	$12,765	24	2	15-1134	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3482&returnto=774
+1	COMPUTER SCIENCES AND INFORMATION SYSTEMS: AAS (CTE)	$13,000	24	2	15-1134	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3483&returnto=774
+6	Diagnostic Medical Sonography	$28,000	48	1	29-2031,29-2032	n	http://catalog.weber.edu/preview_program.php?catoid=12&poid=5855&returnto=2969
+5	Apprenticeship Plumber	$3,000	48	3	47-2152	y	http://btech.edu/certificate/apprenticeship-program/
+2	Plumbing Apprentice	$3,000	48	3	47-2152	y	https://www.davistech.edu/plumbing
+3	Practical Nursing	$4,015	9	3	29-2061	y	http://www.owatc.edu/training/health/practical-nursing/
+9	Practical Nursing	$11,076	18	3	29-2061	n	https://www.snow.edu/offices/advisement/downloads/Practical%20Nursing%20Combined.pdf
+3	Construction Technology	$745	2	3	47-2031,47-2022	n	http://www.owatc.edu/training/construction/construction-technology/
+1	APPRENTICESHIP CARPENTRY JATC TECHNOLOGY: AAS (CTE)	$13,000	24	2	47-2031	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3421&returnto=770
+1	APPRENTICESHIP CARPENTRY INDEPENDENT TECHNOLOGY: AAS (CTE)	$14,000	24	2	47-2031	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3420&returnto=770
+1	APPRENTICESHIP PLUMBER/PIPEFITTER JATC TECHNOLOGY: AAS (CTE)	$14,000	24	2	47-2152	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3433&returnto=770
+1	APPRENTICESHIP PLUMBER INDEPENDENT TECHNOLOGY: AAS (CTE)	$13,000	24	2	47-2152	n	http://catalog.slcc.edu/preview_program.php?catoid=10&poid=3432&returnto=770
+2	Utah Aerospace Pathways	$450	5	3	51-2092	n	https://jobs.utah.gov/aerospace/education.html
+13	FutureINDesign	$0	9	3	15-1134	n	http://www.futureindesign.org
