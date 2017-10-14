@@ -109,10 +109,10 @@ class App extends Component {
               <Link className="logo" to="/"><img src="/logo.svg"/></Link>
               <Link className="feed-filter" to="/search">
                 <MediaQuery minWidth={1224}>
-                  <b>Can't find what you're looking for?</b>
+                  <b>Get Recommendations</b>
                 </MediaQuery>
                 <MediaQuery maxWidth={1224}>
-                  <b>Narrow occupations?</b>
+                  <b>Get Recommendations</b>
                 </MediaQuery>
               </Link>
               {this.state.userData && localStorage.getItem('fb_info') !== "{}" ?
