@@ -7,6 +7,8 @@ import './occupations_details.css';
 import {Link} from 'react-router-dom';
 import YouTube from 'react-youtube';
 import MediaQuery from 'react-responsive';
+import '../util/MoneyUtils'
+import MoneyUtils from "../util/MoneyUtils";
 
 class OccupationsDetailComponent extends Component {
   desktopVideo = {
@@ -54,6 +56,8 @@ class OccupationsDetailComponent extends Component {
           }).catch(error => console.log(error));
       });
   }
+
+
 
   render() {
     return <div>
@@ -128,15 +132,23 @@ class OccupationsDetailComponent extends Component {
               Ten year growth
             </div>
             <div className="meta-value">
-              {`${parseInt(this.state.details.project_growth_2024)}%`}
+              {`${MoneyUtils.thousands(parseInt(this.state.details.project_growth_2024))}%`}
             </div>
           </div>
           <div className="odd-row">
             <div className="meta-label">
-              Average Yearly Salary
+              Average Starting Salary
             </div>
             <div className="meta-value">
-              {`$${parseInt(this.state.details.annual_mean)}`}
+              {`${MoneyUtils.thousands(parseInt(this.state.details.annual_pct10))}`}
+            </div>
+          </div>
+          <div className="even-row">
+            <div className="meta-label">
+              Highest salary
+            </div>
+            <div className="meta-value">
+              {`${MoneyUtils.thousands(parseInt(this.state.details.annual_pct90))}`}
             </div>
           </div>
           <br/>
