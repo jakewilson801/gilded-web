@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="49px" viewBox="0 0 24 49" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 47 (45396) - http://www.bohemiancoding.com/sketch -->
+    <title>Combined Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M980,118 L970,128 L970,85.5 C970,84.1166667 971.116667,83 972.5,83 L987.5,83 C988.883333,83 990,84.1166667 990,85.5 L990,128 L980,118 Z M986.747516,100.199344 C986.900469,100.093115 987,99.9180328 987,99.7213115 C987,99.3947541 986.727,99.1311475 986.390422,99.1311475 L982.337672,99.1311475 L981.082562,95.4170492 C981.006188,95.175082 980.774219,95 980.499797,95 C980.225578,95 979.993609,95.175082 979.917234,95.4170492 L978.662125,99.1311475 L974.609172,99.1311475 C974.272797,99.1311475 974,99.3947541 974,99.7213115 C974,99.9180328 974.099328,100.093115 974.252078,100.199344 L977.526047,102.493115 L976.264844,106.224918 C976.245141,106.283934 976.234172,106.344918 976.234172,106.409836 C976.234172,106.736393 976.507172,107 976.843547,107 C976.977,107 977.100297,106.958689 977.200641,106.887869 L977.200844,106.887869 L980.499797,104.576393 L983.798953,106.887869 L983.799156,106.887869 C983.8995,106.958689 984.022797,107 984.156047,107 C984.492625,107 984.765422,106.736393 984.765422,106.409836 C984.765422,106.344918 984.754656,106.283934 984.734953,106.224918 L983.47375,102.493115 L986.747719,100.199344 L986.747516,100.199344 Z" id="path-1"></path>
+        <filter x="-17.5%" y="-5.6%" width="135.0%" height="115.6%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="user" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="home_user-discover-2" transform="translate(-1098.000000, -589.000000)">
+            <g id="main" transform="translate(130.000000, 507.000000)">
+                <g id="Combined-Shape">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

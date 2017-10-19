@@ -31,7 +31,8 @@ class OccupationsDetailComponent extends Component {
     details: null,
     showProviders: false,
     showEmployers: false,
-    socCode: ""
+    socCode: "",
+    isBookmarked: false
   };
 
 
@@ -56,7 +57,6 @@ class OccupationsDetailComponent extends Component {
           }).catch(error => console.log(error));
       });
   }
-
 
 
   render() {
@@ -110,13 +110,19 @@ class OccupationsDetailComponent extends Component {
             </div>
           </div>
           <MediaQuery minWidth={1224}>
-            <img className="imageBanner" src={this.state.details.image_avatar_url}/>
+            <div className="bannerWrapper">
+              <img className="imageBanner" src={this.state.details.image_avatar_url}/>
+              <img className="bookmark" src={this.state.isBookmarked ? '/bookmarked.svg' : '/bookmark.svg'}/>
+            </div>
             <p className="description">{this.state.details.description}</p>
           </MediaQuery>
           <MediaQuery maxWidth={1224}>
             <div className="imageBanner-mobile-container">
               <h2 className="imageBanner-mobile-title">{this.state.details.title}</h2>
-              <img className="imageBanner-mobile" src={this.state.details.image_avatar_url}/>
+              <div className="bannerWrapper">
+                <img className="imageBanner-mobile" src={this.state.details.image_avatar_url}/>
+                <img className="bookmark-mobile" src={this.state.isBookmarked ? '/bookmarked.svg' : '/bookmark.svg'}/>
+              </div>
             </div>
           </MediaQuery>
           <div className="odd-row">
@@ -132,7 +138,7 @@ class OccupationsDetailComponent extends Component {
               Ten year growth
             </div>
             <div className="meta-value">
-              {`${MoneyUtils.thousands(parseInt(this.state.details.project_growth_2024))}%`}
+              {`${parseInt(this.state.details.project_growth_2024)}%`}
             </div>
           </div>
           <div className="odd-row">

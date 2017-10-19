@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const _ = require('lodash');
 const morgan = require('morgan');
 const request = require('request');
+const JWT = require('jsonwebtoken');
 
 let connectionInfo = process.env.DATABASE_URL || {
   host: process.env.DATABASE_URL || '127.0.0.1',
@@ -26,6 +27,8 @@ massive(connectionInfo).then(instance => {
   }));
 
   app.use(morgan('dev'));
+
+  app.set('superSecret', '1337hackzors');
 
   app.get('/api/v1/fields', (req, res) => {
     req.app.get('db').run('select * from gilded_public.fields').then(result => res.json(result));
@@ -190,7 +193,7 @@ massive(connectionInfo).then(instance => {
       .then(result => {
         res.json(result);
       })
-      .catch(error => error => {
+      .catch(error => {
         console.log(`ERROR ${error}`);
         res.status(400);
         res.send("BAD REQUEST");
@@ -198,23 +201,68 @@ massive(connectionInfo).then(instance => {
   });
 
   app.post('/api/v1/accounts/facebook', (req, res) => {
-    req.app.get('db').gilded_private.accounts.findOne({fb_user_id: req.body.userID}).then(values => {
-      if (!values) {
-        req.app.get('db').gilded_private.accounts.insert({
-          full_name: req.body.name,
-          email: req.body.email,
-          avatar_url: req.body.picture.data.url,
-          fb_user_id: req.body.userID,
-          account_fb_info: req.body
-        }).then(result => {
-            res.status(201).send(result);
+    request(`https://graph.facebook.com/app?access_token=${req.body.accessToken}`, (error, response, body) => {
+      let t = JWT.sign({
+        data: {fb_token: req.body.accessToken, user_id: req.body.userID}
+      }, app.get('superSecret'));
+      if (!error) {
+        req.app.get('db').gilded_private.accounts.findOne({fb_user_id: req.body.userID}).then(values => {
+          if (!values) {
+            req.app.get('db').gilded_private.accounts.insert({
+              full_name: req.body.name,
+              email: req.body.email,
+              avatar_url: req.body.picture.data.url,
+              fb_user_id: req.body.userID,
+              account_fb_info: req.body
+            }).then(r => {
+                res.status(201).send({token: t, result: r});
+              }
+            )
+          } else {
+            res.status(200).send({token: t});
           }
-        )
+        });
       } else {
-        res.status(200).send("GTG");
+        res.status(400).send("Upgrade your honda");
       }
     });
+
   });
+
+  let authRoutes = express.Router();
+
+  authRoutes.use((req, res, next) => {
+    let jwtToken = req.body.token || req.query.token || req.headers['x-access-token'];
+    if (jwtToken) {
+      JWT.verify(jwtToken, app.get('superSecret'), (err, decoded) => {
+        if (err) {
+          return res.json({success: false, message: 'Failed to authenticate token.'});
+        } else {
+          req.decoded = decoded;
+          next();
+        }
+      });
+    } else {
+      return res.status(401).send({
+        success: false,
+        message: 'No token provided.'
+      });
+    }
+  });
+
+  authRoutes.get('/me', (req, res) => {
+    let jwtToken = req.body.token || req.query.token || req.headers['x-access-token'];
+    JWT.verify(jwtToken, app.get('superSecret'), (err, decoded) => {
+      if (err) {
+        res.status(401).send("Invalid auth");
+      } else {
+        req.app.get('db').run("select * from gilded_private.accounts where fb_user_id = $1", [decoded.data.user_id]).then(data => res.json(data));
+      }
+    });
+
+  });
+
+  app.use('/api/v1/user', authRoutes);
 
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname + '/client/build/index.html'));

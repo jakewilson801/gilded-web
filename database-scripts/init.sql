@@ -166,6 +166,12 @@ create table if not exists gilded_private.Accounts(
   account_fb_info json
 );
 
+create table if not exists gilded_private.OccupationBookmarks(
+  id serial primary key,
+  user_id integer not null references gilded_private.Accounts(id),
+  occupation_id integer not null references gilded_public.Occupations(id)
+);
+
 create type seasonal_adjustment_type as enum ('S','U');
 create type area_type_type as enum ('M','N','S');
 create type datatype_type as enum ('01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17');
