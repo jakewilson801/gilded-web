@@ -12,7 +12,8 @@ class LandingScreenComponent extends Component {
     let y = URLUtils.getParameterByName('years');
     let s = URLUtils.getParameterByName('salary');
     let request;
-    if (t && y && s) {
+
+    if (t !== 'null' && y !== 'null' && s !== 'null') {
       localStorage.setItem('years', y);
       localStorage.setItem('salary', s);
       localStorage.setItem('tuition', t);
@@ -42,7 +43,7 @@ class LandingScreenComponent extends Component {
                                                                      occupations={row.occupations}/>)}
         </div>
       } else {
-        return <div style={{margin: '10px'}}>No results for given salary, time and tuition <Link to={"/"}>Try
+        return <div style={{margin: '10px'}}>No results for given salary, time and tuition <Link to={"/search"}>Try
           again?</Link></div>
       }
     }

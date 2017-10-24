@@ -32,9 +32,14 @@ class OccupationsDetailComponent extends Component {
     showProviders: false,
     showEmployers: false,
     socCode: "",
-    isBookmarked: false
+    isBookmarked: false,
+    isAuth: false
   };
 
+  constructor() {
+    super();
+    this.bookmarkOccupation = this.bookmarkOccupation.bind(this);
+  }
 
   componentDidMount() {
     fetch(`/api/v1/occupations/${this.props.match.params.id}/details`)
@@ -55,9 +60,38 @@ class OccupationsDetailComponent extends Component {
             if (results.length > 0)
               this.setState({showEmployers: true});
           }).catch(error => console.log(error));
+
+        fetch('/api/v1/user/bookmarks', {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'x-access-token': localStorage.getItem('jwt')
+          }
+        }).then(res => {
+            if (res.status === 200) {
+              this.setState({isAuth: true})
+            }
+            return res.json();
+          }
+        ).then(data => {
+          console.log(data);
+        });
       });
   }
 
+  bookmarkOccupation() {
+    this.setState({isBookmarked: true});
+    fetch('/api/v1/user/bookmarks', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'x-access-token': localStorage.getItem('jwt')
+      },
+      body: JSON.stringify({occupation_id: this.state.details.id})
+    }).then(res => res.json()).then(data => console.log("stuff"));
+  }
 
   render() {
     return <div>
@@ -65,7 +99,7 @@ class OccupationsDetailComponent extends Component {
         <div className="occupation-detail-container">
           <div className="occupation-header">
             <Link
-              to={`/feed?years=${localStorage.getItem('years')}&salary=${localStorage.getItem('salary')}&tuition=${localStorage.getItem('tuition')}`}>
+              to={`/?years=${localStorage.getItem('years')}&salary=${localStorage.getItem('salary')}&tuition=${localStorage.getItem('tuition')}`}>
               <MediaQuery minWidth={1224}>
                 <h2
                   className="occupation-nav-link">{`< ${this.state.details.title}`}</h2>
@@ -112,7 +146,9 @@ class OccupationsDetailComponent extends Component {
           <MediaQuery minWidth={1224}>
             <div className="bannerWrapper">
               <img className="imageBanner" src={this.state.details.image_avatar_url}/>
-              <img className="bookmark" src={this.state.isBookmarked ? '/bookmarked.svg' : '/bookmark.svg'}/>
+              {this.state.isAuth ?
+                <img className="bookmark" onClick={this.bookmarkOccupation}
+                     src={this.state.isBookmarked ? '/bookmarked.svg' : '/bookmark.svg'}/> : null}
             </div>
             <p className="description">{this.state.details.description}</p>
           </MediaQuery>
@@ -121,7 +157,9 @@ class OccupationsDetailComponent extends Component {
               <h2 className="imageBanner-mobile-title">{this.state.details.title}</h2>
               <div className="bannerWrapper">
                 <img className="imageBanner-mobile" src={this.state.details.image_avatar_url}/>
-                <img className="bookmark-mobile" src={this.state.isBookmarked ? '/bookmarked.svg' : '/bookmark.svg'}/>
+                {this.state.isAuth ? <img className="bookmark-mobile"
+                                          onClick={this.bookmarkOccupation}
+                                          src={this.state.isBookmarked ? '/bookmarked.svg' : '/bookmark.svg'}/> : null}
               </div>
             </div>
           </MediaQuery>
