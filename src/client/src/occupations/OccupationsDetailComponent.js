@@ -70,11 +70,15 @@ class OccupationsDetailComponent extends Component {
           }
         }).then(res => {
             res.json().then(json => {
-              this.setState({
-                isBookmarked: (json.filter(occupation => {
-                  return occupation.id === this.state.details.id;
-                }).length > 0), isAuth: res.status === 200
-              });
+              if (res.status === 200) {
+                this.setState({
+                  isBookmarked: (json.filter(occupation => {
+                    return occupation.id === this.state.details.id;
+                  }).length > 0), isAuth: true
+                });
+              } else {
+                this.setState({isAuth: false});
+              }
             });
           }
         );

@@ -117,34 +117,36 @@ class App extends Component {
                 </MediaQuery>
               </Link>
               {this.state.userData && localStorage.getItem('fb_info') !== "{}" ?
-                <div className="user-container">
-                  <img className="avatar" src={this.state.userData.picture.data.url}/>
-                  <MediaQuery minWidth={1224}>
-                    <div className="name">{this.state.userData.name}</div>
-                  </MediaQuery>
-                  <MediaQuery maxWidth={1224}>
-                    <div className="name">{this.state.userData.name.split(" ")[0]}</div>
-                  </MediaQuery>
-                </div> :
+                <Link to="/user/bookmarks">
+                  <div className="user-container">
+                    <img className="avatar" src={this.state.userData.picture.data.url}/>
+                    <MediaQuery minWidth={1224}>
+                      <div className="name">{this.state.userData.name}</div>
+                    </MediaQuery>
+                    <MediaQuery maxWidth={1224}>
+                      <div className="name">{this.state.userData.name.split(" ")[0]}</div>
+                    </MediaQuery>
+                  </div>
+                </Link> :
                 <div className="signUp" onClick={this.handleOpenModal}>Sign Up</div>}
             </div>
           </div>
           <div className="nav-container">
             <MediaQuery minWidth={1224}>
-            <div className="nav-sidebar"
-                 style={{display: this.state.userData && localStorage.getItem('fb_info') !== "{}" ? 'inline' : 'none'}}>
-              <img
-                src={this.state.userData && localStorage.getItem('fb_info') !== "{}" ? `http://graph.facebook.com/v2.10/${this.state.userData.id}/picture?width=170&height=170` : ''}
-                className="avatar-large"/>
-              <Link to="/user/bookmarks" className="nav-link">
-                <div className="nav-item">Bookmarks</div>
-              </Link>
-              <div onClick={this.logout} className="logout-message-container">
-                <div className="logout-message-text">
-                  Log Out
+              <div className="nav-sidebar"
+                   style={{display: this.state.userData && localStorage.getItem('fb_info') !== "{}" ? 'inline' : 'none'}}>
+                <img
+                  src={this.state.userData && localStorage.getItem('fb_info') !== "{}" ? `http://graph.facebook.com/v2.10/${this.state.userData.id}/picture?width=170&height=170` : ''}
+                  className="avatar-large"/>
+                <Link to="/user/bookmarks" className="nav-link">
+                  <div className="nav-item">Bookmarks</div>
+                </Link>
+                <div onClick={this.logout} className="logout-message-container">
+                  <div className="logout-message-text">
+                    Log Out
+                  </div>
                 </div>
               </div>
-            </div>
             </MediaQuery>
             <div className="nav-content">
               <div>

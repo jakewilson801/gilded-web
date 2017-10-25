@@ -23,7 +23,7 @@ class BookmarksComponent extends Component {
         return <OccupationsComponent fieldTitle={"Bookmarks"}
                                      occupations={this.state.bookmarks}/>;
       } else {
-        return <div>No bookmarks go check out some occupations and bookmark them!</div>
+        return <div style={{margin: 20}}><h2>No bookmarks go check out some occupations and bookmark them!</h2></div>
       }
     }
   }
