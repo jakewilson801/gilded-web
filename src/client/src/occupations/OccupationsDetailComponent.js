@@ -69,19 +69,20 @@ class OccupationsDetailComponent extends Component {
             'x-access-token': localStorage.getItem('jwt')
           }
         }).then(res => {
-            if (res.status === 200) {
-              this.setState({isAuth: true})
-            }
-            return res.json();
+            res.json().then(json => {
+              this.setState({
+                isBookmarked: (json.filter(occupation => {
+                  return occupation.id === this.state.details.id;
+                }).length > 0), isAuth: res.status === 200
+              });
+            });
           }
-        ).then(data => {
-          console.log(data);
-        });
+        );
       });
   }
 
   bookmarkOccupation() {
-    this.setState({isBookmarked: true});
+    this.setState({isBookmarked: !this.state.isBookmarked});
     fetch('/api/v1/user/bookmarks', {
       method: 'POST',
       headers: {
@@ -90,7 +91,7 @@ class OccupationsDetailComponent extends Component {
         'x-access-token': localStorage.getItem('jwt')
       },
       body: JSON.stringify({occupation_id: this.state.details.id})
-    }).then(res => res.json()).then(data => console.log("stuff"));
+    }).then(res => res.json());
   }
 
   render() {

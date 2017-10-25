@@ -271,9 +271,17 @@ massive(connectionInfo).then(instance => {
           let values = [];
           values.push(data[0].id);
           values.push(req.body.occupation_id);
-          req.app.get('db').run("insert into gilded_private.occupationbookmarks(user_id, occupation_id) values ($1,$2)", values).then(data => {
-            res.status(201).send({message: "Successfully created"});
-          }).catch(error => res.status(400).send({error: "Error creating bookmark"}));
+          req.app.get('db').run("select * from gilded_private.occupationbookmarks where user_id = $1 and occupation_id = $2", values).then(data => {
+            if (data.length > 0) {
+              req.app.get('db').run("delete from gilded_private.occupationbookmarks where user_id = $1 and occupation_id = $2", values).then(data => {
+                res.status(202).send({message: "Successfully deleted"});
+              }).catch(error => res.status(400).send({error: "Error creating bookmark"}));
+            } else {
+              req.app.get('db').run("insert into gilded_private.occupationbookmarks(user_id, occupation_id) values ($1,$2)", values).then(data => {
+                res.status(201).send({message: "Successfully created"});
+              }).catch(error => res.status(400).send({error: "Error creating bookmark"}));
+            }
+          });
         });
       }
     });

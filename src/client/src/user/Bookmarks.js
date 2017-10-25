@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
+import OccupationsComponent from '../occupations/OccupationsComponent';
 
-class Bookmarks extends Component {
+class BookmarksComponent extends Component {
+  state = {bookmarks: null};
+
   componentDidMount() {
     fetch('/api/v1/user/bookmarks', {
       method: 'GET',
@@ -10,12 +12,21 @@ class Bookmarks extends Component {
         'Content-Type': 'application/json',
         'x-access-token': localStorage.getItem('jwt')
       }
-    }).then(res => res.json()).then(d => console.log(d));
+    }).then(res => res.json()).then(d => this.setState({bookmarks: d}));
   }
 
   render() {
-    return <div>Bookmarks coming soon</div>;
+    if (!this.state.bookmarks) {
+      return <div>Loading...</div>
+    } else {
+      if (this.state.bookmarks.length > 0) {
+        return <OccupationsComponent fieldTitle={"Bookmarks"}
+                                     occupations={this.state.bookmarks}/>;
+      } else {
+        return <div>No bookmarks go check out some occupations and bookmark them!</div>
+      }
+    }
   }
 }
 
-export default Bookmarks;
+export default BookmarksComponent;
