@@ -5,7 +5,6 @@
 import React, {Component} from 'react';
 import './schools.css'
 import {Link} from 'react-router-dom';
-
 class SchoolsComponent extends Component {
   state = {schools: []};
 

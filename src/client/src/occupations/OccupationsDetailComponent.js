@@ -31,9 +31,15 @@ class OccupationsDetailComponent extends Component {
     details: null,
     showProviders: false,
     showEmployers: false,
-    socCode: ""
+    socCode: "",
+    isBookmarked: false,
+    isAuth: false
   };
 
+  constructor() {
+    super();
+    this.bookmarkOccupation = this.bookmarkOccupation.bind(this);
+  }
 
   componentDidMount() {
     fetch(`/api/v1/occupations/${this.props.match.params.id}/details`)
@@ -54,10 +60,43 @@ class OccupationsDetailComponent extends Component {
             if (results.length > 0)
               this.setState({showEmployers: true});
           }).catch(error => console.log(error));
+
+        fetch('/api/v1/user/bookmarks', {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'x-access-token': localStorage.getItem('jwt')
+          }
+        }).then(res => {
+            res.json().then(json => {
+              if (res.status === 200) {
+                this.setState({
+                  isBookmarked: (json.filter(occupation => {
+                    return occupation.id === this.state.details.id;
+                  }).length > 0), isAuth: true
+                });
+              } else {
+                this.setState({isAuth: false});
+              }
+            });
+          }
+        );
       });
   }
 
-
+  bookmarkOccupation() {
+    this.setState({isBookmarked: !this.state.isBookmarked});
+    fetch('/api/v1/user/bookmarks', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'x-access-token': localStorage.getItem('jwt')
+      },
+      body: JSON.stringify({occupation_id: this.state.details.id})
+    }).then(res => res.json());
+  }
 
   render() {
     return <div>
@@ -65,7 +104,7 @@ class OccupationsDetailComponent extends Component {
         <div className="occupation-detail-container">
           <div className="occupation-header">
             <Link
-              to={`/feed?years=${localStorage.getItem('years')}&salary=${localStorage.getItem('salary')}&tuition=${localStorage.getItem('tuition')}`}>
+              to={`/?years=${localStorage.getItem('years')}&salary=${localStorage.getItem('salary')}&tuition=${localStorage.getItem('tuition')}`}>
               <MediaQuery minWidth={1224}>
                 <h2
                   className="occupation-nav-link">{`< ${this.state.details.title}`}</h2>
@@ -110,13 +149,23 @@ class OccupationsDetailComponent extends Component {
             </div>
           </div>
           <MediaQuery minWidth={1224}>
-            <img className="imageBanner" src={this.state.details.image_avatar_url}/>
+            <div className="bannerWrapper">
+              <img className="imageBanner" src={this.state.details.image_avatar_url}/>
+              {this.state.isAuth ?
+                <img className="bookmark" onClick={this.bookmarkOccupation}
+                     src={this.state.isBookmarked ? '/bookmarked.svg' : '/bookmark.svg'}/> : null}
+            </div>
             <p className="description">{this.state.details.description}</p>
           </MediaQuery>
           <MediaQuery maxWidth={1224}>
             <div className="imageBanner-mobile-container">
               <h2 className="imageBanner-mobile-title">{this.state.details.title}</h2>
-              <img className="imageBanner-mobile" src={this.state.details.image_avatar_url}/>
+              <div className="bannerWrapper">
+                <img className="imageBanner-mobile" src={this.state.details.image_avatar_url}/>
+                {this.state.isAuth ? <img className="bookmark-mobile"
+                                          onClick={this.bookmarkOccupation}
+                                          src={this.state.isBookmarked ? '/bookmarked.svg' : '/bookmark.svg'}/> : null}
+              </div>
             </div>
           </MediaQuery>
           <div className="odd-row">
@@ -132,7 +181,7 @@ class OccupationsDetailComponent extends Component {
               Ten year growth
             </div>
             <div className="meta-value">
-              {`${MoneyUtils.thousands(parseInt(this.state.details.project_growth_2024))}%`}
+              {`${parseInt(this.state.details.project_growth_2024)}%`}
             </div>
           </div>
           <div className="odd-row">

@@ -13,6 +13,7 @@ import ReactModal from 'react-modal';
 import FacebookLogin from './fb_login/facebook';
 import SearchComponent from "./landing/SearchComponent";
 import MediaQuery from 'react-responsive';
+import Bookmarks from "./user/Bookmarks";
 // const PrivateRoute = ({component: Component, ...rest}) => (
 //   <Route {...rest} render={props => (
 //     localStorage.getItem('fb_info') || localStorage.getItem('fb_info') !== "{}" ? (
@@ -62,7 +63,7 @@ class App extends Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(response)
-      });
+      }).then(r => r.json()).then(d => localStorage.setItem('jwt', d.token));
       this.handleCloseModal(response);
     } else {
       this.setState({showModal: true});
@@ -116,37 +117,36 @@ class App extends Component {
                 </MediaQuery>
               </Link>
               {this.state.userData && localStorage.getItem('fb_info') !== "{}" ?
-                <div className="user-container">
-                  <img className="avatar" src={this.state.userData.picture.data.url}/>
-                  <MediaQuery minWidth={1224}>
-                    <div className="name">{this.state.userData.name}</div>
-                  </MediaQuery>
-                  <MediaQuery maxWidth={1224}>
-                    <div className="name">{this.state.userData.name.split(" ")[0]}</div>
-                  </MediaQuery>
-                </div> :
+                <Link to="/user/bookmarks">
+                  <div className="user-container">
+                    <img className="avatar" src={this.state.userData.picture.data.url}/>
+                    <MediaQuery minWidth={1224}>
+                      <div className="name">{this.state.userData.name}</div>
+                    </MediaQuery>
+                    <MediaQuery maxWidth={1224}>
+                      <div className="name">{this.state.userData.name.split(" ")[0]}</div>
+                    </MediaQuery>
+                  </div>
+                </Link> :
                 <div className="signUp" onClick={this.handleOpenModal}>Sign Up</div>}
             </div>
           </div>
           <div className="nav-container">
             <MediaQuery minWidth={1224}>
-            <div className="nav-sidebar"
-                 style={{display: this.state.userData && localStorage.getItem('fb_info') !== "{}" ? 'inline' : 'none'}}>
-              <img
-                src={this.state.userData && localStorage.getItem('fb_info') !== "{}" ? `http://graph.facebook.com/v2.10/${this.state.userData.id}/picture?width=170&height=170` : ''}
-                className="avatar-large"/>
-              <Link to="/" className="nav-link">
-                <div className="nav-item">Home</div>
-              </Link>
-              <Link to="/messages" className="nav-link">
-                <div className="nav-item">Messages</div>
-              </Link>
-              <div onClick={this.logout} className="logout-message-container">
-                <div className="logout-message-text">
-                  Log Out
+              <div className="nav-sidebar"
+                   style={{display: this.state.userData && localStorage.getItem('fb_info') !== "{}" ? 'inline' : 'none'}}>
+                <img
+                  src={this.state.userData && localStorage.getItem('fb_info') !== "{}" ? `http://graph.facebook.com/v2.10/${this.state.userData.id}/picture?width=170&height=170` : ''}
+                  className="avatar-large"/>
+                <Link to="/user/bookmarks" className="nav-link">
+                  <div className="nav-item">Bookmarks</div>
+                </Link>
+                <div onClick={this.logout} className="logout-message-container">
+                  <div className="logout-message-text">
+                    Log Out
+                  </div>
                 </div>
               </div>
-            </div>
             </MediaQuery>
             <div className="nav-content">
               <div>
@@ -178,6 +178,12 @@ class App extends Component {
               </div>
               <div>
                 <Route exact path="/messages/:id" component={MessagesComponent}/>
+              </div>
+              <div>
+                <Route exact path="/messages/:id" component={MessagesComponent}/>
+              </div>
+              <div>
+                <Route exact path="/user/bookmarks" component={Bookmarks}/>
               </div>
             </div>
           </div>
