@@ -14,18 +14,6 @@ import FacebookLogin from './fb_login/facebook';
 import SearchComponent from "./landing/SearchComponent";
 import MediaQuery from 'react-responsive';
 import Bookmarks from "./user/Bookmarks";
-// const PrivateRoute = ({component: Component, ...rest}) => (
-//   <Route {...rest} render={props => (
-//     localStorage.getItem('fb_info') || localStorage.getItem('fb_info') !== "{}" ? (
-//       <Component {...props}/>
-//     ) : (
-//       <Redirect to={{
-//         pathname: '/',
-//         state: {from: props.location}
-//       }}/>
-//     )
-//   )}/>
-// );
 
 class App extends Component {
   FB_DEV = "278110495999806";
@@ -96,7 +84,7 @@ class App extends Component {
             </div>
             <h2>To connect with Schools and Employers please make an account.</h2>
             <FacebookLogin
-              appId={this.FB_DEV}
+              appId={this.FB_PROD}
               reRequest={true}
               fields="name,email,picture"
               scope="public_profile,user_friends,email"
