@@ -3,8 +3,6 @@ FIELDS_SCRIPT=fields.sql
 FIELD_IMAGES_SCRIPT=fieldImages.sql
 OCCUPATIONS_SCRIPT=occupations.sql
 OCCUPATIONS_IMAGES_SCRIPT=occupationImages.sql
-SCHOOLS=schools.sql
-PROGRAMS=programs.sql
 INIT_SCRIPT=init.sql
 EMPLOYERS=employers.sql
 
@@ -19,12 +17,11 @@ if [ ! -f ${INIT_SCRIPT} ]; then
   EMPLOYERS=database-scripts/employers.sql
 fi
 
-psql postgres://gknkukyparucvq:ba78c3f16fa4ef2b3f4a38fef55392a196c3611df973cfc91c4aeeb8f17f6733@ec2-50-17-236-15.compute-1.amazonaws.com:5432/d5cedv3sq38d55 -f ${INIT_SCRIPT} d5cedv3sq38d55
-psql postgres://gknkukyparucvq:ba78c3f16fa4ef2b3f4a38fef55392a196c3611df973cfc91c4aeeb8f17f6733@ec2-50-17-236-15.compute-1.amazonaws.com:5432/d5cedv3sq38d55 -f ${FIELDS_SCRIPT} d5cedv3sq38d55
-psql postgres://gknkukyparucvq:ba78c3f16fa4ef2b3f4a38fef55392a196c3611df973cfc91c4aeeb8f17f6733@ec2-50-17-236-15.compute-1.amazonaws.com:5432/d5cedv3sq38d55 -f ${FIELD_IMAGES_SCRIPT} d5cedv3sq38d55
-psql postgres://gknkukyparucvq:ba78c3f16fa4ef2b3f4a38fef55392a196c3611df973cfc91c4aeeb8f17f6733@ec2-50-17-236-15.compute-1.amazonaws.com:5432/d5cedv3sq38d55 -f ${OCCUPATIONS_SCRIPT} d5cedv3sq38d55
-psql postgres://gknkukyparucvq:ba78c3f16fa4ef2b3f4a38fef55392a196c3611df973cfc91c4aeeb8f17f6733@ec2-50-17-236-15.compute-1.amazonaws.com:5432/d5cedv3sq38d55 -f ${OCCUPATIONS_IMAGES_SCRIPT} d5cedv3sq38d55
-psql postgres://gknkukyparucvq:ba78c3f16fa4ef2b3f4a38fef55392a196c3611df973cfc91c4aeeb8f17f6733@ec2-50-17-236-15.compute-1.amazonaws.com:5432/d5cedv3sq38d55 -f ${SCHOOLS_SCRIPT} d5cedv3sq38d55
-psql postgres://gknkukyparucvq:ba78c3f16fa4ef2b3f4a38fef55392a196c3611df973cfc91c4aeeb8f17f6733@ec2-50-17-236-15.compute-1.amazonaws.com:5432/d5cedv3sq38d55 -f ${PROGRAMS_SCRIPT} d5cedv3sq38d55
-psql postgres://gknkukyparucvq:ba78c3f16fa4ef2b3f4a38fef55392a196c3611df973cfc91c4aeeb8f17f6733@ec2-50-17-236-15.compute-1.amazonaws.com:5432/d5cedv3sq38d55 -f ${EMPLOYERS} d5cedv3sq38d55
-
+psql postgres://mqcmytbkryxdgc:c91cc1a7dd0ba3c2674a9416152f16e8b4acb6d16c6f112592d5d80120e0fe39@ec2-174-129-239-0.compute-1.amazonaws.com:5432/dd1pvhrht3t7ac -f ${INIT_SCRIPT} dd1pvhrht3t7ac
+psql postgres://mqcmytbkryxdgc:c91cc1a7dd0ba3c2674a9416152f16e8b4acb6d16c6f112592d5d80120e0fe39@ec2-174-129-239-0.compute-1.amazonaws.com:5432/dd1pvhrht3t7ac -f ${FIELDS_SCRIPT} dd1pvhrht3t7ac
+psql postgres://mqcmytbkryxdgc:c91cc1a7dd0ba3c2674a9416152f16e8b4acb6d16c6f112592d5d80120e0fe39@ec2-174-129-239-0.compute-1.amazonaws.com:5432/dd1pvhrht3t7ac -f ${FIELD_IMAGES_SCRIPT} dd1pvhrht3t7ac
+psql postgres://mqcmytbkryxdgc:c91cc1a7dd0ba3c2674a9416152f16e8b4acb6d16c6f112592d5d80120e0fe39@ec2-174-129-239-0.compute-1.amazonaws.com:5432/dd1pvhrht3t7ac -f ${OCCUPATIONS_SCRIPT} dd1pvhrht3t7ac
+psql postgres://mqcmytbkryxdgc:c91cc1a7dd0ba3c2674a9416152f16e8b4acb6d16c6f112592d5d80120e0fe39@ec2-174-129-239-0.compute-1.amazonaws.com:5432/dd1pvhrht3t7ac -f ${OCCUPATIONS_IMAGES_SCRIPT} dd1pvhrht3t7ac
+psql postgres://mqcmytbkryxdgc:c91cc1a7dd0ba3c2674a9416152f16e8b4acb6d16c6f112592d5d80120e0fe39@ec2-174-129-239-0.compute-1.amazonaws.com:5432/dd1pvhrht3t7ac -f ${SCHOOLS_SCRIPT} dd1pvhrht3t7ac
+psql postgres://mqcmytbkryxdgc:c91cc1a7dd0ba3c2674a9416152f16e8b4acb6d16c6f112592d5d80120e0fe39@ec2-174-129-239-0.compute-1.amazonaws.com:5432/dd1pvhrht3t7ac -f ${PROGRAMS_SCRIPT} dd1pvhrht3t7ac
+psql postgres://mqcmytbkryxdgc:c91cc1a7dd0ba3c2674a9416152f16e8b4acb6d16c6f112592d5d80120e0fe39@ec2-174-129-239-0.compute-1.amazonaws.com:5432/dd1pvhrht3t7ac -f ${EMPLOYERS} dd1pvhrht3t7ac
