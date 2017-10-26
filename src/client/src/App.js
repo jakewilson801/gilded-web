@@ -18,7 +18,7 @@ import Bookmarks from "./user/Bookmarks";
 class App extends Component {
   FB_DEV = "278110495999806";
   FB_PROD = "124782244806218";
-  FB_CURRENT = "124782244806218";
+  FB_CURRENT = this.FB_PROD;
 
   state = {
     showModal: false,
@@ -39,7 +39,6 @@ class App extends Component {
   }
 
   handleCloseModal(response) {
-    window.location.replace("/");
     this.setState({showModal: false, userData: response});
   }
 
@@ -53,7 +52,10 @@ class App extends Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(response)
-      }).then(r => r.json()).then(d => localStorage.setItem('jwt', d.token));
+      }).then(r => r.json()).then(d => {
+        localStorage.setItem('jwt', d.token);
+        window.location.replace("/");
+      });
       this.handleCloseModal(response);
     } else {
       this.setState({showModal: true});
