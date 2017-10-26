@@ -73,6 +73,14 @@ class App extends Component {
     this.setState({showModal: false});
   }
 
+  componentDidMount() {
+    let codeParam = URLUtils.getParameterByName("code");
+    let stateParam = URLUtils.getParameterByName("state");
+    if (codeParam && stateParam) {
+      this.setState({showModal: true});
+    }
+  }
+
   //TODO https://reacttraining.com/react-router/web/example/auth-workflow
   //https://stackoverflow.com/questions/31079081/programmatically-navigate-using-react-router
   render() {
