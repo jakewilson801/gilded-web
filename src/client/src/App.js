@@ -14,6 +14,7 @@ import FacebookLogin from './fb_login/facebook';
 import SearchComponent from "./landing/SearchComponent";
 import MediaQuery from 'react-responsive';
 import Bookmarks from "./user/Bookmarks";
+import URLUtils from "./util/URLUtils";
 
 class App extends Component {
   FB_DEV = "278110495999806";
