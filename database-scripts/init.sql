@@ -18,7 +18,7 @@ drop table if exists gilded_public.EmployerBenefits CASCADE;
 drop table if exists gilded_public.EmployerPositions CASCADE;
 drop table if exists gilded_public.OccupationPrograms CASCADE;
 drop table if exists gilded_public.bls_series CASCADE;
-drop table if exists gilded_private.Accounts CASCADE;
+--drop table if exists gilded_private.Accounts CASCADE;
 drop type if exists seasonal_adjustment_type;
 drop type if exists area_type_type;
 drop type if exists datatype_type;
