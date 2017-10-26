@@ -54,9 +54,10 @@ class App extends Component {
         body: JSON.stringify(response)
       }).then(r => r.json()).then(d => {
         localStorage.setItem('jwt', d.token);
-        window.location.replace("/");
+        this.handleCloseModal(response);
+        // window.location.replace("/");
       });
-      this.handleCloseModal(response);
+
     } else {
       this.setState({showModal: true});
     }
