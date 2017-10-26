@@ -71,7 +71,7 @@ class FacebookLogin extends React.Component {
     version: '2.3',
     language: 'en_US',
     disableMobileRedirect: false,
-    isMobile: getIsMobile(),
+    isMobile: true,
     tag: 'button',
     onFailure: null,
   };
