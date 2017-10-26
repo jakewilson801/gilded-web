@@ -7,7 +7,7 @@ import SchoolsDetailComponent from "./schools/SchoolsDetailComponent";
 import EmployersDetailComponent from "./employers/EmployersDetailComponent";
 import SchoolsComponent from "./schools/SchoolsComponent";
 import MessagesComponent from "./messages/MessagesComponent";
-import {Route, Link, withRouter, Redirect} from 'react-router-dom';
+import {Route, Link} from 'react-router-dom';
 import EmployersComponent from "./employers/EmployersComponent";
 import ReactModal from 'react-modal';
 import FacebookLogin from './fb_login/facebook';
@@ -18,6 +18,7 @@ import Bookmarks from "./user/Bookmarks";
 class App extends Component {
   FB_DEV = "278110495999806";
   FB_PROD = "124782244806218";
+  FB_CURRENT = "124782244806218";
 
   state = {
     showModal: false,
@@ -38,6 +39,7 @@ class App extends Component {
   }
 
   handleCloseModal(response) {
+    window.location.replace("/");
     this.setState({showModal: false, userData: response});
   }
 
@@ -84,7 +86,7 @@ class App extends Component {
             </div>
             <h2>To connect with Schools and Employers please make an account.</h2>
             <FacebookLogin
-              appId={this.FB_PROD}
+              appId={this.FB_CURRENT}
               reRequest={true}
               fields="name,email,picture"
               scope="public_profile,user_friends,email"

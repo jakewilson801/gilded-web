@@ -3,10 +3,21 @@
  */
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import './occupations.css'
+import './occupations.css';
+import {Redirect} from 'react-router';
+
 
 class OccupationsComponent extends Component {
-  state = {occupations: [], title: "", error: ""};
+  state = {occupations: [], title: "", error: "", redirect: -1};
+
+  constructor() {
+    super();
+    this.handleCardClick = this.handleCardClick.bind(this);
+  }
+
+  handleCardClick(id) {
+    this.props.history.push(`/occupations/${id}/details`)
+  }
 
   componentDidMount() {
     if (this.props.match) {
@@ -18,14 +29,19 @@ class OccupationsComponent extends Component {
         });
     }
   }
+
   //Needs to be refactored to redux this code sucks
   render() {
+    if (this.state.redirect !== -1) {
+      return <Redirect to={`/occupations/${this.state.redirect}/details`} push={true}/>;
+    }
+
     let title;
     let occupationsFromServerOrProps = [];
     if (this.state.title !== "") {
       title = this.state.title;
     } else {
-      if(this.props.fieldTitle) {
+      if (this.props.fieldTitle) {
         title = this.props.fieldTitle;
       } else {
         title = "";
@@ -42,7 +58,9 @@ class OccupationsComponent extends Component {
       return <div className="container-occupations">
         <h2 className="field-title">{title}</h2>
         <div className="slider">
-          <div className="cardsList">{occupationsFromServerOrProps.map((f) => <div key={f.id} className="card">
+          <div className="cardsList">{occupationsFromServerOrProps.map((f) => <div key={f.id} onClick={() => {
+            this.setState({redirect: f.id})
+          }} className="card">
             <img className="cardImage" src={f.image_avatar_url}/>
             <div className="occupation-title">{f.title}</div>
             <Link to={`/occupations/${f.id}/details`}>View More</Link>

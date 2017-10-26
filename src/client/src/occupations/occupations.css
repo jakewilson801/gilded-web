@@ -25,6 +25,7 @@
   display: flex;
   -webkit-overflow-scrolling: touch;
   overflow-y: hidden;
+  overflow-x: visible;
 }
 
 .cardsList::-webkit-scrollbar {
@@ -36,6 +37,7 @@
   background-color: white;
   overflow: hidden;
   margin: 10px;
+  overflow-x:visible;
 }
 
 .container-occupations::-webkit-scrollbar {
@@ -44,9 +46,19 @@
 
 @media screen and (max-width: 750px) and (min-width: 200px){
   .container-occupations {
+    margin: 0;
     background-color: #DFDBD1;
     border-radius: 0;
     overflow: hidden;
+    overflow-x: visible;
+  }
+
+  .cardsList {
+    display: flex;
+    margin: 0;
+    -webkit-overflow-scrolling: touch;
+    overflow-y: hidden;
+    overflow-x: visible;
   }
 
   .nav-container {

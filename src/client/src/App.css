@@ -17,6 +17,7 @@
   justify-content: center;
   align-self: center;
   color: #FCC824;
+  margin-right: 5px;
 }
 
 .name {
@@ -155,6 +156,19 @@
 }
 
 @media screen and (max-width: 1220px) and (min-width: 200px) {
+  .Modal {
+    cursor: hand;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    right: -40%;
+    bottom: auto;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 1px solid black;
+    border-radius: 5px;
+  }
+
   .nav-sidebar {
     display: none;
   }
