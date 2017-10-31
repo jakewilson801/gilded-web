@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import './App.css';
 import OccupationsComponent from './occupations/OccupationsComponent';
 import OccupationsDetailComponent from './occupations/OccupationsDetailComponent';
 import LandingScreenComponent from './landing/LandingScreenComponent';
@@ -15,6 +14,18 @@ import SearchComponent from "./landing/SearchComponent";
 import MediaQuery from 'react-responsive';
 import Bookmarks from "./user/Bookmarks";
 import URLUtils from "./util/URLUtils";
+import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
+import PropTypes from 'prop-types';
+import {withStyles} from 'material-ui/styles';
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
+import Button from 'material-ui/Button';
+import IconButton from 'material-ui/IconButton';
+import MenuIcon from 'material-ui-icons/Menu';
+import grey from 'material-ui/colors/grey';
+import blueGrey from 'material-ui/colors/blueGrey';
+import blue from 'material-ui/colors/blue';
 
 class App extends Component {
   FB_DEV = "278110495999806";
@@ -28,11 +39,11 @@ class App extends Component {
 
   constructor() {
     super();
-    this.handleOpenModal = this.handleOpenModal.bind(this);
-    this.handleCloseModal = this.handleCloseModal.bind(this);
-    this.responseFacebook = this.responseFacebook.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.logout = this.logout.bind(this);
+    // this.handleOpenModal = this.handleOpenModal.bind(this);
+    // this.handleCloseModal = this.handleCloseModal.bind(this);
+    // this.responseFacebook = this.responseFacebook.bind(this);
+    // this.closeModal = this.closeModal.bind(this);
+    // this.logout = this.logout.bind(this);
   }
 
   handleOpenModal() {
@@ -82,117 +93,89 @@ class App extends Component {
     }
   }
 
+  static styles = theme => ({
+    root: {
+      // paddingTop:theme.spacing.unit * 3,
+      marginTop: theme.spacing.unit * 3,
+      width: '100%',
+    },
+    flex: {
+      flex: 1,
+    },
+    menuButton: {
+      marginLeft: -12,
+      marginRight: 20,
+    },
+  });
+
   //TODO https://reacttraining.com/react-router/web/example/auth-workflow
   //https://stackoverflow.com/questions/31079081/programmatically-navigate-using-react-router
   render() {
+    const {classes} = this.props;
     return (
-      <div>
-        <ReactModal
-          isOpen={this.state.showModal}
-          contentLabel="Login with Facebook"
-          className="Modal"
-          overlayClassName="Overlay">
-          <div className="signup-dialog">
-            <div className="signup-header"><h1>Welcome to Gilded!</h1>
-              <div onClick={this.closeModal}>X</div>
-            </div>
-            <h2>To connect with Schools and Employers please make an account.</h2>
-            <FacebookLogin
-              appId={this.FB_CURRENT}
-              reRequest={true}
-              fields="name,email,picture"
-              scope="public_profile,user_friends,email"
-              callback={this.responseFacebook}
-            />
+      <MuiThemeProvider theme={() => createMuiTheme({
+          palette: {
+            primary: blueGrey,
+            type: "dark",
+          },
+        }
+      )}>
+        <div className={classes.root}>
+          <AppBar>
+            <Toolbar>
+              <IconButton className={classes.menuButton} color="contrast" aria-label="Menu">
+                <MenuIcon/>
+              </IconButton>
+              <Typography type="title" color="inherit" className={classes.flex}>
+                Gilded
+              </Typography>
+              <Button color="contrast">Login</Button>
+            </Toolbar>
+          </AppBar>
+          <div>
+            <Route exact path="/" component={LandingScreenComponent}/>
           </div>
-        </ReactModal>
-        <div className="App">
-          <div className="header">
-            <div className="nav">
-              <Link className="logo" to="/"><img src="/logo.svg"/></Link>
-              <Link className="feed-filter" to="/search">
-                <MediaQuery minWidth={1224}>
-                  <b>Get Recommendations</b>
-                </MediaQuery>
-                <MediaQuery maxWidth={1224}>
-                  <b>Get Recommendations</b>
-                </MediaQuery>
-              </Link>
-              {this.state.userData && localStorage.getItem('fb_info') !== "{}" ?
-                <Link to="/user/bookmarks">
-                  <div className="user-container">
-                    <img className="avatar" src={this.state.userData.picture.data.url}/>
-                    <MediaQuery minWidth={1224}>
-                      <div className="name">{this.state.userData.name}</div>
-                    </MediaQuery>
-                    <MediaQuery maxWidth={1224}>
-                      <div className="name">{this.state.userData.name.split(" ")[0]}</div>
-                    </MediaQuery>
-                  </div>
-                </Link> :
-                <div className="signUp" onClick={this.handleOpenModal}>Sign Up</div>}
-            </div>
+          <div>
+            <Route exact path="/search" component={SearchComponent}/>
           </div>
-          <div className="nav-container">
-            <MediaQuery minWidth={1224}>
-              <div className="nav-sidebar"
-                   style={{display: this.state.userData && localStorage.getItem('fb_info') !== "{}" ? 'inline' : 'none'}}>
-                <img
-                  src={this.state.userData && localStorage.getItem('fb_info') !== "{}" ? `http://graph.facebook.com/v2.10/${this.state.userData.id}/picture?width=170&height=170` : ''}
-                  className="avatar-large"/>
-                <Link to="/user/bookmarks" className="nav-link">
-                  <div className="nav-item">Bookmarks</div>
-                </Link>
-                <div onClick={this.logout} className="logout-message-container">
-                  <div className="logout-message-text">
-                    Log Out
-                  </div>
-                </div>
-              </div>
-            </MediaQuery>
-            <div className="nav-content">
-              <div>
-                <Route exact path="/" component={LandingScreenComponent}/>
-              </div>
-              <div>
-                <Route exact path="/search" component={SearchComponent}/>
-              </div>
-              <div>
-                <Route exact path="/occupations/:id" component={OccupationsComponent}/>
-              </div>
-              <div>
-                <Route exact path="/occupations/:id/details" component={OccupationsDetailComponent}/>
-              </div>
-              <div>
-                <Route exact path="/schools/:id/details/:school_id" component={SchoolsDetailComponent}/>
-              </div>
-              <div>
-                <Route exact path="/employers/:id/details" component={EmployersDetailComponent}/>
-              </div>
-              <div>
-                <Route exact path="/employers/occupations/:id" component={EmployersComponent}/>
-              </div>
-              <div>
-                <Route exact path="/schools/occupations/:id" component={SchoolsComponent}/>
-              </div>
-              <div>
-                <Route exact path="/messages" component={MessagesComponent}/>
-              </div>
-              <div>
-                <Route exact path="/messages/:id" component={MessagesComponent}/>
-              </div>
-              <div>
-                <Route exact path="/messages/:id" component={MessagesComponent}/>
-              </div>
-              <div>
-                <Route exact path="/user/bookmarks" component={Bookmarks}/>
-              </div>
-            </div>
+          <div>
+            <Route exact path="/occupations/:id" component={OccupationsComponent}/>
+          </div>
+          <div>
+            <Route exact path="/occupations/:id/details" component={OccupationsDetailComponent}/>
+          </div>
+          <div>
+            <Route exact path="/schools/:id/details/:school_id" component={SchoolsDetailComponent}/>
+          </div>
+          <div>
+            <Route exact path="/employers/:id/details" component={EmployersDetailComponent}/>
+          </div>
+          <div>
+            <Route exact path="/employers/occupations/:id" component={EmployersComponent}/>
+          </div>
+          <div>
+            <Route exact path="/schools/occupations/:id" component={SchoolsComponent}/>
+          </div>
+          <div>
+            <Route exact path="/messages" component={MessagesComponent}/>
+          </div>
+          <div>
+            <Route exact path="/messages/:id" component={MessagesComponent}/>
+          </div>
+          <div>
+            <Route exact path="/messages/:id" component={MessagesComponent}/>
+          </div>
+          <div>
+            <Route exact path="/user/bookmarks" component={Bookmarks}/>
           </div>
         </div>
-      </div>
+      </MuiThemeProvider>
     );
   }
 }
 
-export default App;
+App.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(App.styles)(App);

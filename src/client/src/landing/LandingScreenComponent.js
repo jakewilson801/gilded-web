@@ -24,27 +24,20 @@ class LandingScreenComponent extends Component {
 
     fetch(request)
       .then(res => res.json())
-      .then(feed => {
-        let combinedResults = feed.fields.map(f => {
-          let occupations = feed.occupations.filter(o => o.field_id === f.soc_major_id);
-          return {title: f.title, occupations: occupations};
-        }).filter(occ => occ.occupations.length > 0);
-        this.setState({feed: combinedResults});
+      .then(data => {
+        this.setState({feed: data.occupations});
       });
   }
 
   render() {
     if (!this.state.feed) {
-      return <div>Loading...</div>
+      return <div>Loading...</div>;
     } else {
       if (this.state.feed.length > 0) {
-        return <div>
-          {this.state.feed.map((row, index) => <OccupationsComponent key={index} fieldId={row.id} fieldTitle={row.title}
-                                                                     occupations={row.occupations}/>)}
-        </div>
+        return <OccupationsComponent occupations={this.state.feed}/>;
       } else {
         return <div style={{margin: '10px'}}>No results for given salary, time and tuition <Link to={"/search"}>Try
-          again?</Link></div>
+          again?</Link></div>;
       }
     }
   }
