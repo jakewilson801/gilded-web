@@ -24,8 +24,25 @@ import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import grey from 'material-ui/colors/grey';
-import blueGrey from 'material-ui/colors/blueGrey';
+
 import blue from 'material-ui/colors/blue';
+import createContext from './createContext';
+import withRoot from './withRoot'
+// Apply some reset
+
+
+const styles = theme => ({
+  root: {
+    width: '100%',
+  },
+  flex: {
+    flex: 1,
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20,
+  },
+});
 
 class App extends Component {
   FB_DEV = "278110495999806";
@@ -93,33 +110,11 @@ class App extends Component {
     }
   }
 
-  static styles = theme => ({
-    root: {
-      // paddingTop:theme.spacing.unit * 3,
-      marginTop: theme.spacing.unit * 3,
-      width: '100%',
-    },
-    flex: {
-      flex: 1,
-    },
-    menuButton: {
-      marginLeft: -12,
-      marginRight: 20,
-    },
-  });
-
   //TODO https://reacttraining.com/react-router/web/example/auth-workflow
   //https://stackoverflow.com/questions/31079081/programmatically-navigate-using-react-router
   render() {
     const {classes} = this.props;
     return (
-      <MuiThemeProvider theme={() => createMuiTheme({
-          palette: {
-            primary: blueGrey,
-            type: "dark",
-          },
-        }
-      )}>
         <div className={classes.root}>
           <AppBar>
             <Toolbar>
@@ -169,7 +164,6 @@ class App extends Component {
             <Route exact path="/user/bookmarks" component={Bookmarks}/>
           </div>
         </div>
-      </MuiThemeProvider>
     );
   }
 }
@@ -178,4 +172,4 @@ App.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(App.styles)(App);
+export default withRoot(withStyles(styles)(App));

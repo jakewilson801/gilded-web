@@ -9,6 +9,40 @@ import YouTube from 'react-youtube';
 import MediaQuery from 'react-responsive';
 import '../util/MoneyUtils'
 import MoneyUtils from "../util/MoneyUtils";
+import PropTypes from 'prop-types';
+import {withStyles} from 'material-ui/styles';
+import Card, {CardActions, CardContent, CardMedia} from 'material-ui/Card';
+import Button from 'material-ui/Button';
+import Typography from 'material-ui/Typography';
+import {CircularProgress} from 'material-ui/Progress';
+import BottomNavigation, {BottomNavigationButton} from 'material-ui/BottomNavigation';
+import AccountBalance from 'material-ui-icons/AccountBalance';
+import Business from 'material-ui-icons/Business';
+import AccountCircle from 'material-ui-icons/AccountCircle';
+
+const styles = theme => ({
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    background: theme.palette.background.default,
+    marginTop: theme.spacing.unit * 10,
+  },
+  card: {
+    maxWidth: 400
+  },
+  media: {
+    height: 200,
+  },
+  progress: {
+    margin: `0 ${theme.spacing.unit * 2}px`,
+  },
+  root: {
+    width: '100%',
+    position: 'fixed',
+    left: 0,
+    bottom: 0,
+  }
+});
 
 class OccupationsDetailComponent extends Component {
   desktopVideo = {
@@ -22,7 +56,7 @@ class OccupationsDetailComponent extends Component {
   mobileVideo = {
     height: '200',
     width: '300',
-    playerVars: { // https://developers.google.com/youtube/player_parameters
+    playerVars: {
       autoplay: 0
     }
   };
@@ -33,7 +67,8 @@ class OccupationsDetailComponent extends Component {
     showEmployers: false,
     socCode: "",
     isBookmarked: false,
-    isAuth: false
+    isAuth: false,
+    page: 0,
   };
 
   constructor() {
@@ -98,131 +133,70 @@ class OccupationsDetailComponent extends Component {
     }).then(res => res.json());
   }
 
-  render() {
-    return <div>
-      {this.state.details ?
-        <div className="occupation-detail-container">
-          <div className="occupation-header">
-            <Link
-              to={`/?years=${localStorage.getItem('years')}&salary=${localStorage.getItem('salary')}&tuition=${localStorage.getItem('tuition')}`}>
-              <MediaQuery minWidth={1224}>
-                <h2
-                  className="occupation-nav-link">{`< ${this.state.details.title}`}</h2>
-              </MediaQuery>
-              <MediaQuery maxWidth={1224}>
-                <h2
-                  className="occupation-nav-link">{`< Back`}</h2>
-              </MediaQuery>
-            </Link>
+  handleChange = (event, value) => {
+    this.setState({page: value});
+  };
 
-            <div className="occupation-option-container">
-              <MediaQuery maxWidth={1224}>
-                {this.state.showProviders ?
-                  <Link to={`/schools/occupations/${this.state.details.field_id}-${this.state.details.soc_detailed_id}`}
-                        className="occupation-provider-mobile">
-                    <div className="occupation-find-providers-mobile">Schools</div>
-                  </Link> : null}
-              </MediaQuery>
-              <MediaQuery minWidth={1224}>
-                {this.state.showProviders ?
-                  <Link to={`/schools/occupations/${this.state.details.field_id}-${this.state.details.soc_detailed_id}`}
-                        className="occupation-provider">
-                    <div className="occupation-find-providers">Find Schools</div>
-                  </Link> : null}
-              </MediaQuery>
-              <MediaQuery maxWidth={1224}>
-                {this.state.showEmployers ?
-                  <Link
-                    to={`/employers/occupations/${this.state.details.field_id}-${this.state.details.soc_detailed_id}`}
-                    className="occupation-employer-mobile">
-                    <div className="occupation-find-employers-mobile">Employers</div>
-                  </Link> : null}
-              </MediaQuery>
-              <MediaQuery minWidth={1224}>
-                {this.state.showEmployers ?
-                  <Link
-                    to={`/employers/occupations/${this.state.details.field_id}-${this.state.details.soc_detailed_id}`}
-                    className="occupation-employer">
-                    <div className="occupation-find-employers">Find Employers</div>
-                  </Link> : null}
-              </MediaQuery>
-            </div>
-          </div>
-          <MediaQuery minWidth={1224}>
-            <div className="bannerWrapper">
-              <img className="imageBanner" src={this.state.details.image_avatar_url}/>
-              {this.state.isAuth ?
-                <img className="bookmark" onClick={this.bookmarkOccupation}
-                     src={this.state.isBookmarked ? '/bookmarked.svg' : '/bookmark.svg'}/> : null}
-            </div>
-            <p className="description">{this.state.details.description}</p>
-          </MediaQuery>
-          <MediaQuery maxWidth={1224}>
-            <div className="imageBanner-mobile-container">
-              <h2 className="imageBanner-mobile-title">{this.state.details.title}</h2>
-              <div className="bannerWrapper">
-                <img className="imageBanner-mobile" src={this.state.details.image_avatar_url}/>
-                {this.state.isAuth ? <img className="bookmark-mobile"
-                                          onClick={this.bookmarkOccupation}
-                                          src={this.state.isBookmarked ? '/bookmarked.svg' : '/bookmark.svg'}/> : null}
-              </div>
-            </div>
-          </MediaQuery>
-          <div className="odd-row">
-            <div className="meta-label">
-              Median Hourly Wage
-            </div>
-            <div className="meta-value">
-              {`$${this.state.details.hourly_median}`}
-            </div>
-          </div>
-          <div className="even-row">
-            <div className="meta-label">
-              Ten year growth
-            </div>
-            <div className="meta-value">
-              {`${parseInt(this.state.details.project_growth_2024)}%`}
-            </div>
-          </div>
-          <div className="odd-row">
-            <div className="meta-label">
-              Average Starting Salary
-            </div>
-            <div className="meta-value">
-              {`${MoneyUtils.thousands(parseInt(this.state.details.annual_pct10))}`}
-            </div>
-          </div>
-          <div className="even-row">
-            <div className="meta-label">
-              Highest salary
-            </div>
-            <div className="meta-value">
-              {`${MoneyUtils.thousands(parseInt(this.state.details.annual_pct90))}`}
-            </div>
-          </div>
-          <br/>
-          <MediaQuery maxWidth={1224}>
-            <div className="occupation-video-mobile">
-              <YouTube
-                videoId={this.state.details.video_url}
-                opts={this.mobileVideo}
-                onReady={this._onReady}
-              />
-            </div>
-          </MediaQuery>
-          <MediaQuery minWidth={1224}>
-            <div className="occupation-video">
-              <YouTube
-                videoId={this.state.details.video_url}
-                opts={this.desktopVideo}
-                onReady={this._onReady}
-              />
-            </div>
-          </MediaQuery>
-          <br/>
-        </div> : <div>Loading...</div>}
+  getCurrentPage(classes) {
+    switch (this.state.page) {
+      case 0:
+        return <Card className={classes.card}>
+          <CardMedia
+            className={classes.media}
+            image={this.state.details.image_avatar_url}
+            title={this.state.details.title}
+          />
+          <CardContent>
+            <Typography type="headline" component="h2">
+              {this.state.details.title}
+            </Typography>
+            <Typography type="display1">{`$${this.state.details.hourly_median}`}/hr</Typography>
+            <Typography type="subheading">{`${parseInt(this.state.details.project_growth_2024)}%`} growth in
+              Utah</Typography>
+            <Typography type="subheading">{`${MoneyUtils.thousands(parseInt(this.state.details.annual_pct10))} `}
+              starting salary</Typography>
+          </CardContent>
+          <CardActions>
+            <Button dense color="primary">
+              Bookmark
+            </Button>
+          </CardActions>
+        </Card>;
+        break;
+      case 1:
+        return <div>Programs</div>;
+        break;
+      case 2:
+        return <div>Employers</div>;
+        break;
+    }
+  }
+
+  render() {
+    const {classes} = this.props;
+    const {page} = this.state;
+      return <div className={classes.container}>
+      {this.state.details ?
+        <div>
+          {this.getCurrentPage(classes)}
+          <BottomNavigation
+            value={page}
+            onChange={this.handleChange}
+            showLabels
+            className={classes.root}
+          >
+            <BottomNavigationButton label="Details" icon={<AccountCircle/>}/>
+            <BottomNavigationButton label="Programs" icon={<AccountBalance/>}/>
+            <BottomNavigationButton label="Employers" icon={<Business/>}/>
+          </BottomNavigation>
+        </div>
+        : <CircularProgress className={classes.progress}/>}
     </div>
   }
 }
 
-export default OccupationsDetailComponent
+OccupationsDetailComponent.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(OccupationsDetailComponent);

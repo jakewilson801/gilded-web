@@ -20,7 +20,7 @@ const styles = theme => ({
     justifyContent: 'space-around',
     overflow: 'hidden',
     background: theme.palette.background.paper,
-    paddingTop: theme.spacing.unit * 5,
+    marginTop: theme.spacing.unit * 7,
   },
   gridList: {
     cellHeight: 'auto',
@@ -55,6 +55,7 @@ class OccupationsComponent extends Component {
     } else if (this.props.occupations) {
       data = this.props.occupations;
     }
+
     if (this.state.error === "") {
       const {classes} = this.props;
       return (<div className={classes.container}>
