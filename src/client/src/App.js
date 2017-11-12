@@ -8,7 +8,7 @@ import SchoolsComponent from "./schools/SchoolsComponent";
 import MessagesComponent from "./messages/MessagesComponent";
 import SignUpComponent from "./signup/SignUpComponent";
 
-import {Route, Link} from 'react-router-dom';
+import {Link, Route} from 'react-router-dom';
 import EmployersComponent from "./employers/EmployersComponent";
 import SearchComponent from "./landing/SearchComponent";
 import Bookmarks from "./user/Bookmarks";
@@ -22,6 +22,10 @@ import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import withRoot from './withRoot'
 import Avatar from 'material-ui/Avatar';
+import List, {ListItem, ListItemText} from 'material-ui/List';
+import Divider from 'material-ui/Divider';
+import Drawer from 'material-ui/Drawer';
+import Logout from './util/Logout';
 
 const styles = theme => ({
   root: {
@@ -34,28 +38,102 @@ const styles = theme => ({
     marginLeft: -12,
     marginRight: 20,
   },
+  list: {
+    width: 200,
+  },
+  listFull: {
+    width: 'auto',
+  },
+  drawer: {
+    maxWidth: 200,
+    background: theme.palette.background.paper,
+  },
 });
 
 class App extends Component {
+  state = {
+    left: false,
+    isAuth: false,
+  };
+
+  toggleDrawer = (side, open) => () => {
+    this.setState({
+      [side]: open,
+    });
+  };
+
+
+  componentDidMount() {
+    if (localStorage.jwt) {
+      console.log(this.props);
+      fetch(`/api/v1/user/me?token=${localStorage.jwt}`)
+        .then(d => d.json())
+        .then(() => this.setState({isAuth: true}))
+        .catch((err) => this.setState({isAuth: false}));
+    }
+  }
+
+
   //TODO https://reacttraining.com/react-router/web/example/auth-workflow
   //https://stackoverflow.com/questions/31079081/programmatically-navigate-using-react-router
   render() {
     const {classes} = this.props;
+    const sideBar = (this.state.isAuth ? <List>
+        <ListItem key={JSON.parse(localStorage.fb_info).id} dense button onClick={() => window.location.href = '/'}>
+          <Avatar alt="Avatar"
+                  src={`http://graph.facebook.com/v2.10/${JSON.parse(localStorage.fb_info).id}/picture?width=170&height=170`}/>
+          <ListItemText primary={`${JSON.parse(localStorage.fb_info).name}`}/>
+        </ListItem>
+        <ListItem button onClick={() => {
+          window.location.href = "/user/bookmarks";
+        }}>
+          <ListItemText primary="Bookmarks"/>
+        </ListItem>
+        <ListItem button>
+          <ListItemText primary={"Projects"}/>
+        </ListItem>
+        <Divider/>
+        <ListItem button component="a" onClick={() => {
+          localStorage.clear();
+          window.location.href = "/";
+        }}>
+          <ListItemText primary="Logout"/>
+        </ListItem>
+      </List> : <Logout/>
+    );
+
+    const sideList = (
+      <div className={classes.list}>
+        {sideBar}
+      </div>
+    );
+
     return (
       <div className={classes.root}>
         <AppBar>
           <Toolbar>
-            <IconButton className={classes.menuButton} color="contrast" aria-label="Menu">
+            <IconButton className={classes.menuButton} color="contrast" aria-label="Menu"
+                        onClick={this.toggleDrawer('left', true)}>
               <MenuIcon/>
             </IconButton>
             <Typography type="title" color="inherit" className={classes.flex}>
               Gilded
             </Typography>
-            {localStorage.fb_info !== undefined ? <Avatar
+            {this.state.isAuth ? <Avatar
                 src={`http://graph.facebook.com/v2.10/${JSON.parse(localStorage.fb_info).id}/picture?width=170&height=170`}/> :
               <Link to={"/user/signup"}><Button color="contrast">Login</Button></Link>}
           </Toolbar>
         </AppBar>
+        <Drawer open={this.state.left} onRequestClose={this.toggleDrawer('left', false)}>
+          <div
+            tabIndex={0}
+            role="button"
+            onClick={this.toggleDrawer('left', false)}
+            onKeyDown={this.toggleDrawer('left', false)}
+          >
+            {sideList}
+          </div>
+        </Drawer>
         <div>
           <Route exact path="/" component={LandingScreenComponent}/>
         </div>

@@ -4,9 +4,6 @@
 
 import React, {Component} from 'react';
 import './occupations_details.css';
-import {Link} from 'react-router-dom';
-import YouTube from 'react-youtube';
-import MediaQuery from 'react-responsive';
 import '../util/MoneyUtils'
 import MoneyUtils from "../util/MoneyUtils";
 import PropTypes from 'prop-types';
@@ -25,10 +22,12 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'center',
     background: theme.palette.background.default,
-    marginTop: theme.spacing.unit * 10,
+    marginTop: theme.spacing.unit * 7,
+    padding: theme.spacing.unit * 2,
   },
   card: {
-    maxWidth: 400
+    maxWidth: 400,
+    minWidth: 300
   },
   media: {
     height: 200,
@@ -157,8 +156,8 @@ class OccupationsDetailComponent extends Component {
               starting salary</Typography>
           </CardContent>
           <CardActions>
-            <Button dense color="primary">
-              Bookmark
+            <Button dense color="primary" onClick={() => this.bookmarkOccupation()}>
+              {this.state.isBookmarked ? 'Remove Bookmark':'Bookmark'}
             </Button>
           </CardActions>
         </Card>;
@@ -175,7 +174,7 @@ class OccupationsDetailComponent extends Component {
   render() {
     const {classes} = this.props;
     const {page} = this.state;
-      return <div className={classes.container}>
+    return <div className={classes.container}>
       {this.state.details ?
         <div>
           {this.getCurrentPage(classes)}

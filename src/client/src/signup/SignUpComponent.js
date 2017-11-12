@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import URLUtils from "../util/URLUtils";
 import FacebookLogin from '../fb_login/facebook';
 import {withStyles} from 'material-ui/styles';
@@ -17,7 +17,7 @@ const styles = theme => ({
 class SignUpComponent extends React.Component {
   FB_DEV = "278110495999806";
   FB_PROD = "124782244806218";
-  FB_CURRENT = this.FB_DEV;
+  FB_CURRENT = window.location.origin.includes("localhost") ? this.FB_DEV : this.FB_PROD;
 
   state = {
     loading: false
@@ -37,7 +37,6 @@ class SignUpComponent extends React.Component {
         localStorage.setItem('jwt', d.token);
         window.location.replace("/");
       });
-
     } else {
       this.setState({loading: false});
     }
@@ -51,7 +50,6 @@ class SignUpComponent extends React.Component {
     }
   }
 
-
   constructor() {
     super();
     this.responseFacebook = this.responseFacebook.bind(this);
@@ -59,7 +57,6 @@ class SignUpComponent extends React.Component {
 
   render() {
     const {classes} = this.props;
-
     return <div className={classes.container}>
       {this.state.loading ? <CircularProgress/> : <FacebookLogin
         appId={this.FB_CURRENT}

@@ -2,14 +2,12 @@
  * Created by jakewilson on 6/29/17.
  */
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import {Redirect} from 'react-router';
 import PropTypes from 'prop-types';
 import '../util/MoneyUtils';
 import MoneyUtils from "../util/MoneyUtils";
 import {withStyles} from 'material-ui/styles';
 import {GridList, GridListTile, GridListTileBar} from 'material-ui/GridList';
-import Subheader from 'material-ui/List/ListSubheader';
 import IconButton from 'material-ui/IconButton';
 import InfoIcon from 'material-ui-icons/Info';
 
@@ -59,7 +57,7 @@ class OccupationsComponent extends Component {
     if (this.state.error === "") {
       const {classes} = this.props;
       return (<div className={classes.container}>
-        <GridList  className={classes.gridList}>
+        <GridList className={classes.gridList}>
           {data.map(occupations => (
             <GridListTile key={occupations.image_avatar_url} onClick={() => this.setState({redirect: occupations.id})}>
               <img src={occupations.image_avatar_url} alt={occupations.title}/>
@@ -68,8 +66,9 @@ class OccupationsComponent extends Component {
                 subtitle={<span>Median Salary {MoneyUtils.thousands(parseInt(occupations.annual_median))}</span>}
                 actionIcon={
                   <IconButton>
-                    <InfoIcon color="rgba(255, 255, 255, 0.54)"
-                              onClick={() => this.setState({redirect: occupations.id})}/>
+                    <InfoIcon
+                      color="rgba(255, 255, 255, 1)"
+                      onClick={() => this.setState({redirect: occupations.id})}/>
                   </IconButton>
                 }
               />
