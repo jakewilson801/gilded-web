@@ -40,6 +40,27 @@ const styles = theme => ({
   root: {
     width: '100%',
   },
+  filter: {
+    width: '100%',
+    background: theme.palette.background.paper,
+  },
+  filterSlider: {
+    width: '100%',
+    background: theme.palette.background.paper,
+  },
+  filterLabelTop: {
+    paddingTop: 10,
+    justifySelf: 'center',
+  },
+  filterLabelBottom: {
+    justifySelf: 'center',
+  },
+  filterContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column',
+    display: 'flex',
+  },
   flex: {
     flex: 1,
   },
@@ -67,7 +88,9 @@ class App extends Component {
     left: false,
     isAuth: false,
     open: false,
-    activeStep: 0,
+    years: parseFloat(localStorage.getItem('years')) || 0,
+    salary: parseInt(localStorage.getItem('salary')) || 0,
+    tuition: parseInt(localStorage.getItem('tuition')) || 0
   };
 
   toggleDrawer = (side, open) => () => {
@@ -75,7 +98,6 @@ class App extends Component {
       [side]: open,
     });
   };
-
 
   componentDidMount() {
     if (localStorage.jwt) {
@@ -95,21 +117,63 @@ class App extends Component {
   };
 
   handleRequestClose = () => {
+    localStorage.setItem('years', this.state.years);
+    localStorage.setItem('salary', this.state.salary);
+    localStorage.setItem('tuition', this.state.tuition);
     this.setState({open: false});
   };
 
-  handleNext = () => {
+  handleNextYears = () => {
     this.setState({
-      activeStep: this.state.activeStep + 1,
+      years: this.state.years + 1,
     });
   };
 
-  handleBack = () => {
+  handleBackYears = () => {
     this.setState({
-      activeStep: this.state.activeStep - 1,
+      years: this.state.years - 1,
     });
   };
 
+  handleNextSalary = () => {
+    this.setState({
+      salary: this.state.salary + 1,
+    });
+  };
+
+  handleBackSalary = () => {
+    this.setState({
+      salary: this.state.salary - 1,
+    });
+  };
+
+  handleNextTuition = () => {
+    this.setState({
+      tuition: this.state.tuition + 1,
+    });
+  };
+
+  handleBackTuition = () => {
+    this.setState({
+      tuition: this.state.tuition - 1,
+    });
+  };
+
+  getSalary(salary) {
+    return (salary * 10000).toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0
+    })
+  }
+
+  getTuition(tuition) {
+    return (tuition * 5000).toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0
+    })
+  }
 
   //TODO https://reacttraining.com/react-router/web/example/auth-workflow
   //https://stackoverflow.com/questions/31079081/programmatically-navigate-using-react-router
@@ -148,31 +212,87 @@ class App extends Component {
             </IconButton>
             <Typography type="title" color="inherit" className={classes.flex}>
               Filter
-            </Typography>
-            <Button color="contrast" onClick={this.handleRequestClose}>
-              Save
-            </Button>
+            </Typography> <Button color="contrast" onClick={this.handleRequestClose}>
+            Save
+          </Button>
           </Toolbar>
         </AppBar>
-        <MobileStepper
-          type="progress"
-          steps={4}
-          position="static"
-          activeStep={this.state.activeStep}
-          className={classes.root}
-          nextButton={
-            <Button dense onClick={this.handleNext} disabled={this.state.activeStep === 5}>
-              More
-              <KeyboardArrowRight/>
-            </Button>
-          }
-          backButton={
-            <Button dense onClick={this.handleBack} disabled={this.state.activeStep === 0}>
-              <KeyboardArrowLeft/>
-              Less
-            </Button>
-          }
-        />
+        <div className={classes.filterContainer}>
+          <Typography className={classes.filterLabelTop}>Years of School</Typography>
+          <MobileStepper
+            type="progress"
+            steps={4}
+            position="static"
+            activeStep={this.state.years}
+            className={classes.filterSlider}
+            nextButton={
+              <Button dense onClick={this.handleNextYears} disabled={this.state.years === 4}>
+                More
+                <KeyboardArrowRight/>
+              </Button>
+            }
+            backButton={
+              <Button dense onClick={this.handleBackYears} disabled={this.state.years === 0}>
+                <KeyboardArrowLeft/>
+                Less
+              </Button>
+            }
+          />
+          <Typography type="display1" className={classes.filterLabelBottom}>{this.state.years}</Typography>
+
+        </div>
+        <Divider style={{marginTop: 10}}/>
+        <div className={classes.filterContainer}>
+          <Typography className={classes.filterLabelTop}>Minimum Salary</Typography>
+          <MobileStepper
+            type="progress"
+            steps={10}
+            position="static"
+            activeStep={this.state.salary}
+            className={classes.filterSlider}
+            nextButton={
+              <Button dense onClick={this.handleNextSalary} disabled={this.state.salary === 10}>
+                More
+                <KeyboardArrowRight/>
+              </Button>
+            }
+            backButton={
+              <Button dense onClick={this.handleBackSalary} disabled={this.state.salary === 0}>
+                <KeyboardArrowLeft/>
+                Less
+              </Button>
+            }
+          />
+          <Typography type="display1"
+                      className={classes.filterLabelBottom}>{this.getSalary(this.state.salary)}</Typography>
+
+        </div>
+        <Divider style={{marginTop: 10}}/>
+        <div className={classes.filterContainer}>
+          <Typography className={classes.filterLabelTop}>Tuition</Typography>
+          <MobileStepper
+            type="progress"
+            steps={5}
+            position="static"
+            activeStep={this.state.tuition}
+            className={classes.filterSlider}
+            nextButton={
+              <Button dense onClick={this.handleNextTuition} disabled={this.state.tuition === 5}>
+                More
+                <KeyboardArrowRight/>
+              </Button>
+            }
+            backButton={
+              <Button dense onClick={this.handleBackTuition} disabled={this.state.tuition === 0}>
+                <KeyboardArrowLeft/>
+                Less
+              </Button>
+            }
+          />
+          <Typography type="display1"
+                      className={classes.filterLabelBottom}>{this.getTuition(this.state.tuition)}</Typography>
+
+        </div>
       </Dialog>
     </div>);
     return (
