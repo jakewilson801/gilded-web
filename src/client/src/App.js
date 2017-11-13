@@ -8,7 +8,7 @@ import SchoolsComponent from "./schools/SchoolsComponent";
 import MessagesComponent from "./messages/MessagesComponent";
 import SignUpComponent from "./signup/SignUpComponent";
 
-import {Link, Route} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import EmployersComponent from "./employers/EmployersComponent";
 import SearchComponent from "./landing/SearchComponent";
 import Bookmarks from "./user/Bookmarks";
@@ -21,7 +21,7 @@ import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import withRoot from './withRoot'
-import Avatar from 'material-ui/Avatar';
+
 import List, {ListItem, ListItemText} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Drawer from 'material-ui/Drawer';
@@ -29,6 +29,12 @@ import Logout from './util/Logout';
 import DrawerNavigationButton from './util/DrawerNavigationButton';
 import NavigationButton from './util/NavigationButton';
 import DrawerAvatarNavigationButton from './util/DrawerAvatarNavigationButton';
+import Dialog from "material-ui/es/Dialog/Dialog";
+import Slide from 'material-ui/transitions/Slide';
+import CloseIcon from 'material-ui-icons/Close';
+import MobileStepper from 'material-ui/MobileStepper';
+import KeyboardArrowLeft from 'material-ui-icons/KeyboardArrowLeft';
+import KeyboardArrowRight from 'material-ui-icons/KeyboardArrowRight';
 
 const styles = theme => ({
   root: {
@@ -51,12 +57,17 @@ const styles = theme => ({
     maxWidth: 200,
     background: theme.palette.background.paper,
   },
+  appBar: {
+    position: 'relative',
+  },
 });
 
 class App extends Component {
   state = {
     left: false,
     isAuth: false,
+    open: false,
+    activeStep: 0,
   };
 
   toggleDrawer = (side, open) => () => {
@@ -79,10 +90,31 @@ class App extends Component {
     return window.location.href.includes("bookmark") ? "Bookmarks" : "Gilded";
   }
 
+  handleClickOpen = () => {
+    this.setState({open: true});
+  };
+
+  handleRequestClose = () => {
+    this.setState({open: false});
+  };
+
+  handleNext = () => {
+    this.setState({
+      activeStep: this.state.activeStep + 1,
+    });
+  };
+
+  handleBack = () => {
+    this.setState({
+      activeStep: this.state.activeStep - 1,
+    });
+  };
+
+
   //TODO https://reacttraining.com/react-router/web/example/auth-workflow
   //https://stackoverflow.com/questions/31079081/programmatically-navigate-using-react-router
   render() {
-    const {classes} = this.props;
+    const {classes, theme} = this.props;
     const sideBar = (this.state.isAuth ? <List>
         <DrawerAvatarNavigationButton/>
         <DrawerNavigationButton routeUrl={"/user/bookmarks"} routeName={"Bookmarks"}/>
@@ -91,8 +123,8 @@ class App extends Component {
         </ListItem>
         <Divider/>
         <DrawerNavigationButton routeUrl={"/"} routeName={"Logout"} routeCallback={() => {
+          localStorage.clear();
           this.setState({isAuth: false});
-          localStorage.clear()
         }}/>
       </List> : <DrawerNavigationButton routeName={"Login"} routeUrl={"/user/signup"}/>
     );
@@ -102,9 +134,50 @@ class App extends Component {
         {sideBar}
       </div>
     );
-
+    const sortDialog = (<div>
+      <Dialog
+        fullScreen
+        open={this.state.open}
+        onRequestClose={this.handleRequestClose}
+        transition={(<Slide direction="up"/>)}
+      >
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <IconButton color="contrast" onClick={this.handleRequestClose} aria-label="Close">
+              <CloseIcon/>
+            </IconButton>
+            <Typography type="title" color="inherit" className={classes.flex}>
+              Filter
+            </Typography>
+            <Button color="contrast" onClick={this.handleRequestClose}>
+              Save
+            </Button>
+          </Toolbar>
+        </AppBar>
+        <MobileStepper
+          type="progress"
+          steps={4}
+          position="static"
+          activeStep={this.state.activeStep}
+          className={classes.root}
+          nextButton={
+            <Button dense onClick={this.handleNext} disabled={this.state.activeStep === 5}>
+              More
+              <KeyboardArrowRight/>
+            </Button>
+          }
+          backButton={
+            <Button dense onClick={this.handleBack} disabled={this.state.activeStep === 0}>
+              <KeyboardArrowLeft/>
+              Less
+            </Button>
+          }
+        />
+      </Dialog>
+    </div>);
     return (
       <div className={classes.root}>
+        {sortDialog}
         <AppBar>
           <Toolbar>
             <IconButton className={classes.menuButton} color="contrast" aria-label="Menu"
@@ -114,8 +187,7 @@ class App extends Component {
             <Typography type="title" color="inherit" className={classes.flex}>
               {this.getTitle()}
             </Typography>
-            {this.state.isAuth ? <Avatar
-                src={`http://graph.facebook.com/v2.10/${JSON.parse(localStorage.fb_info).id}/picture?width=170&height=170`}/> :
+            {this.state.isAuth ? <Button color={"contrast"} onClick={this.handleClickOpen}>Filter</Button> :
               <NavigationButton routeUrl={"/user/signup"} routeName={"Login"}/>}
           </Toolbar>
         </AppBar>
@@ -175,6 +247,8 @@ class App extends Component {
 
 App.propTypes = {
   classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
 };
 
-export default withRoot(withStyles(styles)(App));
+export default withRoot(withStyles(styles, {withTheme: true})(App));
+
