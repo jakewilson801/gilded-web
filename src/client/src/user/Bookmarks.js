@@ -2,14 +2,10 @@ import React, {Component} from 'react';
 import {withStyles} from 'material-ui/styles';
 import {CircularProgress} from 'material-ui/Progress';
 import PropTypes from 'prop-types';
-import Paper from 'material-ui/Paper';
 import Typography from 'material-ui/Typography';
 import Card, {CardActions, CardContent} from 'material-ui/Card';
 import Button from "material-ui/es/Button/Button";
-import CardMedia from "material-ui/es/Card/CardMedia";
-import List from "material-ui/es/List/List";
-import Grid from "material-ui/es/Grid/Grid";
-import GridList from "material-ui/es/GridList/GridList";
+import OccupationsComponent from '../occupations/OccupationsComponent';
 
 const styles = theme => ({
   root: {
@@ -63,25 +59,7 @@ class BookmarksComponent extends Component {
       return <div className={classes.root}><CircularProgress/></div>
     } else {
       if (this.state.bookmarks.length > 0) {
-        let bookmarks = this.state.bookmarks.map(bookmark =>
-          <Card className={classes.card} key={bookmark.id}>
-            <CardMedia
-              className={classes.media}
-              image={bookmark.image_avatar_url}
-              title={bookmark.title}
-            />
-            <CardContent>
-              <Typography type="headline" component="h2">
-                {bookmark.title}
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button dense
-                      onClick={() => window.location.href = `/occupations/${bookmark.id}/details`}>View
-                Occupation</Button>
-            </CardActions>
-          </Card>);
-        return <div className={classes.gridContainer}><GridList className={classes.gridList}>{bookmarks}</GridList>;</div>
+        return <OccupationsComponent occupations={this.state.bookmarks}/>
       } else {
         return <div className={classes.root}><Card className={classes.bookmarks} onClick={() => {
           window.location.href = "/";

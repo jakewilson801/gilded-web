@@ -10,6 +10,7 @@ import {withStyles} from 'material-ui/styles';
 import {GridList, GridListTile, GridListTileBar} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
 import InfoIcon from 'material-ui-icons/Info';
+import CircularProgress from "material-ui/es/Progress/CircularProgress";
 
 const styles = theme => ({
   container: {
@@ -23,6 +24,13 @@ const styles = theme => ({
   gridList: {
     cellHeight: 'auto',
     width: 500,
+  },
+  progress: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    marginTop: theme.spacing.unit * 7,
   },
 });
 
@@ -43,6 +51,7 @@ class OccupationsComponent extends Component {
 
   //Needs to be refactored to redux this code sucks
   render() {
+    const {classes} = this.props;
     if (this.state.redirect !== -1) {
       return <Redirect to={`/occupations/${this.state.redirect}/details`} push={true}/>;
     }
@@ -54,8 +63,7 @@ class OccupationsComponent extends Component {
       data = this.props.occupations;
     }
 
-    if (this.state.error === "") {
-      const {classes} = this.props;
+    if (data.length > 0) {
       return (<div className={classes.container}>
         <GridList className={classes.gridList}>
           {data.map(occupations => (
@@ -77,7 +85,7 @@ class OccupationsComponent extends Component {
         </GridList>
       </div>);
     } else {
-      return <div className="container"><h2>Couldn't find this Occupation</h2></div>;
+      return <div className={classes.progress}><CircularProgress/></div>;
     }
   }
 }

@@ -26,6 +26,9 @@ import List, {ListItem, ListItemText} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 import Drawer from 'material-ui/Drawer';
 import Logout from './util/Logout';
+import DrawerNavigationButton from './util/DrawerNavigationButton';
+import NavigationButton from './util/NavigationButton';
+import DrawerAvatarNavigationButton from './util/DrawerAvatarNavigationButton';
 
 const styles = theme => ({
   root: {
@@ -65,7 +68,6 @@ class App extends Component {
 
   componentDidMount() {
     if (localStorage.jwt) {
-      console.log(this.props);
       fetch(`/api/v1/user/me?token=${localStorage.jwt}`)
         .then(d => d.json())
         .then(() => this.setState({isAuth: true}))
@@ -73,33 +75,26 @@ class App extends Component {
     }
   }
 
+  getTitle() {
+    return window.location.href.includes("bookmark") ? "Bookmarks" : "Gilded";
+  }
 
   //TODO https://reacttraining.com/react-router/web/example/auth-workflow
   //https://stackoverflow.com/questions/31079081/programmatically-navigate-using-react-router
   render() {
     const {classes} = this.props;
     const sideBar = (this.state.isAuth ? <List>
-        <ListItem key={JSON.parse(localStorage.fb_info).id} dense button onClick={() => window.location.href = '/'}>
-          <Avatar alt="Avatar"
-                  src={`http://graph.facebook.com/v2.10/${JSON.parse(localStorage.fb_info).id}/picture?width=170&height=170`}/>
-          <ListItemText primary={`${JSON.parse(localStorage.fb_info).name}`}/>
-        </ListItem>
-        <ListItem button onClick={() => {
-          window.location.href = "/user/bookmarks";
-        }}>
-          <ListItemText primary="Bookmarks"/>
-        </ListItem>
+        <DrawerAvatarNavigationButton/>
+        <DrawerNavigationButton routeUrl={"/user/bookmarks"} routeName={"Bookmarks"}/>
         <ListItem button>
           <ListItemText primary={"Projects"}/>
         </ListItem>
         <Divider/>
-        <ListItem button component="a" onClick={() => {
-          localStorage.clear();
-          window.location.href = "/";
-        }}>
-          <ListItemText primary="Logout"/>
-        </ListItem>
-      </List> : <Logout/>
+        <DrawerNavigationButton routeUrl={"/"} routeName={"Logout"} routeCallback={() => {
+          this.setState({isAuth: false});
+          localStorage.clear()
+        }}/>
+      </List> : <DrawerNavigationButton routeName={"Login"} routeUrl={"/user/signup"}/>
     );
 
     const sideList = (
@@ -117,11 +112,11 @@ class App extends Component {
               <MenuIcon/>
             </IconButton>
             <Typography type="title" color="inherit" className={classes.flex}>
-              Gilded
+              {this.getTitle()}
             </Typography>
             {this.state.isAuth ? <Avatar
                 src={`http://graph.facebook.com/v2.10/${JSON.parse(localStorage.fb_info).id}/picture?width=170&height=170`}/> :
-              <Link to={"/user/signup"}><Button color="contrast">Login</Button></Link>}
+              <NavigationButton routeUrl={"/user/signup"} routeName={"Login"}/>}
           </Toolbar>
         </AppBar>
         <Drawer open={this.state.left} onRequestClose={this.toggleDrawer('left', false)}>
