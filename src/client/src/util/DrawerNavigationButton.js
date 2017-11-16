@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {withRouter} from 'react-router-dom'
 
-import ListItem from "material-ui/es/List/ListItem";
-import ListItemText from "material-ui/es/List/ListItemText";
+import ListItem from "material-ui/List/ListItem";
+import ListItemText from "material-ui/List/ListItemText";
 
 class DrawerNavigationButton extends Component {
   render() {
@@ -20,8 +21,8 @@ class DrawerNavigationButton extends Component {
 
 
 DrawerNavigationButton.propTypes = {
-  history: React.PropTypes.shape({
-    push: React.PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
   }).isRequired,
 };
 

@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
+import PropTypes from "prop-types";
 import {withRouter} from 'react-router-dom'
-import Button from "material-ui/es/Button/Button";
+import Button from "material-ui/Button/Button";
 
 class NavigationButton extends Component {
   render() {
@@ -15,8 +16,8 @@ class NavigationButton extends Component {
 
 
 NavigationButton.propTypes = {
-  history: React.PropTypes.shape({
-    push: React.PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
   }).isRequired,
 };
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import URLUtils from "../util/URLUtils";
 import FacebookLogin from '../fb_login/facebook';
-import {withStyles} from 'material-ui/styles';
+import {withStyles} from 'material-ui';
 import PropTypes from 'prop-types';
-import {CircularProgress} from 'material-ui/Progress';
+import CircularProgress from 'material-ui/Progress/CircularProgress';
 
 const styles = theme => ({
   container: {

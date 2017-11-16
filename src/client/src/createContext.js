@@ -2,15 +2,18 @@
 
 import { create, SheetsRegistry } from 'jss';
 import preset from 'jss-preset-default';
-import { createMuiTheme } from 'material-ui/styles';
-import { blueGrey, green } from 'material-ui/colors';
+import createMuiTheme from 'material-ui/styles/createMuiTheme';
+import blueGrey from 'material-ui/colors/blueGrey';
 import createGenerateClassName from 'material-ui/styles/createGenerateClassName';
+
+function isWorkingHour(now) {
+  return now.getDay() <= 4 && now.getHours() >= 9 && now.getHours() < 17;
+}
 
 const theme = createMuiTheme({
   palette: {
     primary: blueGrey,
-    secondary: green,
-    type: 'dark',
+    type: isWorkingHour(new Date()) ? 'light' : 'dark',
   },
 });
 

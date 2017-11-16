@@ -1,10 +1,11 @@
 /* eslint-disable flowtype/require-valid-file-annotation */
 
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import JssProvider from 'react-jss/lib/JssProvider';
-import { withStyles, MuiThemeProvider } from 'material-ui/styles';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import wrapDisplayName from 'recompose/wrapDisplayName';
 import createContext from './createContext';
+import {withStyles} from "material-ui";
 
 // Apply some reset
 const styles = theme => ({
@@ -21,7 +22,7 @@ const styles = theme => ({
 });
 
 let AppWrapper = props => props.children;
-
+//
 AppWrapper = withStyles(styles)(AppWrapper);
 
 const context = createContext();

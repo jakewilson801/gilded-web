@@ -7,12 +7,13 @@ import './occupations_details.css';
 import '../util/MoneyUtils'
 import MoneyUtils from "../util/MoneyUtils";
 import PropTypes from 'prop-types';
-import {withStyles} from 'material-ui/styles';
+import {withStyles} from 'material-ui';
 import Card, {CardActions, CardContent, CardMedia} from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
-import {CircularProgress} from 'material-ui/Progress';
-import BottomNavigation, {BottomNavigationButton} from 'material-ui/BottomNavigation';
+import CircularProgress from 'material-ui/Progress/CircularProgress';
+import BottomNavigation from 'material-ui/BottomNavigation';
+import BottomNavigationButton from 'material-ui/BottomNavigation/BottomNavigationButton';
 import AccountBalance from 'material-ui-icons/AccountBalance';
 import Business from 'material-ui-icons/Business';
 import AccountCircle from 'material-ui-icons/AccountCircle';

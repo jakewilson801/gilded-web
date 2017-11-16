@@ -1,9 +1,11 @@
+
 import React from 'react';
+import PropTypes from 'prop-types';
 import {withRouter} from 'react-router-dom'
-import List from "material-ui/es/List/List";
-import ListItem from "material-ui/es/List/ListItem";
-import ListItemText from "material-ui/es/List/ListItemText";
-import Divider from "material-ui/es/Divider/Divider";
+import List from "material-ui/List/List";
+import ListItem from "material-ui/List/ListItem";
+import ListItemText from "material-ui/List/ListItemText";
+import Divider from "material-ui/Divider/Divider";
 
 const Logout = ({history}) => (
   <List>
@@ -17,8 +19,8 @@ const Logout = ({history}) => (
 
 
 Logout.propTypes = {
-  history: React.PropTypes.shape({
-    push: React.PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
   }).isRequired,
 };
 

@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {withRouter} from 'react-router-dom'
 
-import ListItem from "material-ui/es/List/ListItem";
-import ListItemText from "material-ui/es/List/ListItemText";
-import Avatar from "material-ui/es/Avatar/Avatar";
+import ListItem from "material-ui/List/ListItem";
+import ListItemText from "material-ui/List/ListItemText";
+import Avatar from "material-ui/Avatar/Avatar";
+import PropTypes from "prop-types";
 
 class DrawerAvatarNavigationButton extends Component {
   render() {
@@ -18,8 +19,8 @@ class DrawerAvatarNavigationButton extends Component {
 
 
 DrawerAvatarNavigationButton.propTypes = {
-  history: React.PropTypes.shape({
-    push: React.PropTypes.func.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
   }).isRequired,
 };
 

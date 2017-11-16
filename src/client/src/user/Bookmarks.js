@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {withStyles} from 'material-ui/styles';
-import {CircularProgress} from 'material-ui/Progress';
+import {withStyles} from 'material-ui';
+import CircularProgress from 'material-ui/Progress/CircularProgress';
 import PropTypes from 'prop-types';
 import Typography from 'material-ui/Typography';
-import Card, {CardActions, CardContent} from 'material-ui/Card';
-import Button from "material-ui/es/Button/Button";
+import Card from 'material-ui/Card';
+import Button from 'material-ui/Button';
 import OccupationsComponent from '../occupations/OccupationsComponent';
 
 const styles = theme => ({
@@ -64,13 +64,13 @@ class BookmarksComponent extends Component {
         return <div className={classes.root}><Card className={classes.bookmarks} onClick={() => {
           window.location.href = "/";
         }}>
-          <CardContent>
+          <Card.CardContent>
             <Typography type="headline" component="h2" className={classes.title}>
               No bookmarks go check out some occupations and bookmark them!
-            </Typography></CardContent>
-          <CardActions>
+            </Typography></Card.CardContent>
+          <Card.CardActions>
             <Button dense>Go to Occupations</Button>
-          </CardActions>
+          </Card.CardActions>
         </Card></div>;
       }
     }

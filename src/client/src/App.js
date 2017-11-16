@@ -13,7 +13,8 @@ import EmployersComponent from "./employers/EmployersComponent";
 import SearchComponent from "./landing/SearchComponent";
 import Bookmarks from "./user/Bookmarks";
 import PropTypes from 'prop-types';
-import {withStyles} from 'material-ui/styles';
+import {withStyles} from 'material-ui';
+
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
@@ -22,19 +23,22 @@ import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import withRoot from './withRoot'
 
-import List, {ListItem, ListItemText} from 'material-ui/List';
+import List from 'material-ui/List';
+import ListItem from 'material-ui/List/ListItem';
+
 import Divider from 'material-ui/Divider';
-import Drawer from 'material-ui/Drawer';
 import Logout from './util/Logout';
 import DrawerNavigationButton from './util/DrawerNavigationButton';
 import NavigationButton from './util/NavigationButton';
 import DrawerAvatarNavigationButton from './util/DrawerAvatarNavigationButton';
-import Dialog from "material-ui/es/Dialog/Dialog";
+import Dialog from "material-ui/Dialog";
 import Slide from 'material-ui/transitions/Slide';
 import CloseIcon from 'material-ui-icons/Close';
 import MobileStepper from 'material-ui/MobileStepper';
 import KeyboardArrowLeft from 'material-ui-icons/KeyboardArrowLeft';
 import KeyboardArrowRight from 'material-ui-icons/KeyboardArrowRight';
+import Drawer from "material-ui/Drawer";
+import ListItemText from "material-ui/List/ListItemText";
 
 const styles = theme => ({
   root: {
@@ -82,6 +86,11 @@ const styles = theme => ({
     position: 'relative',
   },
 });
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
+
 
 class App extends Component {
   state = {
@@ -203,7 +212,7 @@ class App extends Component {
         fullScreen
         open={this.state.open}
         onRequestClose={this.handleRequestClose}
-        transition={(<Slide direction="up"/>)}
+        transition={Transition}
       >
         <AppBar className={classes.appBar}>
           <Toolbar>
@@ -316,8 +325,7 @@ class App extends Component {
             tabIndex={0}
             role="button"
             onClick={this.toggleDrawer('left', false)}
-            onKeyDown={this.toggleDrawer('left', false)}
-          >
+            onKeyDown={this.toggleDrawer('left', false)}>
             {sideList}
           </div>
         </Drawer>

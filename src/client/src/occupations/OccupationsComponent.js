@@ -6,11 +6,13 @@ import {Redirect} from 'react-router';
 import PropTypes from 'prop-types';
 import '../util/MoneyUtils';
 import MoneyUtils from "../util/MoneyUtils";
-import {withStyles} from 'material-ui/styles';
-import {GridList, GridListTile, GridListTileBar} from 'material-ui/GridList';
+import {withStyles} from 'material-ui';
+import GridList from 'material-ui/GridList';
+import GridListTile from 'material-ui/GridList/GridListTile'
+import GridListTileBar from 'material-ui/GridList/GridListTileBar'
 import IconButton from 'material-ui/IconButton';
 import InfoIcon from 'material-ui-icons/Info';
-import CircularProgress from "material-ui/es/Progress/CircularProgress";
+import CircularProgress from "material-ui/Progress/CircularProgress";
 
 const styles = theme => ({
   container: {
