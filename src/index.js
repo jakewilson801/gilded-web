@@ -171,7 +171,7 @@ massive(connectionInfo).then(instance => {
     let socDetail = req.query.socCode.split('-')[1];
     ids.push(socField);
     ids.push(socDetail);
-    req.app.get('db').run('select * from gilded_public.programs where id in (select program_id from gilded_public.occupationprograms where field_id = $1 and soc_id = $2)', ids)
+    req.app.get('db').run('select p.title as program_title, p.length_months, p.cost_in_state, p.id as program_id , s.* from gilded_public.programs p, gilded_public.schools s where p.id in (select program_id from gilded_public.occupationprograms where field_id = $1 and soc_id = $2) and s.id in (select school_id from gilded_public.programs progs where progs.id = p.id);', ids)
       .then(result => {
         res.json(result);
       })

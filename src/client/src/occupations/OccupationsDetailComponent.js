@@ -17,6 +17,11 @@ import BottomNavigationButton from 'material-ui/BottomNavigation/BottomNavigatio
 import AccountBalance from 'material-ui-icons/AccountBalance';
 import Business from 'material-ui-icons/Business';
 import AccountCircle from 'material-ui-icons/AccountCircle';
+import {GridList, GridListTile, GridListTileBar} from 'material-ui/GridList';
+import Subheader from 'material-ui/List/ListSubheader';
+import IconButton from 'material-ui/IconButton';
+import InfoIcon from 'material-ui-icons/Info';
+
 
 const styles = theme => ({
   container: {
@@ -41,7 +46,22 @@ const styles = theme => ({
     position: 'fixed',
     left: 0,
     bottom: 0,
-  }
+  },
+  listItem: {
+    height: 120,
+    background: theme.palette.background.paper
+  },
+  programContainer: {
+    display: 'flex',
+    marginBottom: 50,
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    background: theme.palette.background.paper,
+  },
+  programList: {
+    width: '100%',
+  },
 });
 
 class OccupationsDetailComponent extends Component {
@@ -63,11 +83,11 @@ class OccupationsDetailComponent extends Component {
 
   state = {
     details: null,
-    showProviders: false,
-    showEmployers: false,
     socCode: "",
     isBookmarked: false,
     isAuth: false,
+    providers: [],
+    employers: [],
     page: 0,
   };
 
@@ -86,14 +106,15 @@ class OccupationsDetailComponent extends Component {
           .then(res => res.json())
           .then(results => {
             if (results.length > 0)
-              this.setState({showProviders: true});
+              this.setState({providers: results});
+
           }).catch(error => console.log(error));
 
         fetch(`/api/v1/employers?socCode=${this.state.socCode}`)
           .then(res => res.json())
           .then(results => {
             if (results.length > 0)
-              this.setState({showEmployers: true});
+              this.setState({employers: results});
           }).catch(error => console.log(error));
 
         fetch('/api/v1/user/bookmarks', {
@@ -158,13 +179,30 @@ class OccupationsDetailComponent extends Component {
           </CardContent>
           <CardActions>
             <Button dense color="primary" onClick={() => this.bookmarkOccupation()}>
-              {this.state.isBookmarked ? 'Remove Bookmark':'Bookmark'}
+              {this.state.isBookmarked ? 'Remove Bookmark' : 'Bookmark'}
             </Button>
           </CardActions>
         </Card>;
         break;
       case 1:
-        return <div>Programs</div>;
+        return <div className={classes.programContainer}>
+          <GridList cellHeight={150} cols={1} className={classes.programList}>
+            {this.state.providers.map(provider => (
+              <GridListTile key={provider.program_id}>
+                <img src={`/assets/${provider.image_background_url}`} alt={provider.title}/>
+                <GridListTileBar
+                  title={provider.title}
+                  subtitle={<div><span>{`${MoneyUtils.thousands(parseInt(provider.cost_in_state))}`} {`${provider.length_months}`} Months</span><br/><span style={{marginTop: 5}}>{provider.program_title}</span></div>}
+                  actionIcon={
+                    <IconButton>
+                      <InfoIcon color="rgba(255, 255, 255, 0.54)"/>
+                    </IconButton>
+                  }
+                />
+              </GridListTile>
+            ))}
+          </GridList>
+        </div>
         break;
       case 2:
         return <div>Employers</div>;
