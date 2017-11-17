@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import {withStyles} from 'material-ui';
+import {CardActions, CardContent, withStyles} from 'material-ui';
 import CircularProgress from 'material-ui/Progress/CircularProgress';
 import PropTypes from 'prop-types';
 import Typography from 'material-ui/Typography';
 import Card from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import OccupationsComponent from '../occupations/OccupationsComponent';
+import NavigationButton from "../util/NavigationButton";
 
 const styles = theme => ({
   root: {
@@ -45,32 +46,30 @@ const styles = theme => ({
 });
 
 class BookmarksComponent extends Component {
-  state = {bookmarks: null};
+  state = {bookmarks: null, isLoading: true};
 
   componentDidMount() {
     fetch(`/api/v1/user/bookmarks?token=${localStorage.jwt}`)
       .then(res => res.json())
-      .then(d => this.setState({bookmarks: d}));
+      .then(d => this.setState({bookmarks: d, loading: false}));
   }
 
   render() {
     const {classes} = this.props;
-    if (!this.state.bookmarks) {
+    if (!this.state.bookmarks && this.state.isLoading) {
       return <div className={classes.root}><CircularProgress/></div>
     } else {
       if (this.state.bookmarks.length > 0) {
         return <OccupationsComponent occupations={this.state.bookmarks}/>
       } else {
-        return <div className={classes.root}><Card className={classes.bookmarks} onClick={() => {
-          window.location.href = "/";
-        }}>
-          <Card.CardContent>
+        return <div className={classes.root}><Card className={classes.bookmarks}>
+          <CardContent>
             <Typography type="headline" component="h2" className={classes.title}>
               No bookmarks go check out some occupations and bookmark them!
-            </Typography></Card.CardContent>
-          <Card.CardActions>
-            <Button dense>Go to Occupations</Button>
-          </Card.CardActions>
+            </Typography></CardContent>
+          <CardActions>
+            <NavigationButton routeName={"Go to Occupations"} routeUrl={"/"}/>
+          </CardActions>
         </Card></div>;
       }
     }
@@ -80,4 +79,5 @@ class BookmarksComponent extends Component {
 BookmarksComponent.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+
 export default withStyles(styles)(BookmarksComponent);

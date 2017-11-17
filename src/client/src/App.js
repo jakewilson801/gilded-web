@@ -11,7 +11,7 @@ import SignUpComponent from "./signup/SignUpComponent";
 import {Route} from 'react-router-dom';
 import EmployersComponent from "./employers/EmployersComponent";
 import SearchComponent from "./landing/SearchComponent";
-import Bookmarks from "./user/Bookmarks";
+import Bookmarks from "./user/BookmarksComponent";
 import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui';
 
