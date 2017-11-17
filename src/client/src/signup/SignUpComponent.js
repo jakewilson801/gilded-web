@@ -1,17 +1,28 @@
 import React from 'react';
 import URLUtils from "../util/URLUtils";
 import FacebookLogin from '../fb_login/facebook';
-import {withStyles} from 'material-ui';
+import {Paper, Typography, withStyles} from 'material-ui';
 import PropTypes from 'prop-types';
 import CircularProgress from 'material-ui/Progress/CircularProgress';
 
 const styles = theme => ({
   container: {
     display: 'flex',
+    alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'column',
     background: theme.palette.background.default,
     marginTop: theme.spacing.unit * 10,
-  }
+  },
+  signUp: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: 10,
+    margin: 5,
+    justifyContent: 'center',
+  },
+
 });
 
 class SignUpComponent extends React.Component {
@@ -58,15 +69,23 @@ class SignUpComponent extends React.Component {
   render() {
     const {classes} = this.props;
     return <div className={classes.container}>
-      {this.state.loading ? <CircularProgress/> : <FacebookLogin
-        appId={this.FB_CURRENT}
-        reRequest={true}
-        onClick={() => this.setState({loading: true})}
-        fields="name,email,picture"
-        scope="public_profile,user_friends,email"
-        callback={this.responseFacebook}
-        redirectUri={`${window.location.origin}/user/signup`}
-      />}
+      {this.state.loading ? <CircularProgress/> :
+        <Paper className={classes.signUp}>
+          <Typography type="headline" component="h3" elevation={4}>
+            Welcome to Gilded!
+          </Typography>
+          <Typography type="body1" component="p" style={{padding: 5}}>
+            Gilded is used to develop your career and find new opportunities
+          </Typography>
+          <FacebookLogin
+            appId={this.FB_CURRENT}
+            reRequest={true}
+            onClick={() => this.setState({loading: true})}
+            fields="name,email,picture"
+            scope="public_profile,user_friends,email"
+            callback={this.responseFacebook}
+            redirectUri={`${window.location.origin}/user/signup`}
+          /></Paper>}
     </div>
   }
 }

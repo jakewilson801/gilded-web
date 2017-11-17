@@ -98,8 +98,8 @@ class App extends Component {
     isAuth: false,
     open: false,
     years: parseFloat(localStorage.getItem('years')) || 0,
-    salary: parseInt(localStorage.getItem('salary')) || 0,
-    tuition: parseInt(localStorage.getItem('tuition')) || 0
+    salary: parseInt((localStorage.getItem('salary')) / 10000) || 0,
+    tuition: parseInt((localStorage.getItem('tuition') / 5000)) || 0
   };
 
   toggleDrawer = (side, open) => () => {
@@ -126,11 +126,20 @@ class App extends Component {
   };
 
   handleRequestClose = () => {
-    localStorage.setItem('years', this.state.years);
-    localStorage.setItem('salary', this.state.salary);
-    localStorage.setItem('tuition', this.state.tuition);
+    this.saveValues();
     this.setState({open: false});
+    window.location.href = "/"
   };
+
+  saveValues = () => {
+    localStorage.setItem('years', this.state.years);
+    localStorage.setItem('salary', this.state.salary * 10000);
+    localStorage.setItem('tuition', this.state.tuition * 5000);
+  }
+
+  componentDidUpdate(nextProps, nextState) {
+    this.saveValues();
+  }
 
   handleNextYears = () => {
     this.setState({
@@ -187,7 +196,7 @@ class App extends Component {
   //TODO https://reacttraining.com/react-router/web/example/auth-workflow
   //https://stackoverflow.com/questions/31079081/programmatically-navigate-using-react-router
   render() {
-    const {classes, theme} = this.props;
+    const {classes} = this.props;
     const sideBar = (this.state.isAuth ? <List>
         <DrawerAvatarNavigationButton/>
         <DrawerNavigationButton routeUrl={"/user/bookmarks"} routeName={"Bookmarks"}/>
@@ -207,6 +216,7 @@ class App extends Component {
         {sideBar}
       </div>
     );
+
     const sortDialog = (<div>
       <Dialog
         fullScreen
@@ -248,7 +258,6 @@ class App extends Component {
             }
           />
           <Typography type="display1" className={classes.filterLabelBottom}>{this.state.years}</Typography>
-
         </div>
         <Divider style={{marginTop: 10}}/>
         <div className={classes.filterContainer}>
@@ -300,7 +309,6 @@ class App extends Component {
           />
           <Typography type="display1"
                       className={classes.filterLabelBottom}>{this.getTuition(this.state.tuition)}</Typography>
-
         </div>
       </Dialog>
     </div>);

@@ -60,8 +60,11 @@ const styles = theme => ({
     background: theme.palette.background.paper,
   },
   programList: {
-    width: '100%',
+    // width: '100%',
   },
+  programImage: {
+    width: '100%',
+  }
 });
 
 class OccupationsDetailComponent extends Component {
@@ -177,11 +180,11 @@ class OccupationsDetailComponent extends Component {
             <Typography type="subheading">{`${MoneyUtils.thousands(parseInt(this.state.details.annual_pct10))} `}
               starting salary</Typography>
           </CardContent>
-          <CardActions>
+          {this.state.isAuth && <CardActions>
             <Button dense color="primary" onClick={() => this.bookmarkOccupation()}>
               {this.state.isBookmarked ? 'Remove Bookmark' : 'Bookmark'}
             </Button>
-          </CardActions>
+          </CardActions>}
         </Card>;
         break;
       case 1:
@@ -189,23 +192,35 @@ class OccupationsDetailComponent extends Component {
           <GridList cellHeight={150} cols={1} className={classes.programList}>
             {this.state.providers.map(provider => (
               <GridListTile key={provider.program_id}>
-                <img src={`/assets/${provider.image_background_url}`} alt={provider.title}/>
+                <img className={classes.programImage} src={`/assets/${provider.image_background_url}`}
+                     alt={provider.title}/>
                 <GridListTileBar
                   title={provider.title}
-                  subtitle={<div><span>{`${MoneyUtils.thousands(parseInt(provider.cost_in_state))}`} {`${provider.length_months}`} Months</span><br/><span style={{marginTop: 5}}>{provider.program_title}</span></div>}
-                  actionIcon={
-                    <IconButton>
-                      <InfoIcon color="rgba(255, 255, 255, 0.54)"/>
-                    </IconButton>
-                  }
+                  subtitle={<div>
+                    <span>{`${MoneyUtils.thousands(parseInt(provider.cost_in_state))}`} {`${provider.length_months} `}
+                      Months</span><br/><span style={{marginTop: 5}}>{provider.program_title}</span></div>}
                 />
               </GridListTile>
             ))}
           </GridList>
-        </div>
+        </div>;
         break;
       case 2:
-        return <div>Employers</div>;
+        return <div className={classes.programContainer}>
+          <GridList cellHeight={150} cols={1} className={classes.programList}>
+            {this.state.employers.map(employer => (
+              <GridListTile key={employer.id}>
+                {employer.image_avatar_url &&
+                <img className={classes.programImage} src={`/assets/${employer.image_avatar_url}`}
+                     alt={employer.title}/>}
+                <GridListTileBar
+                  title={employer.title}
+                  subtitle={<span>{employer.city}</span>}
+                />
+              </GridListTile>
+            ))}
+          </GridList>
+        </div>;
         break;
     }
   }

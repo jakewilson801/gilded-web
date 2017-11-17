@@ -3,6 +3,7 @@ import OccupationsComponent from '../occupations/OccupationsComponent.js';
 import URLUtils from '../util/URLUtils'
 import '../occupations/occupations.css'
 import {Link} from 'react-router-dom';
+import {CircularProgress, Paper} from "material-ui";
 
 class LandingScreenComponent extends Component {
   state = {feed: null};
@@ -31,13 +32,13 @@ class LandingScreenComponent extends Component {
 
   render() {
     if (!this.state.feed) {
-      return <div>Loading...</div>;
+      return <CircularProgress/>;
     } else {
       if (this.state.feed.length > 0) {
         return <OccupationsComponent occupations={this.state.feed}/>;
       } else {
-        return <div style={{margin: '10px'}}>No results for given salary, time and tuition <Link to={"/search"}>Try
-          again?</Link></div>;
+        return <Paper style={{margin: 10}}>No results for given salary, time and tuition <Link to={"/search"}>Try
+          again?</Link></Paper>;
       }
     }
   }
