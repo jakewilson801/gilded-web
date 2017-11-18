@@ -18,9 +18,6 @@ import AccountBalance from 'material-ui-icons/AccountBalance';
 import Business from 'material-ui-icons/Business';
 import AccountCircle from 'material-ui-icons/AccountCircle';
 import {GridList, GridListTile, GridListTileBar} from 'material-ui/GridList';
-import Subheader from 'material-ui/List/ListSubheader';
-import IconButton from 'material-ui/IconButton';
-import InfoIcon from 'material-ui-icons/Info';
 
 
 const styles = theme => ({
@@ -190,7 +187,7 @@ class OccupationsDetailComponent extends Component {
       case 1:
         return <div className={classes.programContainer}>
           <GridList cellHeight={150} cols={1} className={classes.programList}>
-            {this.state.providers.map(provider => (
+            {this.state.providers.length > 0 ? this.state.providers.map(provider => (
               <GridListTile key={provider.program_id}>
                 <img className={classes.programImage} src={`/assets/${provider.image_background_url}`}
                      alt={provider.title}/>
@@ -201,14 +198,14 @@ class OccupationsDetailComponent extends Component {
                       Months</span><br/><span style={{marginTop: 5}}>{provider.program_title}</span></div>}
                 />
               </GridListTile>
-            ))}
+            )) : <CircularProgress/>}
           </GridList>
         </div>;
         break;
       case 2:
         return <div className={classes.programContainer}>
           <GridList cellHeight={150} cols={1} className={classes.programList}>
-            {this.state.employers.map(employer => (
+            {this.state.employers.length > 0 ? this.state.employers.map(employer => (
               <GridListTile key={employer.id}>
                 {employer.image_avatar_url &&
                 <img className={classes.programImage} src={`/assets/${employer.image_avatar_url}`}
@@ -218,7 +215,7 @@ class OccupationsDetailComponent extends Component {
                   subtitle={<span>{employer.city}</span>}
                 />
               </GridListTile>
-            ))}
+            )) : <CircularProgress/>}
           </GridList>
         </div>;
         break;

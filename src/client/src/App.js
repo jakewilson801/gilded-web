@@ -39,6 +39,7 @@ import KeyboardArrowLeft from 'material-ui-icons/KeyboardArrowLeft';
 import KeyboardArrowRight from 'material-ui-icons/KeyboardArrowRight';
 import Drawer from "material-ui/Drawer";
 import ListItemText from "material-ui/List/ListItemText";
+import URLUtils from "./util/URLUtils";
 
 const styles = theme => ({
   root: {
@@ -99,7 +100,8 @@ class App extends Component {
     open: false,
     years: parseFloat(localStorage.getItem('years')) || 0,
     salary: parseInt((localStorage.getItem('salary')) / 10000) || 0,
-    tuition: parseInt((localStorage.getItem('tuition') / 5000)) || 0
+    tuition: parseInt((localStorage.getItem('tuition') / 5000)) || 0,
+    shouldFilter: false,
   };
 
   toggleDrawer = (side, open) => () => {
@@ -115,6 +117,10 @@ class App extends Component {
         .then(() => this.setState({isAuth: true}))
         .catch((err) => this.setState({isAuth: false}));
     }
+
+    if (URLUtils.getParameterByName("search") === 'true') {
+      this.setState({open: true});
+    }
   }
 
   getTitle() {
@@ -128,7 +134,7 @@ class App extends Component {
   handleRequestClose = () => {
     this.saveValues();
     this.setState({open: false});
-    window.location.href = "/"
+    window.location.href = `/?years=${this.state.years}&salary=${this.state.salary * 10000}&tuition=${this.state.tuition * 5000}`;
   };
 
   saveValues = () => {
@@ -200,9 +206,6 @@ class App extends Component {
     const sideBar = (this.state.isAuth ? <List>
         <DrawerAvatarNavigationButton/>
         <DrawerNavigationButton routeUrl={"/user/bookmarks"} routeName={"Bookmarks"}/>
-        <ListItem button>
-          <ListItemText primary={"Projects"}/>
-        </ListItem>
         <Divider/>
         <DrawerNavigationButton routeUrl={"/"} routeName={"Logout"} routeCallback={() => {
           localStorage.clear();
@@ -231,9 +234,9 @@ class App extends Component {
             </IconButton>
             <Typography type="title" color="inherit" className={classes.flex}>
               Filter
-            </Typography> <Button color="contrast" onClick={this.handleRequestClose}>
-            Save
-          </Button>
+            </Typography>
+            <NavigationButton color="contrast" routeName={"Save"} routeCallback={this.handleRequestClose}
+                              routeUrl={`/?years=${this.state.years}&salary=${this.state.salary * 10000}&tuition=${this.state.tuition * 5000}`}/>
           </Toolbar>
         </AppBar>
         <div className={classes.filterContainer}>
@@ -338,7 +341,9 @@ class App extends Component {
           </div>
         </Drawer>
         <div>
-          <Route exact path="/" component={LandingScreenComponent}/>
+          <Route exact path="/" render={(props) => (
+            <LandingScreenComponent {...props} />
+          )}/>
         </div>
         <div>
           <Route exact path="/search" component={SearchComponent}/>
