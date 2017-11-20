@@ -6,14 +6,19 @@ import createMuiTheme from 'material-ui/styles/createMuiTheme';
 import blueGrey from 'material-ui/colors/blueGrey';
 import createGenerateClassName from 'material-ui/styles/createGenerateClassName';
 
-function isWorkingHour(now) {
-  return now.getDay() <= 4 && now.getHours() >= 9 && now.getHours() < 17;
+function getTheme(now) {
+  let theme = localStorage.theme;
+  if (theme) {
+    return theme === 'light' ? 'light' : 'dark';
+  } else {
+    return now.getDay() <= 4 && now.getHours() >= 9 && now.getHours() < 17 ? 'light' : 'dark';
+  }
 }
 
 const theme = createMuiTheme({
   palette: {
     primary: blueGrey,
-    type: isWorkingHour(new Date()) ? 'light' : 'dark',
+    type: getTheme(new Date()),
   },
 });
 

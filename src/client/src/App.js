@@ -24,7 +24,6 @@ import MenuIcon from 'material-ui-icons/Menu';
 import withRoot from './withRoot'
 
 import List from 'material-ui/List';
-import ListItem from 'material-ui/List/ListItem';
 
 import Divider from 'material-ui/Divider';
 import Logout from './util/Logout';
@@ -38,7 +37,6 @@ import MobileStepper from 'material-ui/MobileStepper';
 import KeyboardArrowLeft from 'material-ui-icons/KeyboardArrowLeft';
 import KeyboardArrowRight from 'material-ui-icons/KeyboardArrowRight';
 import Drawer from "material-ui/Drawer";
-import ListItemText from "material-ui/List/ListItemText";
 import URLUtils from "./util/URLUtils";
 
 const styles = theme => ({
@@ -202,15 +200,23 @@ class App extends Component {
   //TODO https://reacttraining.com/react-router/web/example/auth-workflow
   //https://stackoverflow.com/questions/31079081/programmatically-navigate-using-react-router
   render() {
-    const {classes} = this.props;
+    const {classes, theme} = this.props;
+    // (theme.palette.type === 'light' ? "Day" : "Night")
     const sideBar = (this.state.isAuth ? <List>
         <DrawerAvatarNavigationButton/>
         <DrawerNavigationButton routeUrl={"/user/bookmarks"} routeName={"Bookmarks"}/>
+        <Divider/>
+        <DrawerNavigationButton routeUrl={"/"} routeName={(theme.palette.type === 'light' ? "Day" : "Night")}
+                                routeCallback={() => {
+                                  localStorage.setItem("theme", (theme.palette.type === 'light' ? "dark" : "light"));
+                                  window.location.href = "/";
+                                }}/>
         <Divider/>
         <DrawerNavigationButton routeUrl={"/"} routeName={"Logout"} routeCallback={() => {
           localStorage.clear();
           this.setState({isAuth: false});
         }}/>
+
       </List> : <DrawerNavigationButton routeName={"Login"} routeUrl={"/user/signup"}/>
     );
 

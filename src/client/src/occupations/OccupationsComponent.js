@@ -67,13 +67,13 @@ class OccupationsComponent extends Component {
 
     if (data.length > 0) {
       return (<div className={classes.container}>
-        <GridList className={classes.gridList}>
+        <GridList cols={1} className={classes.gridList}>
           {data.map(occupations => (
             <GridListTile key={occupations.image_avatar_url} onClick={() => this.setState({redirect: occupations.id})}>
               <img src={occupations.image_avatar_url} alt={occupations.title}/>
               <GridListTileBar
                 title={occupations.title}
-                subtitle={<span>Median Salary {MoneyUtils.thousands(parseInt(occupations.annual_median))}</span>}
+                subtitle={<span>Average Salary {MoneyUtils.thousands(parseInt(occupations.annual_mean))}</span>}
                 actionIcon={
                   <IconButton>
                     <InfoIcon

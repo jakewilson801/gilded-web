@@ -11,8 +11,9 @@ const styles = theme => ({
   container: {
     display: 'flex',
     justifyContent: 'center',
-    background: theme.palette.background.default,
-    marginTop: theme.spacing.unit * 7,
+    background: theme.palette.background.paper,
+    margin: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 8,
     padding: theme.spacing.unit * 2,
   },
 });
