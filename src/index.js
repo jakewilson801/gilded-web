@@ -7,7 +7,6 @@ const _ = require('lodash');
 const morgan = require('morgan');
 const request = require('request');
 const JWT = require('jsonwebtoken');
-const enforce = require('express-sslify');
 
 let connectionInfo = process.env.DATABASE_URL || {
   host: process.env.DATABASE_URL || '127.0.0.1',
@@ -17,12 +16,21 @@ let connectionInfo = process.env.DATABASE_URL || {
   password: process.env.DB_PASSWORD || (process.platform === 'win32' ? 'password' : '')
 };
 
+let https_redirect = function(req, res, next) {
+  if (process.env.NODE_ENV === 'production') {
+    if (req.headers['x-forwarded-proto'] !== 'https') {
+      return res.redirect('https://' + req.headers.host + req.url);
+    } else {
+      return next();
+    }
+  } else {
+    return next();
+  }
+};
+
 massive(connectionInfo).then(instance => {
   app.set('db', instance);
-  if (process.env.NODE_ENV === 'production') {
-    app.use(enforce.HTTPS());
-    app.use(enforce.HTTPS({ trustProtoHeader: true }));
-  }
+  app.use(https_redirect);
   // Serve static files from the React app
   app.use(express.static(path.join(__dirname, 'client/build')));
   app.use(bodyParser.json());
