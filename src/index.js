@@ -20,7 +20,7 @@ let connectionInfo = process.env.DATABASE_URL || {
 massive(connectionInfo).then(instance => {
   app.set('db', instance);
   if (process.env.NODE_ENV === 'production') {
-    app.use(enforce.HTTPS());
+    app.all(enforce.HTTPS());
   }
   // Serve static files from the React app
   app.use(express.static(path.join(__dirname, 'client/build')));
