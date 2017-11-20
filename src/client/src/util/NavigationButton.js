@@ -5,7 +5,7 @@ import Button from "material-ui/Button/Button";
 
 class NavigationButton extends Component {
   render() {
-    return <Button color="contrast" onClick={() => {
+    return <Button onClick={() => {
       if (this.props.routeCallback) {
         this.props.routeCallback();
       }
