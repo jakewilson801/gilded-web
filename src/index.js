@@ -7,6 +7,7 @@ const _ = require('lodash');
 const morgan = require('morgan');
 const request = require('request');
 const JWT = require('jsonwebtoken');
+const enforce = require('express-sslify');
 
 let connectionInfo = process.env.DATABASE_URL || {
   host: process.env.DATABASE_URL || '127.0.0.1',
@@ -18,7 +19,9 @@ let connectionInfo = process.env.DATABASE_URL || {
 
 massive(connectionInfo).then(instance => {
   app.set('db', instance);
-
+  if (process.env.NODE_ENV === 'production') {
+    app.use(enforce.HTTPS());
+  }
   // Serve static files from the React app
   app.use(express.static(path.join(__dirname, 'client/build')));
   app.use(bodyParser.json());
