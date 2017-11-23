@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import JssProvider from 'react-jss/lib/JssProvider';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import wrapDisplayName from 'recompose/wrapDisplayName';
-import createContext from './createContext';
+import createContext, {createContextWithTheme} from './createContext';
 import {withStyles} from "material-ui";
 
 // Apply some reset
@@ -29,6 +29,18 @@ const context = createContext();
 
 function withRoot(App) {
   class WithRoot extends Component {
+    state = {currentTheme: context.theme};
+
+    constructor() {
+      super();
+      this.updateTheme = this.updateTheme.bind(this);
+    }
+
+    updateTheme(themeType) {
+      let newTheme = createContextWithTheme(themeType).theme;
+      this.setState({currentTheme: newTheme});
+    }
+
     componentDidMount() {
       // Remove the server-side injected CSS.
       const jssStyles = document.querySelector('#jss-server-side');
@@ -40,9 +52,9 @@ function withRoot(App) {
     render() {
       return (
         <JssProvider registry={context.sheetsRegistry} jss={context.jss}>
-          <MuiThemeProvider theme={context.theme} sheetsManager={context.sheetsManager}>
+          <MuiThemeProvider theme={this.state.currentTheme} sheetsManager={context.sheetsManager}>
             <AppWrapper>
-              <App />
+              <App updateTheme={this.updateTheme}/>
             </AppWrapper>
           </MuiThemeProvider>
         </JssProvider>

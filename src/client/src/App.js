@@ -13,7 +13,7 @@ import EmployersComponent from "./employers/EmployersComponent";
 import SearchComponent from "./landing/SearchComponent";
 import Bookmarks from "./user/BookmarksComponent";
 import PropTypes from 'prop-types';
-import {withStyles} from 'material-ui';
+import {ListItem, ListItemText, withStyles} from 'material-ui';
 
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
@@ -38,6 +38,8 @@ import KeyboardArrowLeft from 'material-ui-icons/KeyboardArrowLeft';
 import KeyboardArrowRight from 'material-ui-icons/KeyboardArrowRight';
 import Drawer from "material-ui/Drawer";
 import URLUtils from "./util/URLUtils";
+import {withRouter} from 'react-router'
+import createContext from "./createContext";
 
 const styles = theme => ({
   root: {
@@ -100,6 +102,7 @@ class App extends Component {
     salary: parseInt((localStorage.getItem('salary')) / 10000) || 0,
     tuition: parseInt((localStorage.getItem('tuition') / 5000)) || 0,
     shouldFilter: false,
+    shouldOpenDrawer: false,
   };
 
   toggleDrawer = (side, open) => () => {
@@ -197,20 +200,27 @@ class App extends Component {
     })
   }
 
+  setShouldOpenDrawer(isTheme) {
+    this.setState({left:isTheme});
+  }
+
   //TODO https://reacttraining.com/react-router/web/example/auth-workflow
   //https://stackoverflow.com/questions/31079081/programmatically-navigate-using-react-router
   render() {
     const {classes, theme} = this.props;
-    // (theme.palette.type === 'light' ? "Day" : "Night")
+    // (currentTheme.palette.type === 'light' ? "Day" : "Night")
     const sideBar = (this.state.isAuth ? <List>
         <DrawerAvatarNavigationButton/>
-        <DrawerNavigationButton routeUrl={"/user/bookmarks"} routeName={"Bookmarks"}/>
+        <DrawerNavigationButton routeUrl={"/user/bookmarks"} routeName={"Bookmarks"}
+                                routeCallback={() => this.setShouldOpenDrawer(false)}/>
         <Divider/>
-        <DrawerNavigationButton routeUrl={"/"} routeName={(theme.palette.type === 'light' ? "Day" : "Night")}
-                                routeCallback={() => {
-                                  localStorage.setItem("theme", (theme.palette.type === 'light' ? "dark" : "light"));
-                                  window.location.href = "/";
-                                }}/>
+        <ListItem button component="a" primary={(theme.palette.type === 'light' ? "Day" : "Night")}
+                  onClick={() => {
+                    this.setShouldOpenDrawer(true);
+                    let type = (theme.palette.type === 'light' ? "dark" : "light");
+                    localStorage.setItem("theme", type);
+                    this.props.updateTheme(type);
+                  }}><ListItemText primary={theme.palette.type === 'light' ? "Day" : "Night"}/></ListItem>
         <Divider/>
         <DrawerNavigationButton routeUrl={"/"} routeName={"Logout"} routeCallback={() => {
           localStorage.clear();
@@ -340,15 +350,13 @@ class App extends Component {
         <Drawer open={this.state.left} onRequestClose={this.toggleDrawer('left', false)}>
           <div
             tabIndex={0}
-            role="button"
-            onClick={this.toggleDrawer('left', false)}
-            onKeyDown={this.toggleDrawer('left', false)}>
+            role="button">
             {sideList}
           </div>
         </Drawer>
         <div>
           <Route exact path="/" render={(props) => (
-            <LandingScreenComponent {...props} />
+            <LandingScreenComponent {...props} id={props.location.hash}/>
           )}/>
         </div>
         <div>
@@ -395,7 +403,8 @@ class App extends Component {
 App.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
-export default withRoot(withStyles(styles, {withTheme: true})(App));
+export default withRoot(withRouter(withStyles(styles, {withTheme: true})(App)));
 

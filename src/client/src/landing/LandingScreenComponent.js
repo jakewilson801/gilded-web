@@ -44,7 +44,7 @@ class LandingScreenComponent extends Component {
 
   handleFilter = () => {
     window.location.href = '/?search=true';
-  }
+  };
 
   render() {
     const {classes} = this.props;
@@ -52,7 +52,7 @@ class LandingScreenComponent extends Component {
       return <div className={classes.container}><CircularProgress/></div>;
     } else {
       if (this.state.feed.length > 0) {
-        return <OccupationsComponent occupations={this.state.feed}/>;
+        return <OccupationsComponent id={this.props.id} occupations={this.state.feed}/>;
       } else {
         return <Paper className={classes.container}><Typography>No results for given salary, time and
           tuition </Typography><NavigationButton routeUrl={"/?search=true"} routeName={"Filter"} routeCallback={this.handleFilter}/></Paper>;

@@ -2,7 +2,6 @@
  * Created by jakewilson on 6/29/17.
  */
 import React, {Component} from 'react';
-import {Redirect} from 'react-router';
 import PropTypes from 'prop-types';
 import '../util/MoneyUtils';
 import MoneyUtils from "../util/MoneyUtils";
@@ -13,6 +12,7 @@ import GridListTileBar from 'material-ui/GridList/GridListTileBar'
 import IconButton from 'material-ui/IconButton';
 import InfoIcon from 'material-ui-icons/Info';
 import CircularProgress from "material-ui/Progress/CircularProgress";
+import {withRouter} from 'react-router'
 
 const styles = theme => ({
   container: {
@@ -41,22 +41,29 @@ class OccupationsComponent extends Component {
   state = {occupations: [], title: "", error: "", redirect: -1};
 
   componentDidMount() {
-    if (this.props.match) {
-      fetch(`/api/v1/occupations/${this.props.match.params.id}`)
-        .catch(error => this.setState({error}))
-        .then(res => res.json())
-        .then(occ => {
-          this.setState({occupations: occ, title: occ.field.title})
-        });
+    this.scroll();
+  }
+
+  componentDidUpdate() {
+    this.scroll();
+  }
+
+  scroll() {
+    const {id} = this.props;
+    if (!id) {
+      return;
+    }
+    let parsedId = id.substring(1, id.length);
+    document.getElementById(parsedId).scrollTop += 50;
+    const element = document.getElementById(parsedId);
+    if (element) {
+      element.scrollIntoView(true);
     }
   }
 
   //Needs to be refactored to redux this code sucks
   render() {
     const {classes} = this.props;
-    if (this.state.redirect !== -1) {
-      return <Redirect to={`/occupations/${this.state.redirect}/details`} push={true}/>;
-    }
 
     let data = [];
     if (this.state.occupations.length > 0) {
@@ -69,8 +76,13 @@ class OccupationsComponent extends Component {
       return (<div className={classes.container}>
         <GridList cols={1} className={classes.gridList}>
           {data.map(occupations => (
-            <GridListTile key={occupations.image_avatar_url} onClick={() => this.setState({redirect: occupations.id})}>
-              <img src={occupations.image_avatar_url} alt={occupations.title}/>
+            <GridListTile key={occupations.image_avatar_url} id={occupations.id}>
+              <img
+                src={occupations.image_avatar_url} alt={occupations.title}
+                onClick={() => {
+                  this.props.history.push(`/#${occupations.id}`);
+                  this.props.history.push(`/occupations/${occupations.id}/details`);
+                }}/>
               <GridListTileBar
                 title={occupations.title}
                 subtitle={<span>Average Salary {MoneyUtils.thousands(parseInt(occupations.annual_mean))}</span>}
@@ -94,7 +106,8 @@ class OccupationsComponent extends Component {
 
 OccupationsComponent.propTypes = {
   classes: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(OccupationsComponent);
+export default withRouter(withStyles(styles)(OccupationsComponent));
 
