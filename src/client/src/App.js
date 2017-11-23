@@ -223,6 +223,7 @@ class App extends Component {
                   }}><ListItemText primary={theme.palette.type === 'light' ? "Day" : "Night"}/></ListItem>
         <Divider/>
         <DrawerNavigationButton routeUrl={"/"} routeName={"Logout"} routeCallback={() => {
+          this.setShouldOpenDrawer(false);
           localStorage.clear();
           this.setState({isAuth: false});
         }}/>
