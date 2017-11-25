@@ -22,9 +22,7 @@ import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import withRoot from './withRoot'
-
 import List from 'material-ui/List';
-
 import Divider from 'material-ui/Divider';
 import Logout from './util/Logout';
 import DrawerNavigationButton from './util/DrawerNavigationButton';
@@ -37,9 +35,7 @@ import MobileStepper from 'material-ui/MobileStepper';
 import KeyboardArrowLeft from 'material-ui-icons/KeyboardArrowLeft';
 import KeyboardArrowRight from 'material-ui-icons/KeyboardArrowRight';
 import Drawer from "material-ui/Drawer";
-import URLUtils from "./util/URLUtils";
 import {withRouter} from 'react-router'
-import createContext from "./createContext";
 
 const styles = theme => ({
   root: {
@@ -94,15 +90,19 @@ function Transition(props) {
 
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   state = {
     left: false,
     isAuth: false,
     open: false,
-    years: parseFloat(localStorage.getItem('years')) || 0,
-    salary: parseInt((localStorage.getItem('salary')) / 10000) || 0,
-    tuition: parseInt((localStorage.getItem('tuition') / 5000)) || 0,
-    shouldFilter: false,
+    years: null,
+    salary: null,
+    tuition: null,
     shouldOpenDrawer: false,
+    occupations: null
   };
 
   toggleDrawer = (side, open) => () => {
@@ -118,10 +118,7 @@ class App extends Component {
         .then(() => this.setState({isAuth: true}))
         .catch((err) => this.setState({isAuth: false}));
     }
-
-    if (URLUtils.getParameterByName("search") === 'true') {
-      this.setState({open: true});
-    }
+    this.getOccupations();
   }
 
   getTitle() {
@@ -134,19 +131,19 @@ class App extends Component {
 
   handleRequestClose = () => {
     this.saveValues();
+    this.getOccupations();
     this.setState({open: false});
-    window.location.href = `/?years=${this.state.years}&salary=${this.state.salary * 10000}&tuition=${this.state.tuition * 5000}`;
+  };
+
+  handleRequestCancel = () => {
+    this.setState({open: false});
   };
 
   saveValues = () => {
     localStorage.setItem('years', this.state.years);
-    localStorage.setItem('salary', this.state.salary * 10000);
-    localStorage.setItem('tuition', this.state.tuition * 5000);
-  }
-
-  componentDidUpdate(nextProps, nextState) {
-    this.saveValues();
-  }
+    localStorage.setItem('salary', this.state.salary);
+    localStorage.setItem('tuition', this.state.tuition);
+  };
 
   handleNextYears = () => {
     this.setState({
@@ -201,14 +198,32 @@ class App extends Component {
   }
 
   setShouldOpenDrawer(isTheme) {
-    this.setState({left:isTheme});
+    this.setState({left: isTheme});
   }
 
-  //TODO https://reacttraining.com/react-router/web/example/auth-workflow
-  //https://stackoverflow.com/questions/31079081/programmatically-navigate-using-react-router
+  getOccupations() {
+    fetch(this.getRequestUrl())
+      .then(res => res.json())
+      .then(data => {
+        this.setState({occupations: data.occupations});
+      });
+  }
+
+  getRequestUrl() {
+    let y = this.state.years;
+    let s = this.state.salary * 10000;
+    let t = this.state.tuition * 5000;
+    let request;
+    if (t || y || s) {
+      request = `/api/v1/feed?tuition=${t}&years=${y}&salary=${s}`;
+    } else {
+      request = `/api/v1/feed`;
+    }
+    return request;
+  }
+
   render() {
     const {classes, theme} = this.props;
-    // (currentTheme.palette.type === 'light' ? "Day" : "Night")
     const sideBar = (this.state.isAuth ? <List>
         <DrawerAvatarNavigationButton/>
         <DrawerNavigationButton routeUrl={"/user/bookmarks"} routeName={"Bookmarks"}
@@ -246,14 +261,13 @@ class App extends Component {
       >
         <AppBar className={classes.appBar}>
           <Toolbar>
-            <IconButton color="contrast" onClick={this.handleRequestClose} aria-label="Close">
+            <IconButton color="contrast" onClick={this.handleRequestCancel} aria-label="Close">
               <CloseIcon/>
             </IconButton>
             <Typography type="title" color="inherit" className={classes.flex}>
               Filter
             </Typography>
-            <NavigationButton color="contrast" routeName={"Save"} routeCallback={this.handleRequestClose}
-                              routeUrl={`/?years=${this.state.years}&salary=${this.state.salary * 10000}&tuition=${this.state.tuition * 5000}`}/>
+            <Button type="title" color="inherit" onClick={this.handleRequestClose}>Save</Button>
           </Toolbar>
         </AppBar>
         <div className={classes.filterContainer}>
@@ -262,7 +276,7 @@ class App extends Component {
             type="progress"
             steps={4}
             position="static"
-            activeStep={this.state.years}
+            activeStep={this.state.years || 0}
             className={classes.filterSlider}
             nextButton={
               <Button dense onClick={this.handleNextYears} disabled={this.state.years === 4}>
@@ -277,7 +291,7 @@ class App extends Component {
               </Button>
             }
           />
-          <Typography type="display1" className={classes.filterLabelBottom}>{this.state.years}</Typography>
+          <Typography type="display1" className={classes.filterLabelBottom}>{this.state.years || 0}</Typography>
         </div>
         <Divider style={{marginTop: 10}}/>
         <div className={classes.filterContainer}>
@@ -286,7 +300,7 @@ class App extends Component {
             type="progress"
             steps={10}
             position="static"
-            activeStep={this.state.salary}
+            activeStep={this.state.salary || 0}
             className={classes.filterSlider}
             nextButton={
               <Button dense onClick={this.handleNextSalary} disabled={this.state.salary === 10}>
@@ -312,7 +326,7 @@ class App extends Component {
             type="progress"
             steps={5}
             position="static"
-            activeStep={this.state.tuition}
+            activeStep={this.state.tuition || 0}
             className={classes.filterSlider}
             nextButton={
               <Button dense onClick={this.handleNextTuition} disabled={this.state.tuition === 5}>
@@ -357,7 +371,11 @@ class App extends Component {
         </Drawer>
         <div>
           <Route exact path="/" render={(props) => (
-            <LandingScreenComponent {...props} id={props.location.hash}/>
+            <LandingScreenComponent {...props}
+                                    open={() => this.setState({open: true})}
+                                    occupations={this.state.occupations}
+                                    id={props.location.hash}
+            />
           )}/>
         </div>
         <div>

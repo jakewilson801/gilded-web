@@ -38,7 +38,7 @@ const styles = theme => ({
 
 
 class OccupationsComponent extends Component {
-  state = {occupations: [], title: "", error: "", redirect: -1};
+  state = {occupations: [], title: "", error: ""};
 
   componentDidMount() {
     this.scroll();
@@ -50,39 +50,37 @@ class OccupationsComponent extends Component {
 
   scroll() {
     const {id} = this.props;
+
     if (!id) {
       return;
     }
-    let parsedId = id.substring(1, id.length);
-    document.getElementById(parsedId).scrollTop += 50;
+
+    let parsedId = id.substring(1, id.indexOf("-"));
+    let offset = id.substring(id.indexOf("-") + 1, id.length);
     const element = document.getElementById(parsedId);
     if (element) {
+      if (element.scrollTop) {
+        element.scrollTop = offset;
+      }
       element.scrollIntoView(true);
     }
   }
 
-  //Needs to be refactored to redux this code sucks
+  handleNavigation = (occupations) => {
+    const element = document.getElementById(occupations.id);
+    let top = element.getBoundingClientRect().top;
+    this.props.history.push(`/#${occupations.id}-${top}`);
+    this.props.history.push(`/occupations/${occupations.id}/details`);
+  };
+
   render() {
-    const {classes} = this.props;
-
-    let data = [];
-    if (this.state.occupations.length > 0) {
-      data = this.state.occupations;
-    } else if (this.props.occupations) {
-      data = this.props.occupations;
-    }
-
-    if (data.length > 0) {
+    const {classes, occupations} = this.props;
+    if (occupations.length > 0) {
       return (<div className={classes.container}>
         <GridList cols={1} className={classes.gridList}>
-          {data.map(occupations => (
-            <GridListTile key={occupations.image_avatar_url} id={occupations.id}>
-              <img
-                src={occupations.image_avatar_url} alt={occupations.title}
-                onClick={() => {
-                  this.props.history.push(`/#${occupations.id}`);
-                  this.props.history.push(`/occupations/${occupations.id}/details`);
-                }}/>
+          {occupations.map(occupations => (
+            <GridListTile key={occupations.image_avatar_url} id={occupations.id} onClick={() => this.handleNavigation(occupations)}>
+              <img src={occupations.image_avatar_url} alt={occupations.title}/>
               <GridListTileBar
                 title={occupations.title}
                 subtitle={<span>Average Salary {MoneyUtils.thousands(parseInt(occupations.annual_mean))}</span>}
@@ -90,7 +88,7 @@ class OccupationsComponent extends Component {
                   <IconButton>
                     <InfoIcon
                       color="rgba(255, 255, 255, 1)"
-                      onClick={() => this.setState({redirect: occupations.id})}/>
+                      onClick={() => this.handleNavigation(occupations)}/>
                   </IconButton>
                 }
               />
