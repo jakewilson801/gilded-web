@@ -27,7 +27,7 @@ import Divider from 'material-ui/Divider';
 import Logout from './util/Logout';
 import DrawerNavigationButton from './util/DrawerNavigationButton';
 import NavigationButton from './util/NavigationButton';
-import DrawerAvatarNavigationButton from './util/DrawerAvatarNavigationButton';
+import Avatar from "material-ui/Avatar/Avatar";
 import Dialog from "material-ui/Dialog";
 import Slide from 'material-ui/transitions/Slide';
 import CloseIcon from 'material-ui-icons/Close';
@@ -130,19 +130,12 @@ class App extends Component {
   };
 
   handleRequestClose = () => {
-    this.saveValues();
     this.getOccupations();
     this.setState({open: false});
   };
 
   handleRequestCancel = () => {
     this.setState({open: false});
-  };
-
-  saveValues = () => {
-    localStorage.setItem('years', this.state.years);
-    localStorage.setItem('salary', this.state.salary);
-    localStorage.setItem('tuition', this.state.tuition);
   };
 
   handleNextYears = () => {
@@ -225,7 +218,15 @@ class App extends Component {
   render() {
     const {classes, theme} = this.props;
     const sideBar = (this.state.isAuth ? <List>
-        <DrawerAvatarNavigationButton/>
+        <ListItem key={JSON.parse(localStorage.fb_info).id} dense button
+                  onClick={() => {
+                    this.setShouldOpenDrawer(false)
+                    this.props.history.push("/")
+                  }}>
+          <Avatar alt="Avatar"
+                  src={`http://graph.facebook.com/v2.10/${JSON.parse(localStorage.fb_info).id}/picture?width=170&height=170`}/>
+          <ListItemText primary={`${JSON.parse(localStorage.fb_info).name}`}/>
+        </ListItem>
         <DrawerNavigationButton routeUrl={"/user/bookmarks"} routeName={"Bookmarks"}
                                 routeCallback={() => this.setShouldOpenDrawer(false)}/>
         <Divider/>

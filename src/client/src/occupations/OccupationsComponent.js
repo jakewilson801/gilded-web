@@ -49,14 +49,14 @@ class OccupationsComponent extends Component {
   }
 
   scroll() {
-    const {id} = this.props;
+    const {id, theme} = this.props;
 
     if (!id) {
       return;
     }
 
     let parsedId = id.substring(1, id.indexOf("-"));
-    let offset = id.substring(id.indexOf("-") + 1, id.length);
+    let offset = id.substring(id.indexOf("-") + 1, id.length) * theme.spacing.unit * 7;
     const element = document.getElementById(parsedId);
     if (element) {
       if (element.scrollTop) {
@@ -79,7 +79,8 @@ class OccupationsComponent extends Component {
       return (<div className={classes.container}>
         <GridList cols={1} className={classes.gridList}>
           {occupations.map(occupations => (
-            <GridListTile key={occupations.image_avatar_url} id={occupations.id} onClick={() => this.handleNavigation(occupations)}>
+            <GridListTile key={occupations.image_avatar_url} id={occupations.id}
+                          onClick={() => this.handleNavigation(occupations)}>
               <img src={occupations.image_avatar_url} alt={occupations.title}/>
               <GridListTileBar
                 title={occupations.title}
@@ -104,8 +105,9 @@ class OccupationsComponent extends Component {
 
 OccupationsComponent.propTypes = {
   classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired
 };
 
-export default withRouter(withStyles(styles)(OccupationsComponent));
+export default withRouter(withStyles(styles, {withTheme: true})(OccupationsComponent));
 
