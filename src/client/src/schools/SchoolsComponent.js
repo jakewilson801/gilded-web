@@ -22,9 +22,9 @@ class SchoolsComponent extends Component {
         <div className="school-card-list">
           {this.state.schools.map(e => <div key={e.id}
                                             className="school-card">
-            <img className="school-banner" src={`/assets/${e.image_background_url}`}/>
+            <img className="school-banner" src={`/assets/${e.image_background_url}`} alt="banner"/>
             <div className="school-card-inner">
-              <img className="school-avatar" src={`/assets/${e.image_avatar_url}`}/>
+              <img className="school-avatar" src={`/assets/${e.image_avatar_url}`} alt="avatar"/>
               <div className="school-outer">
                 <div className="school-name">{e.title}</div>
                 <Link className="school-view-more" to={`/schools/${this.props.match.params.id}/details/${e.id}`}>View More</Link>

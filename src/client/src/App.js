@@ -24,9 +24,7 @@ import MenuIcon from 'material-ui-icons/Menu';
 import withRoot from './withRoot'
 import List from 'material-ui/List';
 import Divider from 'material-ui/Divider';
-import Logout from './util/Logout';
 import DrawerNavigationButton from './util/DrawerNavigationButton';
-import NavigationButton from './util/NavigationButton';
 import Avatar from "material-ui/Avatar/Avatar";
 import Dialog from "material-ui/Dialog";
 import Slide from 'material-ui/transitions/Slide';
@@ -90,10 +88,6 @@ function Transition(props) {
 
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   state = {
     left: false,
     isAuth: false,

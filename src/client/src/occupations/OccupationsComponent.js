@@ -84,7 +84,7 @@ class OccupationsComponent extends Component {
               <img src={occupations.image_avatar_url} alt={occupations.title}/>
               <GridListTileBar
                 title={occupations.title}
-                subtitle={<span>Average Salary {MoneyUtils.thousands(parseInt(occupations.annual_mean))}</span>}
+                subtitle={<span>Average Salary {MoneyUtils.thousands(parseInt(occupations.annual_mean, 10))}</span>}
                 actionIcon={
                   <IconButton>
                     <InfoIcon

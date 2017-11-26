@@ -20,9 +20,9 @@ class SchoolsDetailComponent extends Component {
         <div>
           <div className="schools-detail-container">
             <div className="schools-detail-banner-holder">
-              <img className="schools-detail-banner" src={`/assets/${this.state.school.image_background_url}`}/>
+              <img className="schools-detail-banner" src={`/assets/${this.state.school.image_background_url}`} alt="banner"/>
               <div className="schools-name">{this.state.school.title}</div>
-              <img className="schools-detail-avatar" src={`/assets/${this.state.school.image_avatar_url}`}/>
+              <img className="schools-detail-avatar" src={`/assets/${this.state.school.image_avatar_url}`} alt="avatar"/>
             </div>
             <div className="schools-header-container">
               <div className="schools-address">

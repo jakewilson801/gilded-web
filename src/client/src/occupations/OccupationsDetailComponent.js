@@ -173,9 +173,9 @@ class OccupationsDetailComponent extends Component {
               {this.state.details.title}
             </Typography>
             <Typography type="display1">{`$${this.state.details.hourly_median}`}/hr</Typography>
-            <Typography type="subheading">{`${parseInt(this.state.details.project_growth_2024)}%`} growth in
+            <Typography type="subheading">{`${parseInt(this.state.details.project_growth_2024, 10)}%`} growth in
               Utah</Typography>
-            <Typography type="subheading">{`${MoneyUtils.thousands(parseInt(this.state.details.annual_pct10))} `}
+            <Typography type="subheading">{`${MoneyUtils.thousands(parseInt(this.state.details.annual_pct10, 10))} `}
               starting salary</Typography>
           </CardContent>
           {this.state.isAuth && <CardActions>
@@ -184,7 +184,6 @@ class OccupationsDetailComponent extends Component {
             </Button>
           </CardActions>}
         </Card>;
-        break;
       case 1:
         return <div className={classes.programContainer}>
           <GridList cellHeight={150} cols={1} className={classes.programList}>
@@ -195,14 +194,13 @@ class OccupationsDetailComponent extends Component {
                 <GridListTileBar
                   title={provider.title}
                   subtitle={<div>
-                    <span>{`${MoneyUtils.thousands(parseInt(provider.cost_in_state))}`} {`${provider.length_months} `}
+                    <span>{`${MoneyUtils.thousands(parseInt(provider.cost_in_state, 10))}`} {`${provider.length_months} `}
                       Months</span><br/><span style={{marginTop: 5}}>{provider.program_title}</span></div>}
                 />
               </GridListTile>
             )) : <CircularProgress/>}
           </GridList>
         </div>;
-        break;
       case 2:
         return <div className={classes.programContainer}>
           <GridList cellHeight={150} cols={1} className={classes.programList}>
@@ -219,7 +217,8 @@ class OccupationsDetailComponent extends Component {
             )) : <CircularProgress/>}
           </GridList>
         </div>;
-        break;
+      default:
+        return <CircularProgress/>;
     }
   }
 

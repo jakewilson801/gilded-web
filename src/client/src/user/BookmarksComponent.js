@@ -4,7 +4,6 @@ import CircularProgress from 'material-ui/Progress/CircularProgress';
 import PropTypes from 'prop-types';
 import Typography from 'material-ui/Typography';
 import Card from 'material-ui/Card';
-import Button from 'material-ui/Button';
 import OccupationsComponent from '../occupations/OccupationsComponent';
 import NavigationButton from "../util/NavigationButton";
 
