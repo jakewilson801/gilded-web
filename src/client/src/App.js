@@ -243,7 +243,8 @@ class App extends Component {
           this.setState({isAuth: false});
         }}/>
 
-      </List> : <DrawerNavigationButton routeName={"Login"} routeUrl={"/user/signup"}/>
+      </List> : <DrawerNavigationButton routeName={"Login"} routeUrl={"/user/signup"}
+                                        routeCallback={() => this.setShouldOpenDrawer(false)}/>
     );
 
     const sideList = (
@@ -358,8 +359,8 @@ class App extends Component {
             <Typography type="title" color="inherit" className={classes.flex}>
               {this.getTitle()}
             </Typography>
-            {this.state.isAuth ? <Button color={"contrast"} onClick={this.handleClickOpen}>Filter</Button> :
-              <NavigationButton routeUrl={"/user/signup"} routeName={"Login"}/>}
+            {this.state.isAuth ? <Button color="contrast" onClick={this.handleClickOpen}>Filter</Button> :
+              <Button color="contrast" onClick={() => this.props.history.push("/user/signup")}>Login</Button>}
           </Toolbar>
         </AppBar>
         <Drawer open={this.state.left} onRequestClose={this.toggleDrawer('left', false)}>
