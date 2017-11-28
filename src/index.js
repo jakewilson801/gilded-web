@@ -7,6 +7,9 @@ const _ = require('lodash');
 const morgan = require('morgan');
 const routes = require('./routes/PublicRoutes');
 const privateRoutes = require('./routes/PrivateRoutes');
+// const { postgraphile } = require('postgraphile');
+const { postgraphql } = require('postgraphql');
+
 
 let connectionInfo = process.env.DATABASE_URL || {
   host: process.env.DATABASE_URL || '127.0.0.1',
@@ -14,6 +17,18 @@ let connectionInfo = process.env.DATABASE_URL || {
   database: process.env.DB_NAME || 'gilded',
   user: process.env.DB_USER || (process.platform === 'win32' ? 'postgres' : ''),
   password: process.env.DB_PASSWORD || (process.platform === 'win32' ? 'password' : '')
+};
+
+const pgConnection = {
+  host: '127.0.0.1',
+  user: '',
+  password: '',
+  database: 'gilded',
+  port: 5432
+};
+const postgraphqlConfig = {
+  pgDefaultRole: 'anonymous',
+  graphiql: true,
 };
 
 let https_redirect = function (req, res, next) {
@@ -37,6 +52,9 @@ massive(connectionInfo).then(instance => {
   app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
     extended: true
   }));
+
+  // app.use(postgraphql('postgres://localhost:5432'))
+  app.use(postgraphql(pgConnection, 'gilded_public', postgraphqlConfig));
 
   app.use(morgan('dev'));
   app.set('superSecret', '1337hackzors');
