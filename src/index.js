@@ -57,6 +57,8 @@ massive(connectionInfo).then(instance => {
   authRoutes.use(privateRoutes.jwtMiddleware(app));
   authRoutes.get('/me', privateRoutes.me(app));
   authRoutes.post('/bookmarks', privateRoutes.createBookmark(app));
+  authRoutes.post('/bookmarks/program', privateRoutes.createProgramBookmark(app));
+  authRoutes.post('/bookmarks/employer', privateRoutes.createEmployerBookmark(app));
   authRoutes.get('/bookmarks', privateRoutes.bookmarks(app));
 
   app.use('/api/v1/user', authRoutes);

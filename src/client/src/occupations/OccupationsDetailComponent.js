@@ -7,7 +7,8 @@ import './occupations_details.css';
 import '../util/MoneyUtils'
 import MoneyUtils from "../util/MoneyUtils";
 import PropTypes from 'prop-types';
-import {withStyles} from 'material-ui';
+import {IconButton, withStyles} from 'material-ui';
+import {StarBorder, Star} from 'material-ui-icons';
 import Card, {CardActions, CardContent, CardMedia} from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
@@ -18,6 +19,7 @@ import AccountBalance from 'material-ui-icons/AccountBalance';
 import Business from 'material-ui-icons/Business';
 import AccountCircle from 'material-ui-icons/AccountCircle';
 import {GridList, GridListTile, GridListTileBar} from 'material-ui/GridList';
+import {withRouter} from "react-router";
 
 
 const styles = theme => ({
@@ -103,43 +105,56 @@ class OccupationsDetailComponent extends Component {
       .then(results => {
         results.video_url = new URL(results.video_url).searchParams.get("v");
         this.setState({details: results, socCode: `${results.field_id}-${results.soc_detailed_id}`});
-        fetch(`/api/v1/programs?socCode=${this.state.socCode}`)
-          .then(res => res.json())
-          .then(results => {
-            if (results.length > 0)
-              this.setState({providers: results});
-
-          }).catch(error => console.log(error));
-
-        fetch(`/api/v1/employers?socCode=${this.state.socCode}`)
-          .then(res => res.json())
-          .then(results => {
-            if (results.length > 0)
-              this.setState({employers: results});
-          }).catch(error => console.log(error));
-
-        fetch('/api/v1/user/bookmarks', {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'x-access-token': localStorage.getItem('jwt')
-          }
-        }).then(res => {
-            res.json().then(json => {
-              if (res.status === 200) {
-                this.setState({
-                  isBookmarked: (json.filter(occupation => {
-                    return occupation.id === this.state.details.id;
-                  }).length > 0), isAuth: true
-                });
-              } else {
-                this.setState({isAuth: false});
-              }
-            });
-          }
-        );
+        this.fetchOccupationBookmarks();
       });
+  }
+
+  fetchOccupationBookmarks() {
+    fetch('/api/v1/user/bookmarks', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'x-access-token': localStorage.getItem('jwt')
+      }
+    }).then(res => {
+        res.json().then(json => {
+          if (res.status === 200) {
+            this.fetchEmployers(json.employers.map(e => e.id));
+            this.fetchPrograms(json.programs.map(p => p.id));
+            this.setState({
+              isBookmarked: (json.occupations.filter(occupation => {
+                return occupation.id === this.state.details.id;
+              }).length > 0), isAuth: true
+            });
+          } else {
+            this.setState({isAuth: false});
+            this.fetchEmployers([]);
+            this.fetchPrograms([]);
+          }
+        });
+      }
+    );
+  }
+
+  fetchEmployers(employersBookmarked) {
+    fetch(`/api/v1/employers?socCode=${this.state.socCode}`)
+      .then(res => res.json())
+      .then(results => {
+        if (results.length > 0) {
+          this.setState({employers: results.map(r => Object.assign(r, {isBookmarked: employersBookmarked && employersBookmarked.includes(r.id)}))});
+        }
+      }).catch(error => console.log(error));
+  }
+
+  fetchPrograms(programsBookmarked) {
+    fetch(`/api/v1/programs?socCode=${this.state.socCode}`)
+      .then(res => res.json())
+      .then(results => {
+        if (results.length > 0) {
+          this.setState({providers: results.map(r => Object.assign(r, {isBookmarked: programsBookmarked && programsBookmarked.includes(r.id)}))});
+        }
+      }).catch(error => console.log(error));
   }
 
   bookmarkOccupation() {
@@ -152,6 +167,42 @@ class OccupationsDetailComponent extends Component {
         'x-access-token': localStorage.getItem('jwt')
       },
       body: JSON.stringify({occupation_id: this.state.details.id})
+    }).then(res => res.json());
+  }
+
+  bookmarkProgram(id) {
+    let providers = this.state.providers;
+    let program = providers.find((e) => e.id === id);
+    program.isBookmarked = !program.isBookmarked;
+    let index = providers.indexOf(program);
+    providers[index] = program;
+    this.setState({providers});
+    fetch('/api/v1/user/bookmarks/program', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'x-access-token': localStorage.getItem('jwt')
+      },
+      body: JSON.stringify({program_id: id})
+    }).then(res => res.json());
+  }
+
+  bookmarkEmployer(id) {
+    let employers = this.state.employers;
+    let employer = employers.find((e) => e.id === id);
+    employer.isBookmarked = !employer.isBookmarked;
+    let index = employers.indexOf(employer);
+    employers[index] = employer;
+    this.setState({employers});
+    fetch('/api/v1/user/bookmarks/employer', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'x-access-token': localStorage.getItem('jwt')
+      },
+      body: JSON.stringify({employer_id: id})
     }).then(res => res.json());
   }
 
@@ -178,11 +229,12 @@ class OccupationsDetailComponent extends Component {
             <Typography type="subheading">{`${MoneyUtils.thousands(parseInt(this.state.details.annual_pct10, 10))} `}
               starting salary</Typography>
           </CardContent>
-          {this.state.isAuth && <CardActions>
-            <Button dense color="primary" onClick={() => this.bookmarkOccupation()}>
-              {this.state.isBookmarked ? 'Remove Bookmark' : 'Bookmark'}
+          <CardActions>
+            <Button dense color="primary"
+                    onClick={() => this.state.isAuth ? this.bookmarkOccupation() : this.props.history.push("/user/signup")}>
+              {this.state.isBookmarked && this.state.isAuth ? 'Remove Bookmark' : 'Bookmark'}
             </Button>
-          </CardActions>}
+          </CardActions>
         </Card>;
       case 1:
         return <div className={classes.programContainer}>
@@ -196,6 +248,18 @@ class OccupationsDetailComponent extends Component {
                   subtitle={<div>
                     <span>{`${MoneyUtils.thousands(parseInt(provider.cost_in_state, 10))}`} {`${provider.length_months} `}
                       Months</span><br/><span style={{marginTop: 5}}>{provider.program_title}</span></div>}
+                  actionIcon={
+                    <IconButton>
+                      {provider.isBookmarked ? <Star
+                          color="rgba(255, 255, 255, 1)"
+                          onClick={() => {
+                            this.state.isAuth ? this.bookmarkProgram(provider.id) : this.props.history.push("/user/signup")
+                          }}/> :
+                        <StarBorder
+                          color="rgba(255, 255, 255, 1)"
+                          onClick={() => this.state.isAuth ? this.bookmarkProgram(provider.id) : this.props.history.push("/user/signup")}/>}
+                    </IconButton>
+                  }
                 />
               </GridListTile>
             )) : <CircularProgress/>}
@@ -212,6 +276,17 @@ class OccupationsDetailComponent extends Component {
                 <GridListTileBar
                   title={employer.title}
                   subtitle={<span>{employer.city}</span>}
+                  actionIcon={
+                    <IconButton>
+                      {employer.isBookmarked ?
+                        <Star
+                          color="rgba(255, 255, 255, 1)"
+                          onClick={() => this.state.isAuth ? this.bookmarkEmployer(employer.id) : this.props.history.push("/user/signup")}/> :
+                        <StarBorder
+                          color="rgba(255, 255, 255, 1)"
+                          onClick={() => this.state.isAuth ? this.bookmarkEmployer(employer.id) : this.props.history.push("/user/signup")}/>}
+                    </IconButton>
+                  }
                 />
               </GridListTile>
             )) : <CircularProgress/>}
@@ -247,6 +322,7 @@ class OccupationsDetailComponent extends Component {
 
 OccupationsDetailComponent.propTypes = {
   classes: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(OccupationsDetailComponent);
+export default withRouter(withStyles(styles)(OccupationsDetailComponent));
