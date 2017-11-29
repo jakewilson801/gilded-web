@@ -112,7 +112,7 @@ let bookmarks = (app) => (req, res) => {
         let user_id = data[0].id;
         let queries = [];
         queries.push(req.app.get('db').run("select * from gilded_public.occupations where id in (select occupation_id from gilded_private.occupationbookmarks where user_id = $1)", [user_id]));
-        queries.push(req.app.get('db').run("select * from gilded_public.programs where id in (select program_id from gilded_private.programbookmarks where user_id = $1)", [user_id]));
+        queries.push(req.app.get('db').run("select program.*, school.image_background_url, school.title as school_title from gilded_public.programs program, gilded_public.schools school where program.id in (select program_id from gilded_private.programbookmarks where user_id = $1) and program.school_id = school.id", [user_id]));
         queries.push(req.app.get('db').run("select * from gilded_public.employers where id in (select employer_id from gilded_private.employerbookmarks where user_id = $1)", [user_id]));
         Promise.all(queries).then(data => res.json({occupations: data[0], programs: data[1], employers: data[2]}));
       });
