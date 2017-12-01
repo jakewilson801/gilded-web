@@ -172,7 +172,7 @@ class OccupationsDetailComponent extends Component {
 
   bookmarkProgram(id) {
     let providers = this.state.providers;
-    let program = providers.find((e) => e.id === id);
+    let program = providers.find((e) => e.program_id === id);
     program.isBookmarked = !program.isBookmarked;
     let index = providers.indexOf(program);
     providers[index] = program;
@@ -253,11 +253,11 @@ class OccupationsDetailComponent extends Component {
                       {provider.isBookmarked ? <Star
                           color="rgba(255, 255, 255, 1)"
                           onClick={() => {
-                            this.state.isAuth ? this.bookmarkProgram(provider.id) : this.props.history.push("/user/signup")
+                            this.state.isAuth ? this.bookmarkProgram(provider.program_id) : this.props.history.push("/user/signup")
                           }}/> :
                         <StarBorder
                           color="rgba(255, 255, 255, 1)"
-                          onClick={() => this.state.isAuth ? this.bookmarkProgram(provider.id) : this.props.history.push("/user/signup")}/>}
+                          onClick={() => this.state.isAuth ? this.bookmarkProgram(provider.program_id) : this.props.history.push("/user/signup")}/>}
                     </IconButton>
                   }
                 />

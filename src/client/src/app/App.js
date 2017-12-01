@@ -143,6 +143,7 @@ class App extends Component {
             tabIndex={0}
             role="button">
             <AppDrawer theme={theme} classes={classes} isAuth={this.state.isAuth}
+                       appHistory={this.props.history}
                        setAuth={(t) => this.setState({isAuth: t})}
                        updateTheme={(type) => this.props.updateTheme(type)}
                        setShouldOpenDrawer={(t) => this.setShouldOpenDrawer(t)}/>

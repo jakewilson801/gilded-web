@@ -7,8 +7,8 @@ class AppDrawer extends Component {
     return this.props.isAuth ? <div className={this.props.classes.list}><List>
         <ListItem key={JSON.parse(localStorage.fb_info).id} dense button
                   onClick={() => {
-                    this.setShouldOpenDrawer(false);
-                    this.props.history.push("/");
+                    this.props.setShouldOpenDrawer(false);
+                    this.props.appHistory.push("/");
                   }}>
           <Avatar alt="Avatar"
                   src={`http://graph.facebook.com/v2.10/${JSON.parse(localStorage.fb_info).id}/picture?width=170&height=170`}/>

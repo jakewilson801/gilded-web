@@ -18,7 +18,7 @@ const styles = theme => ({
     justifyContent: 'space-around',
     overflow: 'hidden',
     background: theme.palette.background.paper,
-    marginTop: theme.spacing.unit * 7,
+    marginTop: theme.spacing.unit * 8,
   },
   bookmarks: {
     padding: theme.spacing.unit * 2,
@@ -53,86 +53,89 @@ class BookmarksComponent extends Component {
     if (!this.state.bookmarks && this.state.isLoading) {
       return <div className={classes.container}><CircularProgress/></div>
     } else {
+      let nodes = [];
       if (this.state.bookmarks.occupations.length > 0) {
-        return (<div className={classes.container}>
-          <GridList cols={1} className={classes.gridList}>
-            {this.state.bookmarks.occupations.length > 0 ?
-              <GridListTile key="occupations" style={{height: 50}}>
-                <Subheader component="div">Occupations</Subheader>
-              </GridListTile> : null}
+        nodes.push(<GridListTile key="occupations" style={{height: 50}}>
+          <Subheader component="div">Occupations</Subheader>
+        </GridListTile>);
+        nodes.push(this.state.bookmarks.occupations.map(occupations => (
+          <GridListTile style={{cellHeight: 'auto'}} key={occupations.image_avatar_url} id={occupations.id}
+                        onClick={() => this.props.history.push(`/occupations/${occupations.id}/details`)}>
+            <img src={occupations.image_avatar_url} alt={occupations.title}/>
+            <GridListTileBar
+              title={occupations.title}
+              subtitle={<span>Average Salary {MoneyUtils.thousands(parseInt(occupations.annual_mean, 10))}</span>}
+              actionIcon={
+                <IconButton>
+                  <InfoIcon
+                    color="rgba(255, 255, 255, 1)"
+                    onClick={() => this.props.history.push(`/occupations/${occupations.id}/details`)}/>
+                </IconButton>
+              }
+            />
+          </GridListTile>
+        )));
+      }
 
-            {this.state.bookmarks.occupations.map(occupations => (
-              <GridListTile style={{cellHeight: 'auto'}} key={occupations.image_avatar_url} id={occupations.id}
-                            onClick={() => this.props.history.push(`/occupations/${occupations.id}/details`)}>
-                <img src={occupations.image_avatar_url} alt={occupations.title}/>
-                <GridListTileBar
-                  title={occupations.title}
-                  subtitle={<span>Average Salary {MoneyUtils.thousands(parseInt(occupations.annual_mean, 10))}</span>}
-                  actionIcon={
-                    <IconButton>
-                      <InfoIcon
-                        color="rgba(255, 255, 255, 1)"
-                        onClick={() => this.props.history.push(`/occupations/${occupations.id}/details`)}/>
-                    </IconButton>
-                  }
-                />
-              </GridListTile>
-            ))}
-            {this.state.bookmarks.programs.length > 0 ?
-              <GridListTile key="programs" style={{height: 50}}>
-                <Subheader component="div">Programs</Subheader>
-              </GridListTile> : null}
-
-            {this.state.bookmarks.programs.length > 0 ? this.state.bookmarks.programs.map(program => (
-              <GridListTile key={program.program_id + program.title} onClick={() => this.props.history.push(`/`)}>
-                <img className={classes.programImage} src={`/assets/${program.image_background_url}`}
-                     alt={program.title}/>
-                <GridListTileBar
-                  title={program.school_title}
-                  subtitle={<div>
+      if (this.state.bookmarks.programs.length > 0) {
+        nodes.push(<GridListTile key="programs" style={{height: 50}}>
+          <Subheader component="div">Programs</Subheader>
+        </GridListTile>);
+        nodes.push(this.state.bookmarks.programs.map(program => (
+          <GridListTile key={program.program_id + program.title} onClick={() => this.props.history.push(`/`)}>
+            <img className={classes.programImage} src={`/assets/${program.image_background_url}`}
+                 alt={program.title}/>
+            <GridListTileBar
+              title={program.school_title}
+              subtitle={<div>
                     <span>{`${MoneyUtils.thousands(parseInt(program.cost_in_state, 10))}`} {`${program.length_months} `}
                       Months</span><br/><span style={{marginTop: 5}}>{program.title}</span></div>}
-                  actionIcon={
-                    <IconButton>
-                      <InfoIcon
-                        color="rgba(255, 255, 255, 1)"
-                        onClick={() => this.props.history.push("/")}/>
-                    </IconButton>
-                  }
-                />
-              </GridListTile>
-            )) : null}
+              actionIcon={
+                <IconButton>
+                  <InfoIcon
+                    color="rgba(255, 255, 255, 1)"
+                    onClick={() => this.props.history.push("/")}/>
+                </IconButton>
+              }
+            />
+          </GridListTile>
+        )));
+      }
 
-            {this.state.bookmarks.employers.length > 0 ? <GridListTile key="employers" style={{height: 50}}>
-              <Subheader component="div">Employers</Subheader>
-            </GridListTile> : null}
-
-            {this.state.bookmarks.employers.length > 0 ? this.state.bookmarks.employers.map(employer => (
-              <GridListTile key={employer.id + employer.title}>
-                {employer.image_avatar_url &&
-                <img className={classes.programImage} src={`/assets/${employer.image_avatar_url}`}
-                     alt={employer.title}/>}
-                <GridListTileBar
-                  title={employer.title}
-                  subtitle={<span>{employer.city}</span>}
-                  actionIcon={
-                    <IconButton>
-                      <InfoIcon
-                        color="rgba(255, 255, 255, 1)"
-                        onClick={() => this.props.history.push("/")}/>
-                    </IconButton>
-                  }
-                />
-              </GridListTile>
-            )) : null}
-
+      if (this.state.bookmarks.employers.length > 0) {
+        nodes.push(<GridListTile key="employers" style={{height: 50}}>
+          <Subheader component="div">Employers</Subheader>
+        </GridListTile>);
+        nodes.push(this.state.bookmarks.employers.map(employer => (
+          <GridListTile key={employer.id + employer.title}>
+            {employer.image_avatar_url &&
+            <img className={classes.programImage} src={`/assets/${employer.image_avatar_url}`}
+                 alt={employer.title}/>}
+            <GridListTileBar
+              title={employer.title}
+              subtitle={<span>{employer.city}</span>}
+              actionIcon={
+                <IconButton>
+                  <InfoIcon
+                    color="rgba(255, 255, 255, 1)"
+                    onClick={() => this.props.history.push("/")}/>
+                </IconButton>
+              }
+            />
+          </GridListTile>
+        )));
+      }
+      if (nodes.length > 0) {
+        return (<div className={classes.container}>
+          <GridList cols={1} className={classes.gridList}>
+            {nodes}
           </GridList>
         </div>);
       } else {
         return <div className={classes.container}><Card className={classes.bookmarks}>
           <CardContent>
             <Typography type="headline" component="h2" className={classes.title}>
-              No bookmarks go check out some occupations and bookmark them!
+              No bookmarks go check out some occupations, programs and employers then bookmark them!
             </Typography></CardContent>
           <CardActions>
             <Button onClick={() => this.props.history.push("/")}>Go to Occupations</Button>
