@@ -46,7 +46,7 @@ class SignUpComponent extends React.Component {
         body: JSON.stringify(response)
       }).then(r => r.json()).then(d => {
         localStorage.setItem('jwt', d.token);
-        window.location.replace("/");
+        this.props.history.push("/?hasAuth=true");
       });
     } else {
       this.setState({loading: false});

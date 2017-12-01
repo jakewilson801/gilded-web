@@ -173,11 +173,12 @@ const programs = (req, res) => {
 const request = require('request');
 
 let facebookSignUp = (app) => (req, res) => {
-  request(`https://graph.facebook.com/app?access_token=${req.body.accessToken}`, (error, response, body) => {
-    let t = JWT.sign({
-      data: {fb_token: req.body.accessToken, user_id: req.body.userID}
-    }, app.get('superSecret'));
-    if (!error) {
+  request(`https://graph.facebook.com/me?access_token=${req.body.accessToken}`, (error, response, body) => {
+    let parsedResponse = JSON.parse(body);
+    if (!error && parsedResponse.id && parsedResponse.id === req.body.userID) {
+      let t = JWT.sign({
+        data: {fb_token: req.body.accessToken, user_id: req.body.userID}
+      }, app.get('superSecret'));
       req.app.get('db').gilded_private.accounts.findOne({fb_user_id: req.body.userID}).then(values => {
         if (!values) {
           req.app.get('db').gilded_private.accounts.insert({
@@ -198,7 +199,6 @@ let facebookSignUp = (app) => (req, res) => {
       res.status(400).send("Upgrade your honda");
     }
   });
-
 };
 
 module.exports = {

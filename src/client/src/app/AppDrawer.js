@@ -11,7 +11,7 @@ class AppDrawer extends Component {
                     this.props.appHistory.push("/");
                   }}>
           <Avatar alt="Avatar"
-                  src={`http://graph.facebook.com/v2.10/${JSON.parse(localStorage.fb_info).id}/picture?width=170&height=170`}/>
+                  src={`https://graph.facebook.com/v2.10/${JSON.parse(localStorage.fb_info).id}/picture?width=170&height=170`}/>
           <ListItemText primary={`${JSON.parse(localStorage.fb_info).name}`}/>
         </ListItem>
         <DrawerNavigationButton routeUrl={"/user/bookmarks"} routeName={"Bookmarks"}

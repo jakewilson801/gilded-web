@@ -27,6 +27,7 @@ import Drawer from "material-ui/Drawer";
 import {withRouter} from 'react-router'
 import AppDrawer from "./AppDrawer";
 import Filter from "./Filter";
+import URLUtils from "../util/URLUtils";
 
 const styles = theme => ({
   root: {
@@ -99,6 +100,14 @@ class App extends Component {
         .then(d => d.json())
         .then(() => this.setState({isAuth: true}))
         .catch((err) => this.setState({isAuth: false}));
+    }
+  }
+
+  componentDidUpdate() {
+    let didLogin = URLUtils.getParameterByName("hasAuth");
+    if (didLogin === "true") {
+      this.setState({isAuth: true});
+      this.props.history.push("/");
     }
   }
 
