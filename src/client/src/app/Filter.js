@@ -23,7 +23,7 @@ class Filter extends Component {
     let i = interest ? interest : -1;
     let request;
 
-    if (t || y || s || i) {
+    if (t !== 0 || y !== 0 || s !== 0 || i !== -1) {
       request = `/api/v1/feed?tuition=${t}&years=${y}&salary=${s}&interest=${i}`;
     } else {
       request = `/api/v1/feed`;

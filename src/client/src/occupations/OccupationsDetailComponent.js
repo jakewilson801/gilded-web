@@ -20,7 +20,11 @@ import Business from 'material-ui-icons/Business';
 import AccountCircle from 'material-ui-icons/AccountCircle';
 import {GridList, GridListTile, GridListTileBar} from 'material-ui/GridList';
 import {withRouter} from "react-router";
-
+import Collapse from 'material-ui/transitions/Collapse';
+import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+import classnames from 'classnames';
+import URLUtils from "../util/URLUtils";
+import YouTube from 'react-youtube';
 
 const styles = theme => ({
   container: {
@@ -64,18 +68,22 @@ const styles = theme => ({
   },
   programImage: {
     width: '100%',
-  }
+  },
+  flexGrow: {
+    flex: '1 1 auto',
+  },
+  expand: {
+    transform: 'rotate(0deg)',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: 'rotate(180deg)',
+  },
 });
 
 class OccupationsDetailComponent extends Component {
-  desktopVideo = {
-    height: '390',
-    width: '640',
-    playerVars: { // https://developers.google.com/youtube/player_parameters
-      autoplay: 0
-    }
-  };
-
   mobileVideo = {
     height: '200',
     width: '300',
@@ -92,6 +100,7 @@ class OccupationsDetailComponent extends Component {
     providers: [],
     employers: [],
     page: 0,
+    expanded: false,
   };
 
   constructor() {
@@ -108,6 +117,10 @@ class OccupationsDetailComponent extends Component {
         this.fetchOccupationBookmarks();
       });
   }
+
+  handleExpandClick = () => {
+    this.setState({expanded: !this.state.expanded});
+  };
 
   fetchOccupationBookmarks() {
     fetch('/api/v1/user/bookmarks', {
@@ -210,6 +223,11 @@ class OccupationsDetailComponent extends Component {
     this.setState({page: value});
   };
 
+  _onReady(event) {
+    // access to player in all event handlers via event.target
+    event.target.pauseVideo();
+  }
+
   getCurrentPage(classes) {
     switch (this.state.page) {
       case 0:
@@ -234,7 +252,27 @@ class OccupationsDetailComponent extends Component {
                     onClick={() => this.state.isAuth ? this.bookmarkOccupation() : this.props.history.push("/user/signup")}>
               {this.state.isBookmarked && this.state.isAuth ? 'Remove Bookmark' : 'Bookmark'}
             </Button>
+            <div className={classes.flexGrow}/>
+            <IconButton
+              className={classnames(classes.expand, {
+                [classes.expandOpen]: this.state.expanded,
+              })}
+              onClick={this.handleExpandClick}
+              aria-expanded={this.state.expanded}
+              aria-label="Show more"
+            >
+              <ExpandMoreIcon/>
+            </IconButton>
           </CardActions>
+          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <YouTube
+                videoId={this.state.details.video_url}
+                opts={this.mobileVideo}
+                onReady={this._onReady}
+              />
+            </CardContent>
+          </Collapse>
         </Card>;
       case 1:
         return <div className={classes.programContainer}>
