@@ -3,10 +3,10 @@ const path = require('path');
 const massive = require('massive');
 const app = express();
 const bodyParser = require('body-parser');
-const _ = require('lodash');
 const morgan = require('morgan');
 const routes = require('./routes/PublicRoutes');
 const privateRoutes = require('./routes/PrivateRoutes');
+const compression = require('compression')
 
 let connectionInfo = process.env.DATABASE_URL || {
   host: process.env.DATABASE_URL || '127.0.0.1',
@@ -30,6 +30,7 @@ let https_redirect = function (req, res, next) {
 
 massive(connectionInfo).then(instance => {
   app.set('db', instance);
+  app.use(compression());
   app.use(https_redirect);
   // Serve static files from the React app
   app.use(express.static(path.join(__dirname, 'client/build')));
