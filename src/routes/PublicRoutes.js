@@ -1,21 +1,22 @@
 const JWT = require('jsonwebtoken');
+const interests = require('../constants/PersonalityFilters');
 
 const feed = (req, res) => {
-  let {tuition, years, salary} = req.query;
+  let {tuition, years, salary, interest} = req.query;
   years = req.query.years * 12;
-
   let query = `select distinct occs.* from gilded_public.programs progs, gilded_public.occupationprograms occMap, gilded_public.occupations occs where progs.cost_in_state <= $1 and progs.length_months <= $2 and occs.annual_mean >= $3 and occMap.field_id = occs.field_id and occMap.soc_id = occs.soc_detailed_id and progs.id = occMap.program_id order by occs.annual_mean desc;`;
-  let queries = [];
-  queries.push(req.app.get('db').run('select * from gilded_public.fields'));
-  if (tuition || years || salary) {
-    queries.push(req.app.get('db').run(query, [tuition, years, salary]));
+  if (tuition || years || salary || interest) {
+    if (parseInt(interest) === -1) {
+      req.app.get('db').run(query, [tuition, years, salary]).then(data => res.json({occupations: data}));
+    } else {
+      let socInterestBasedCodes = interests.getInterestById(interest);
+      req.app.get('db').run(query, [tuition, years, salary]).then(data => {
+        res.json({occupations: data.filter(d => socInterestBasedCodes.includes(`${d.field_id}-${d.soc_detailed_id}`))});
+      });
+    }
   } else {
-    queries.push(req.app.get('db').run('select * from gilded_public.occupations order by gilded_public.occupations.annual_mean desc'));
+    req.app.get('db').run('select * from gilded_public.occupations order by gilded_public.occupations.annual_mean desc').then(data => res.json({occupations: data}));
   }
-  Promise.all(queries).then(values => res.json({
-    fields: values[0],
-    occupations: values[1]
-  })).catch(error => console.log(error));
 };
 
 const fields = (req, res) => {

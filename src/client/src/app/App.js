@@ -74,6 +74,9 @@ const styles = theme => ({
   appBar: {
     position: 'relative',
   },
+  selectEmpty: {
+    margin: theme.spacing.unit * 2,
+  },
 });
 
 class App extends Component {
@@ -85,7 +88,8 @@ class App extends Component {
     salary: null,
     tuition: null,
     shouldOpenDrawer: false,
-    occupations: null
+    occupations: null,
+    interest: null,
   };
 
   toggleDrawer = (side, open) => () => {
@@ -128,10 +132,11 @@ class App extends Component {
     const {classes, theme} = this.props;
     return (
       <div className={classes.root}>
-        <Filter open={this.state.open} handleRequestClose={this.handleRequestClose} classes={classes}
+        <Filter open={this.state.open} classes={classes}
                 years={this.state.years}
                 tuition={this.state.tuition}
                 salary={this.state.salary}
+                interest={this.state.interest}
                 setAppState={(s) => this.setState(s)}
         />
         <AppBar>
