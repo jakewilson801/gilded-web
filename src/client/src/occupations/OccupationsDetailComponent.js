@@ -23,7 +23,6 @@ import {withRouter} from "react-router";
 import Collapse from 'material-ui/transitions/Collapse';
 import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
 import classnames from 'classnames';
-import URLUtils from "../util/URLUtils";
 import YouTube from 'react-youtube';
 
 const styles = theme => ({
