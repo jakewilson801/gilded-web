@@ -202,12 +202,12 @@ class Filter extends Component {
             value={this.props.interest || -1}
             onChange={this.handleChange('interest')}
             className={this.props.classes.selectEmpty}>
-            <option value={-1}>Tell us what kind of work you like...</option>
-            <option value={0}>I like working with my hands</option>
-            <option value={1}>I like to think about abstract ideas</option>
-            <option value={2}>I like to express myself through different forms</option>
-            <option value={3}>I like to work with and help other people</option>
-            <option value={4}>I like to lead people and make decisions</option>
+            <option value={-1}>Tell us about your interests...</option>
+            <option value={0}>I like to work with my hands</option>
+            <option value={1}>I like to think about ideas</option>
+            <option value={2}>I like to express myself</option>
+            <option value={3}>I like to help others</option>
+            <option value={4}>I like to lead people</option>
             <option value={5}>I like to follow procedures</option>
           </Select>
         </div>
