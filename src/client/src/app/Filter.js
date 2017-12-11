@@ -98,7 +98,6 @@ class Filter extends Component {
   }
 
   handleChange = name => event => {
-    console.log(event.target.value);
     this.props.setAppState({interest: event.target.value});
   };
 

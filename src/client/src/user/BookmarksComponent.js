@@ -82,7 +82,8 @@ class BookmarksComponent extends Component {
           <Subheader component="div">Programs</Subheader>
         </GridListTile>);
         nodes.push(this.state.bookmarks.programs.map(program => (
-          <GridListTile key={program.program_id + program.title} onClick={() => this.props.history.push(`/`)}>
+          <GridListTile key={program.program_id + program.title}
+                        onClick={() => this.props.history.push(`/schools/${program.school_id}/programs/${program.id}`)}>
             <img className={classes.programImage} src={`/assets/${program.image_background_url}`}
                  alt={program.title}/>
             <GridListTileBar
@@ -94,7 +95,7 @@ class BookmarksComponent extends Component {
                 <IconButton>
                   <InfoIcon
                     color="rgba(255, 255, 255, 1)"
-                    onClick={() => this.props.history.push("/")}/>
+                    onClick={() => this.props.history.push(`/schools/${program.school_id}/programs/${program.id}`)}/>
                 </IconButton>
               }
             />

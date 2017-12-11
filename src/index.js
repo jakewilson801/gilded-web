@@ -45,13 +45,13 @@ massive(connectionInfo).then(instance => {
   app.get('/api/v1/feed', routes.feed);
   app.get('/api/v1/occupations/:field_id', routes.occupationByFieldID);
   app.get('/api/v1/occupations/:occupation_id/details', routes.occupation);
-  app.get('/api/v1/schools', routes.schoolsBySocCode);
+  app.get('/api/v1/schools/:school_id', routes.schoolsById);
   app.get('/api/v1/employers', routes.employersBySocCode);
   app.get('/api/v1/employers/:employer_id/details', routes.employerDetails);
   app.get('/api/v1/mercury', routes.mecuryContentParser);
   app.get('/api/v1/schools/:id/details/:school_id', routes.programsBySchoolID);
   app.get('/api/v1/programs', routes.programsBySocCode);
-  app.get('/api/v1/programs/:socCode/:school_id', routes.programs);
+  app.get('/api/v1/programs/:program_id', routes.programs);
   app.post('/api/v1/accounts/facebook', routes.facebookSignup(app));
 
   let authRoutes = express.Router();
