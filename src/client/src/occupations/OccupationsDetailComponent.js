@@ -277,7 +277,7 @@ class OccupationsDetailComponent extends Component {
         return <div className={classes.programContainer}>
           <GridList cellHeight={150} cols={1} className={classes.programList}>
             {this.state.providers.length > 0 ? this.state.providers.map(provider => (
-              <GridListTile key={provider.program_id} onClick={() => this.props.history.push(`/schools/${this.state.socCode}/details/${provider.id}`)}>
+              <GridListTile key={provider.program_id} onClick={() => this.props.history.push(`/schools/${provider.id}/programs/${provider.program_id}`)}>
                 <img className={classes.programImage} src={`/assets/${provider.image_background_url}`}
                      alt={provider.title}/>
                 <GridListTileBar

@@ -3,7 +3,10 @@
  */
 import React, {Component} from 'react';
 import SchoolsProgramComponent from './SchoolsProgramComponent'
-import {Avatar, Card, CardHeader, CardMedia, CircularProgress, Typography, withStyles} from "material-ui";
+import {
+  Avatar, Button, Card, CardActions, CardContent, CardHeader, CardMedia, CircularProgress,
+  withStyles
+} from "material-ui";
 import PropTypes from 'prop-types';
 
 const styles = theme => ({
@@ -14,7 +17,6 @@ const styles = theme => ({
       padding: theme.spacing.unit * 2,
     },
     card: {
-
       marginTop: theme.spacing.unit * 7,
       maxWidth: 600,
     },
@@ -25,12 +27,50 @@ const styles = theme => ({
 );
 
 class SchoolsDetailComponent extends Component {
-  state = {school: null, programs: null};
+  state = {school: null, programs: null, isAuth: false, isBookmarked: false};
 
   componentDidMount() {
-    fetch(`/api/v1/schools/${this.props.match.params.id}/details/${this.props.match.params.school_id}`)
+    this.fetchProgramBookmark();
+    fetch(`/api/v1/schools/${this.props.match.params.school_id}`)
       .then(res => res.json())
-      .then(sch => this.setState({school: sch}));
+      .then(sch => this.setState({school: sch[0]}));
+  }
+
+  fetchProgramBookmark() {
+    fetch('/api/v1/user/bookmarks', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'x-access-token': localStorage.getItem('jwt')
+      }
+    }).then(res => {
+        res.json().then(json => {
+          if (res.status === 200) {
+            this.setState({
+              isBookmarked: (json.programs.filter(program => {
+                return program.id === parseInt(this.props.match.params.program_id)
+              }).length > 0), isAuth: true
+            });
+          } else {
+            this.setState({isAuth: false});
+          }
+        });
+      }
+    );
+  }
+
+  bookmarkProgram(id) {
+    this.setState({isBookmarked: !this.state.isBookmarked});
+    fetch('/api/v1/user/bookmarks/program', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'x-access-token': localStorage.getItem('jwt')
+      },
+      body: JSON.stringify({program_id: id})
+    }).then(res => res.json());
   }
 
   render() {
@@ -43,28 +83,20 @@ class SchoolsDetailComponent extends Component {
               <Avatar src={`/assets/${this.state.school.image_avatar_url}`}/>
             }
             title={this.state.school.title}
-            subheader="September 14, 2016"
+            subheader={`${this.state.school.city}, ${this.state.school.state_code}`}
           />
           <CardMedia
             className={classes.media}
             image={`/assets/${this.state.school.image_background_url}`}
             title={this.state.school.title}
           />
-          {/*<Typography type="display1">{this.state.school.title}</Typography>*/}
-
-          {/*<div className="schools-address">*/}
-          {/*<div>{this.state.school.address}</div>*/}
-          {/*<div>{this.state.school.city + ", " + this.state.school.state_code}</div>*/}
-          {/*<div>{this.state.school.zipcode}</div>*/}
-          {/*</div>*/}
-
-
-          {/*<h2>About</h2>*/}
-          {/*<h3>Find your next career in today!</h3>*/}
-          {/*{this.state.school.phone}*/}
-          {/*<br/>*/}
-          {/*{this.state.school.website_url}*/}
-          <SchoolsProgramComponent soc_id={this.props.match.params.id} school_id={this.props.match.params.school_id}/>
+          <CardContent><SchoolsProgramComponent program_id={this.props.match.params.program_id}/></CardContent>
+          <CardActions>
+            <Button dense color="primary"
+                    onClick={() => this.state.isAuth ? this.bookmarkProgram(this.props.match.params.program_id) : this.props.history.push("/user/signup")}>
+              {this.state.isBookmarked && this.state.isAuth ? 'Remove Bookmark' : 'Bookmark'}
+            </Button>
+          </CardActions>
         </Card>
         : <CircularProgress/>}
       <br/>

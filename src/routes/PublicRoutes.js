@@ -43,12 +43,10 @@ const occupation = (req, res) => {
     .then(result => res.json(result));
 };
 
-const schoolsBySocCode = (req, res) => {
-  if (req.query.socCode) {
-    let ids = [];
-    ids.push(req.query.socCode.split('-')[0]);
-    ids.push(req.query.socCode.split('-')[1]);
-    req.app.get('db').run(`select distinct schools.* from gilded_public.occupationprograms programsMap, gilded_public.programs programs, gilded_public.schools schools  where programsMap.program_id = programs.id and schools.id = programs.school_id and field_id =$1  and soc_id =$2;`, ids)
+const schoolsById = (req, res) => {
+  if (req.params.school_id) {
+    let id = [req.params.school_id];
+    req.app.get('db').run(`select * from gilded_public.schools where id = $1`, id)
       .then(result => {
         if (result) {
           res.json(result);
@@ -146,7 +144,7 @@ const programsBySocCode = (req, res) => {
     .then(result => {
       res.json(result);
     })
-    .catch(error => error => {
+    .catch(error => {
       console.log(`ERROR ${error}`);
       res.status(400);
       res.send("BAD REQUEST");
@@ -154,13 +152,8 @@ const programsBySocCode = (req, res) => {
 };
 
 const programs = (req, res) => {
-  let ids = [];
-  let socField = req.params.socCode.split('-')[0];
-  let socDetail = req.params.socCode.split('-')[1];
-  ids.push(socField);
-  ids.push(socDetail);
-  ids.push(req.params.school_id);
-  req.app.get('db').run('select programs.* from gilded_public.occupationprograms programsMap, gilded_public.programs programs where programsMap.program_id = programs.id and programsMap.field_id = $1 and programsMap.soc_id = $2 and programs.school_id = $3', ids)
+  let id = [req.params.program_id];
+  req.app.get('db').run('select * from gilded_public.programs where id = $1', id)
     .then(result => {
       res.json(result);
     })
@@ -207,7 +200,7 @@ module.exports = {
   fields: fields,
   occupationByFieldID: occupationByFieldID,
   occupation: occupation,
-  schoolsBySocCode: schoolsBySocCode,
+  schoolsById: schoolsById,
   employersBySocCode: employersBySocCode,
   employerDetails: employerDetails,
   mecuryContentParser: mecuryContentParser,
