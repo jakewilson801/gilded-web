@@ -287,13 +287,6 @@ class OccupationsDetailComponent extends Component {
                   subtitle={<div>
                     <span>{`${MoneyUtils.thousands(parseInt(provider.cost_in_state, 10))}`} {`${provider.length_months} `}
                       Months</span><br/><span style={{marginTop: 5}}>{provider.program_title}</span></div>}
-                  actionIcon={
-                    <IconButton>
-                      <Info
-                        color="rgba(255, 255, 255, 1)"
-                        onClick={() => this.props.history.push(`/schools/${provider.id}/programs/${provider.program_id}`)}/>
-                    </IconButton>
-                  }
                 />
               </GridListTile>
             )) : <CircularProgress/>}
