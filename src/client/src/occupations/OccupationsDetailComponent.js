@@ -8,7 +8,7 @@ import '../util/MoneyUtils'
 import MoneyUtils from "../util/MoneyUtils";
 import PropTypes from 'prop-types';
 import {IconButton, withStyles} from 'material-ui';
-import {StarBorder, Star} from 'material-ui-icons';
+import {StarBorder, Star, Info} from 'material-ui-icons';
 import Card, {CardActions, CardContent, CardMedia} from 'material-ui/Card';
 import Button from 'material-ui/Button';
 import Typography from 'material-ui/Typography';
@@ -164,7 +164,7 @@ class OccupationsDetailComponent extends Component {
       .then(res => res.json())
       .then(results => {
         if (results.length > 0) {
-          this.setState({providers: results.map(r => Object.assign(r, {isBookmarked: programsBookmarked && programsBookmarked.includes(r.id)}))});
+          this.setState({providers: results.map(r => Object.assign(r, {isBookmarked: programsBookmarked && programsBookmarked.includes(r.program_id)}))});
         }
       }).catch(error => console.log(error));
   }
@@ -277,9 +277,11 @@ class OccupationsDetailComponent extends Component {
         return <div className={classes.programContainer}>
           <GridList cellHeight={150} cols={1} className={classes.programList}>
             {this.state.providers.length > 0 ? this.state.providers.map(provider => (
-              <GridListTile key={provider.program_id} onClick={() => this.props.history.push(`/schools/${provider.id}/programs/${provider.program_id}`)}>
-                <img className={classes.programImage} src={`/assets/${provider.image_background_url}`}
-                     alt={provider.title}/>
+              <GridListTile key={provider.program_id}
+                            onClick={() => this.props.history.push(`/schools/${provider.id}/programs/${provider.program_id}`)}>
+                <img
+                  className={classes.programImage} src={`/assets/${provider.image_background_url}`}
+                  alt={provider.title}/>
                 <GridListTileBar
                   title={provider.title}
                   subtitle={<div>
@@ -287,14 +289,9 @@ class OccupationsDetailComponent extends Component {
                       Months</span><br/><span style={{marginTop: 5}}>{provider.program_title}</span></div>}
                   actionIcon={
                     <IconButton>
-                      {provider.isBookmarked ? <Star
-                          color="rgba(255, 255, 255, 1)"
-                          onClick={() => {
-                            this.state.isAuth ? this.bookmarkProgram(provider.program_id) : this.props.history.push("/user/signup")
-                          }}/> :
-                        <StarBorder
-                          color="rgba(255, 255, 255, 1)"
-                          onClick={() => this.state.isAuth ? this.bookmarkProgram(provider.program_id) : this.props.history.push("/user/signup")}/>}
+                      <Info
+                        color="rgba(255, 255, 255, 1)"
+                        onClick={() => this.props.history.push(`/schools/${provider.id}/programs/${provider.program_id}`)}/>
                     </IconButton>
                   }
                 />

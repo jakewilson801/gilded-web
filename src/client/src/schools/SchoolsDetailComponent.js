@@ -49,7 +49,7 @@ class SchoolsDetailComponent extends Component {
           if (res.status === 200) {
             this.setState({
               isBookmarked: (json.programs.filter(program => {
-                return program.id === parseInt(this.props.match.params.program_id)
+                return program.id === parseInt(this.props.match.params.program_id, 10)
               }).length > 0), isAuth: true
             });
           } else {

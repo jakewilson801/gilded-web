@@ -27,7 +27,6 @@ class SchoolsProgramComponent extends Component {
   }
 
   render() {
-    const {classes} = this.props;
     if (this.state.programs) {
       return this.state.programs.map(p =>
         <div key={this.state.programs.indexOf(p)}>
