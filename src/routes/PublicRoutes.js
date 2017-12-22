@@ -134,7 +134,20 @@ const programsBySchoolID = (req, res) => {
   });
 };
 
+var Thread = {
+  sleep: function(ms) {
+    var start = Date.now();
+
+    while (true) {
+      var clock = (Date.now() - start);
+      if (clock >= ms) break;
+    }
+
+  }
+};
+
 const programsBySocCode = (req, res) => {
+  Thread.sleep(5000);
   let ids = [];
   let socField = req.query.socCode.split('-')[0];
   let socDetail = req.query.socCode.split('-')[1];
@@ -152,6 +165,7 @@ const programsBySocCode = (req, res) => {
 };
 
 const programs = (req, res) => {
+  Thread.sleep(5000);
   let id = [req.params.program_id];
   req.app.get('db').run('select * from gilded_public.programs where id = $1', id)
     .then(result => {

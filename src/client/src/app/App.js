@@ -3,6 +3,7 @@ import OccupationsComponent from '../occupations/OccupationsComponent';
 import OccupationsDetailComponent from '../occupations/OccupationsDetailComponent';
 import LandingScreenComponent from '../landing/LandingScreenComponent';
 import SchoolsDetailComponent from "../schools/SchoolsDetailComponent";
+
 import EmployersDetailComponent from "../employers/EmployersDetailComponent";
 import SchoolsComponent from "../schools/SchoolsComponent";
 import MessagesComponent from "../messages/MessagesComponent";
@@ -28,7 +29,9 @@ import {withRouter} from 'react-router'
 import AppDrawer from "./AppDrawer";
 import Filter from "./Filter";
 import URLUtils from "../util/URLUtils";
+import APIClient from "../client/APIClient";
 
+console.log(SchoolsDetailComponent);
 const styles = theme => ({
   root: {
     width: '100%',
@@ -100,10 +103,7 @@ class App extends Component {
 
   componentDidMount() {
     if (localStorage.jwt) {
-      fetch(`/api/v1/user/me?token=${localStorage.jwt}`)
-        .then(d => d.json())
-        .then(() => this.setState({isAuth: true}))
-        .catch((err) => this.setState({isAuth: false}));
+      APIClient.getMe(() => this.setState({isAuth: true}), () => this.setState({isAuth: false}));
     }
   }
 
@@ -182,7 +182,8 @@ class App extends Component {
           <Route exact path="/occupations/:id/details" component={OccupationsDetailComponent}/>
         </div>
         <div>
-          <Route exact path="/schools/:school_id/programs/:program_id" component={SchoolsDetailComponent}/>
+          <Route exact path="/schools/:school_id/programs/:program_id" component={SchoolsDetailComponent} />
+
         </div>
         <div>
           <Route exact path="/employers/:id/details" component={EmployersDetailComponent}/>
