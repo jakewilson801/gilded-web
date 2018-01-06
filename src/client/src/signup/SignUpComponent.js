@@ -4,23 +4,25 @@ import FacebookLogin from '../fb_login/facebook';
 import {Paper, Typography, withStyles} from 'material-ui';
 import PropTypes from 'prop-types';
 import CircularProgress from 'material-ui/Progress/CircularProgress';
+import SwipeableViews from 'react-swipeable-views';
 
 const styles = theme => ({
   container: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'column',
+    //margin: 5,
+    // display: 'flex',
+    // alignItems: 'center',
+    // justifyContent: 'center',
+    // flexDirection: 'column',
     background: theme.palette.background.default,
     marginTop: theme.spacing.unit * 10,
   },
   signUp: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    // display: 'flex',
+    // flexDirection: 'column',
+    // alignItems: 'center',
     padding: 10,
     margin: 5,
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
 
 });
@@ -70,22 +72,63 @@ class SignUpComponent extends React.Component {
     const {classes} = this.props;
     return <div className={classes.container}>
       {this.state.loading ? <CircularProgress/> :
-        <Paper className={classes.signUp}>
-          <Typography type="headline" component="h3" elevation={4}>
-            Welcome to Gilded!
-          </Typography>
-          <Typography type="body1" component="p" style={{padding: 5}}>
-            Gilded is used to develop your career and find new opportunities
-          </Typography>
-          <FacebookLogin
-            appId={this.FB_CURRENT}
-            reRequest={true}
-            onClick={() => this.setState({loading: true})}
-            fields="name,email,picture"
-            scope="public_profile,user_friends,email"
-            callback={this.responseFacebook}
-            redirectUri={`${window.location.origin}/user/signup`}
-          /></Paper>}
+        <SwipeableViews>
+          <div>
+            <Paper className={classes.signUp}>
+              <Typography type="headline" component="h3" elevation={4}>
+                Welcome to Neek!
+              </Typography>
+              <FacebookLogin
+                appId={this.FB_CURRENT}
+                reRequest={true}
+                onClick={() => this.setState({loading: true})}
+                fields="name,email,picture"
+                scope="public_profile,user_friends,email"
+                callback={this.responseFacebook}
+                redirectUri={`${window.location.origin}/user/signup`}
+              /></Paper>
+          </div>
+          <div>
+            <Paper className={classes.signUp}>
+              <Typography type="headline" component="h3" elevation={4}>
+                Credentials
+              </Typography>
+              <Typography type="body1" component="p" style={{padding: 5}}>
+                Input your credentials if applicable
+              </Typography>
+            </Paper>
+          </div>
+          <div>
+            <Paper className={classes.signUp}>
+              <Typography type="headline" component="h3" elevation={4}>
+                Industry Certifications
+              </Typography>
+              <Typography type="body1" component="p" style={{padding: 5}}>
+                Input your certifications
+              </Typography>
+            </Paper>
+          </div>
+          <div>
+            <Paper className={classes.signUp}>
+              <Typography type="headline" component="h3" elevation={4}>
+                Skills
+              </Typography>
+              <Typography type="body1" component="p" style={{padding: 5}}>
+                Input your skills
+              </Typography>
+            </Paper>
+          </div>
+          <div>
+            <Paper className={classes.signUp}>
+              <Typography type="headline" component="h3" elevation={4}>
+                Projects
+              </Typography>
+              <Typography type="body1" component="p" style={{padding: 5}}>
+                Input your projects
+              </Typography>
+            </Paper>
+          </div>
+        </SwipeableViews>}
     </div>
   }
 }
