@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import cache from './Cache';
 import {CircularProgress} from "material-ui";
+import APIClient from "./APIClient";
 
 const FAILED = Symbol.for('FAILED');
 export default function withData(methodMapping) {
@@ -17,6 +18,7 @@ export default function withData(methodMapping) {
           }
           return state;
         }, {});
+
       }
 
       getMethodMapping(realProps) {
@@ -26,7 +28,9 @@ export default function withData(methodMapping) {
       componentDidMount() {
         const mapping = this.getMethodMapping(this.props);
         const keys = Object.keys(mapping);
-        const newState = keys.reduce((state, key) => {
+
+        APIClient.getMe(() => this.setState({isAuth: true}), () => this.setState({isAuth: false}));
+        keys.reduce((state, key) => {
           const endPoint = mapping[key];
           if (!this.state[endPoint]) {
             state[key] = Symbol.for('LOADING');
@@ -49,14 +53,13 @@ export default function withData(methodMapping) {
           }
           return state;
         }, {});
-        this.setState(newState);
       }
 
       render() {
         if (Object.keys(this.state).every((d) => this.state[d] !== Symbol.for('LOADING'))) {
           return <Komponent {...this.props} {...this.state}/>;
         } else {
-          return <CircularProgress/>;
+          return <div style={{marginTop: 100, display: 'flex', justifyContent: 'center'}}><CircularProgress/></div>;
         }
       }
     }

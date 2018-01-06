@@ -31,7 +31,6 @@ import Filter from "./Filter";
 import URLUtils from "../util/URLUtils";
 import APIClient from "../client/APIClient";
 
-console.log(SchoolsDetailComponent);
 const styles = theme => ({
   root: {
     width: '100%',

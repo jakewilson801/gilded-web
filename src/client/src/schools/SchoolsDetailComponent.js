@@ -32,9 +32,6 @@ class SchoolsDetailComponent extends Component {
 
   componentDidMount() {
     this.fetchProgramBookmark();
-    // fetch(`/api/v1/schools/${this.props.match.params.school_id}`)
-    //   .then(res => res.json())
-    //   .then(sch => this.setState({school: sch[0]}));
   }
 
   fetchProgramBookmark() {
@@ -63,7 +60,7 @@ class SchoolsDetailComponent extends Component {
   }
 
   bookmarkProgram(id) {
-    this.setState({isBookmarked: !this.props.isBookmarked});
+    this.setState({isBookmarked: !this.state.isBookmarked});
     fetch('/api/v1/user/bookmarks/program', {
       method: 'POST',
       headers: {
@@ -102,8 +99,10 @@ class SchoolsDetailComponent extends Component {
           <CardContent><SchoolsProgramComponent program_id={this.props.match.params.program_id}/></CardContent>
           <CardActions>
             <Button dense color="primary"
-                    onClick={() => this.props.isAuth ? this.bookmarkProgram(this.props.match.params.program_id) : this.props.history.push("/user/signup")}>
-              {this.isBookmarked() && this.props.isAuth ? 'Remove Bookmark' : 'Bookmark'}
+                    onClick={() => {
+                      this.props.isAuth ? this.bookmarkProgram(this.props.match.params.program_id) : this.props.history.push("/user/signup")
+                    }}>
+              {this.state.isBookmarked && this.props.isAuth ? 'Remove Bookmark' : 'Bookmark'}
             </Button>
           </CardActions>
         </Card>
@@ -117,13 +116,11 @@ SchoolsDetailComponent.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-const withDataC = withData((props) => {
-  console.log(props);
+const styledComponent = withStyles(styles)(SchoolsDetailComponent);
+
+export default withData((props) => {
   return {
     school: `/api/v1/schools/${props.match.params.school_id}`,
     bookmarks: '/api/v1/user/bookmarks',
   };
-})(SchoolsDetailComponent);
-console.log(withDataC);
-
-export default withStyles(styles)(withDataC);
+})(styledComponent);
