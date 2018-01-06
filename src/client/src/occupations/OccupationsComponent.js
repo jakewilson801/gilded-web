@@ -2,75 +2,112 @@
  * Created by jakewilson on 6/29/17.
  */
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
-import './occupations.css';
-import {Redirect} from 'react-router';
+import PropTypes from 'prop-types';
+import '../util/MoneyUtils';
+import MoneyUtils from "../util/MoneyUtils";
+import {withStyles} from 'material-ui';
+import GridList from 'material-ui/GridList';
+import GridListTile from 'material-ui/GridList/GridListTile'
+import GridListTileBar from 'material-ui/GridList/GridListTileBar'
+import IconButton from 'material-ui/IconButton';
+import InfoIcon from 'material-ui-icons/Info';
+import CircularProgress from "material-ui/Progress/CircularProgress";
+import {withRouter} from 'react-router'
+
+const styles = theme => ({
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    background: theme.palette.background.paper,
+    marginTop: theme.spacing.unit * 7,
+  },
+  gridList: {
+    cellHeight: 'auto',
+    width: 500,
+  },
+  progress: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    marginTop: theme.spacing.unit * 7,
+  },
+});
 
 
 class OccupationsComponent extends Component {
-  state = {occupations: [], title: "", error: "", redirect: -1};
-
-  constructor() {
-    super();
-    this.handleCardClick = this.handleCardClick.bind(this);
-  }
-
-  handleCardClick(id) {
-    this.props.history.push(`/occupations/${id}/details`)
-  }
+  state = {occupations: [], title: "", error: ""};
 
   componentDidMount() {
-    if (this.props.match) {
-      fetch(`/api/v1/occupations/${this.props.match.params.id}`)
-        .catch(error => this.setState({error}))
-        .then(res => res.json())
-        .then(occ => {
-          this.setState({occupations: occ.occupations, title: occ.field.title})
-        });
+    this.scroll();
+  }
+
+  componentDidUpdate() {
+    this.scroll();
+  }
+
+  scroll() {
+    const {id, theme} = this.props;
+
+    if (!id) {
+      return;
+    }
+
+    let parsedId = id.substring(1, id.indexOf("-"));
+    let offset = id.substring(id.indexOf("-") + 1, id.length) * theme.spacing.unit * 7;
+    const element = document.getElementById(parsedId);
+    if (element) {
+      if (element.scrollTop) {
+        element.scrollTop = offset;
+      }
+      element.scrollIntoView(true);
     }
   }
 
-  //Needs to be refactored to redux this code sucks
+  handleNavigation = (occupations) => {
+    const element = document.getElementById(occupations.id);
+    let top = element.getBoundingClientRect().top;
+    this.props.history.push(`/#${occupations.id}-${top}`);
+    this.props.history.push(`/occupations/${occupations.id}/details`);
+  };
+
   render() {
-    if (this.state.redirect !== -1) {
-      return <Redirect to={`/occupations/${this.state.redirect}/details`} push={true}/>;
-    }
-
-    let title;
-    let occupationsFromServerOrProps = [];
-    if (this.state.title !== "") {
-      title = this.state.title;
+    const {classes, occupations} = this.props;
+    if (occupations.length > 0) {
+      return (<div className={classes.container}>
+        <GridList cols={1} className={classes.gridList}>
+          {occupations.map(occupations => (
+            <GridListTile key={occupations.image_avatar_url} id={occupations.id}
+                          onClick={() => this.handleNavigation(occupations)}>
+              <img src={occupations.image_avatar_url} alt={occupations.title}/>
+              <GridListTileBar
+                title={occupations.title}
+                subtitle={<span>Average Salary {MoneyUtils.thousands(parseInt(occupations.annual_mean, 10))}</span>}
+                actionIcon={
+                  <IconButton>
+                    <InfoIcon
+                      color="rgba(255, 255, 255, 1)"
+                      onClick={() => this.handleNavigation(occupations)}/>
+                  </IconButton>
+                }
+              />
+            </GridListTile>
+          ))}
+        </GridList>
+      </div>);
     } else {
-      if (this.props.fieldTitle) {
-        title = this.props.fieldTitle;
-      } else {
-        title = "";
-      }
-    }
-
-    if (this.state.occupations.length > 0) {
-      occupationsFromServerOrProps = this.state.occupations;
-    } else if (this.props.occupations) {
-      occupationsFromServerOrProps = this.props.occupations;
-    }
-
-    if (this.state.error === "") {
-      return <div className="container-occupations">
-        <h2 className="field-title">{title}</h2>
-        <div className="slider">
-          <div className="cardsList">{occupationsFromServerOrProps.map((f) => <div key={f.id} onClick={() => {
-            this.setState({redirect: f.id})
-          }} className="card">
-            <img className="cardImage" src={f.image_avatar_url}/>
-            <div className="occupation-title">{f.title}</div>
-            <Link to={`/occupations/${f.id}/details`}>View More</Link>
-          </div>)}</div>
-        </div>
-      </div>;
-    } else {
-      return <div className="container"><h2>Couldn't find this Occupation</h2></div>;
+      return <div className={classes.progress}><CircularProgress/></div>;
     }
   }
 }
 
-export default OccupationsComponent
+OccupationsComponent.propTypes = {
+  classes: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
+};
+
+export default withRouter(withStyles(styles, {withTheme: true})(OccupationsComponent));
+

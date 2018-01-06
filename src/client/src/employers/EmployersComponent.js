@@ -20,7 +20,7 @@ class EmployersComponent extends Component {
                                               className="employer-card">
             <div className="employer-banner"/>
             <div className="employer-card-inner">
-              <img className="employer-avatar" src={`/assets/${e.image_avatar_url}`}/>
+              <img className="employer-avatar" src={`/assets/${e.image_avatar_url}`} alt="employeravatar"/>
               <div className="employer-outer">
                 <div className="employer-name">{e.title}</div>
                 <Link className="employer-view-more" to={`/employers/${e.id}/details`}>View More</Link>

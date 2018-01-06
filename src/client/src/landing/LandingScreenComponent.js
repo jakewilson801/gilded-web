@@ -1,53 +1,42 @@
 import React, {Component} from 'react';
 import OccupationsComponent from '../occupations/OccupationsComponent.js';
-import URLUtils from '../util/URLUtils'
 import '../occupations/occupations.css'
-import {Link} from 'react-router-dom';
+import {Button, CircularProgress, Paper, Typography, withStyles} from "material-ui";
+import PropTypes from "prop-types";
+
+const styles = theme => ({
+  container: {
+    display: 'flex',
+    justifyContent: 'center',
+    background: theme.palette.background.paper,
+    margin: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 8,
+    padding: theme.spacing.unit * 2,
+  },
+});
 
 class LandingScreenComponent extends Component {
-  state = {feed: null};
-
-  componentDidMount() {
-    let t = URLUtils.getParameterByName('tuition');
-    let y = URLUtils.getParameterByName('years');
-    let s = URLUtils.getParameterByName('salary');
-    let request;
-
-    if (t !== 'null' && y !== 'null' && s !== 'null') {
-      localStorage.setItem('years', y);
-      localStorage.setItem('salary', s);
-      localStorage.setItem('tuition', t);
-      request = `/api/v1/feed?tuition=${t}&years=${y}&salary=${s}`;
-    } else {
-      request = `/api/v1/feed`;
-    }
-
-    fetch(request)
-      .then(res => res.json())
-      .then(feed => {
-        let combinedResults = feed.fields.map(f => {
-          let occupations = feed.occupations.filter(o => o.field_id === f.soc_major_id);
-          return {title: f.title, occupations: occupations};
-        }).filter(occ => occ.occupations.length > 0);
-        this.setState({feed: combinedResults});
-      });
-  }
+  handleFilter = () => {
+    this.props.open();
+  };
 
   render() {
-    if (!this.state.feed) {
-      return <div>Loading...</div>
+    const {classes} = this.props;
+    if (!this.props.occupations) {
+      return <div className={classes.container}><CircularProgress/></div>;
     } else {
-      if (this.state.feed.length > 0) {
-        return <div>
-          {this.state.feed.map((row, index) => <OccupationsComponent key={index} fieldId={row.id} fieldTitle={row.title}
-                                                                     occupations={row.occupations}/>)}
-        </div>
+      if (this.props.occupations.length > 0) {
+        return <OccupationsComponent id={this.props.id} occupations={this.props.occupations}/>;
       } else {
-        return <div style={{margin: '10px'}}>No results for given salary, time and tuition <Link to={"/search"}>Try
-          again?</Link></div>
+        return <Paper className={classes.container}><Typography>No results for given salary, time and
+          tuition </Typography><Button onClick={this.handleFilter}>Filter</Button></Paper>;
       }
     }
   }
 }
 
-export default LandingScreenComponent;
+LandingScreenComponent.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(LandingScreenComponent);

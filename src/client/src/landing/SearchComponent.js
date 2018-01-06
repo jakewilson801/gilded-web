@@ -6,11 +6,7 @@ import {Link} from 'react-router-dom';
 class SearchComponent extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      years: parseFloat(localStorage.getItem('years')) || 0,
-      salary: parseInt(localStorage.getItem('salary')) || 10000,
-      tuition: parseInt(localStorage.getItem('tuition')) || 1000
-    };
+    this.state = { };
   }
 
   render() {

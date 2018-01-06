@@ -21,9 +21,9 @@ class EmployersDetailComponent extends Component {
         <div>
           <div className="employers-detail-container">
             <div className="employers-detail-banner-holder">
-              <img className="employers-detail-banner" src='/assets/employer_banner.jpg'/>
+              <img className="employers-detail-banner" src='/assets/employer_banner.jpg' alt="banner"/>
               <div className="employers-name">{this.state.employer.title}</div>
-              <img className="employers-detail-avatar" src={`/assets/${this.state.employer.image_avatar_url}`}/>
+              <img className="employers-detail-avatar" src={`/assets/${this.state.employer.image_avatar_url}`} alt="banner"/>
             </div>
             <div className="employers-header-container">
               <div className="employers-address">

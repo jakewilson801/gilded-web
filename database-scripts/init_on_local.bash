@@ -5,6 +5,7 @@ OCCUPATIONS_SCRIPT=occupations.sql
 OCCUPATIONS_IMAGES_SCRIPT=occupationImages.sql
 INIT_SCRIPT=init.sql
 EMPLOYERS=employers.sql
+ACCOUNTS_MIGRATION=accounts_and_bookmarks_migration.sql
 
 if [ ! -f ${INIT_SCRIPT} ]; then
   INIT_SCRIPT=database-scripts/init.sql
@@ -15,6 +16,7 @@ if [ ! -f ${INIT_SCRIPT} ]; then
   SCHOOLS_SCRIPT=database-scripts/schools.sql
   PROGRAMS_SCRIPT=database-scripts/programs.sql
   EMPLOYERS=database-scripts/employers.sql
+  ACCOUNTS_MIGRATION=database-scripts/accounts_and_bookmarks_migration.sql
 fi
 psql -f ${INIT_SCRIPT} gilded
 psql -f ${FIELDS_SCRIPT} gilded
@@ -24,4 +26,4 @@ psql -f ${OCCUPATIONS_IMAGES_SCRIPT} gilded
 psql -f ${SCHOOLS_SCRIPT} gilded
 psql -f ${PROGRAMS_SCRIPT} gilded
 psql -f ${EMPLOYERS} gilded
-
+psql -f ${ACCOUNTS_MIGRATION} gilded

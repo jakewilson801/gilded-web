@@ -107,7 +107,7 @@ class ConversationComponent extends Component {
                                                   className={currentMessages.indexOf(i) % 2 === 1 ? "conversation-me" : "conversation-them"}>{i.split('\n').map((item, key) => {
         return <span key={key}>{item}<br/></span>
       })}</div>);
-      convoImage = (<img src={imageUrl} className="conversation-avatar"/>);
+      convoImage = (<img src={imageUrl} alt="convo" className="conversation-avatar"/>);
       convoName = (<div className="conversation-name">{headerName}</div>);
     }
     return <div className="conversation-container">
