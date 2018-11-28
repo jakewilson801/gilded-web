@@ -40,7 +40,6 @@ massive(connectionInfo).then(instance => {
   }));
 
   app.use(morgan('dev'));
-  app.set('superSecret', '1337hackzors');
   app.get('/api/v1/fields', routes.fields);
   app.get('/api/v1/feed', routes.feed);
   app.get('/api/v1/occupations/:field_id', routes.occupationByFieldID);
