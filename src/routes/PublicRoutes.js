@@ -106,7 +106,7 @@ const mecuryContentParser = (req, res) => {
     let options = {
       url: `https://mercury.postlight.com/parser?url=${req.query.url}`,
       headers: {
-        'x-api-key': 'S79Q41Lw3H3S5JSgNT9Gztcz2zYwJBJtHGPUlKtK'
+        'x-api-key': ''
       }
     };
     request(options, function (error, response, body) {
