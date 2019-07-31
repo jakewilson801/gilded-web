@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import OccupationsComponent from '../occupations/OccupationsComponent';
 import OccupationsDetailComponent from '../occupations/OccupationsDetailComponent';
-import LandingScreenComponent from '../landing/LandingScreenComponent';
 import SchoolsDetailComponent from "../schools/SchoolsDetailComponent";
 
 import EmployersDetailComponent from "../employers/EmployersDetailComponent";
@@ -19,7 +18,6 @@ import {withStyles} from 'material-ui';
 import AppBar from 'material-ui/AppBar';
 import Toolbar from 'material-ui/Toolbar';
 import Typography from 'material-ui/Typography';
-import Button from 'material-ui/Button';
 import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import withRoot from '../withRoot'
@@ -27,7 +25,6 @@ import withRoot from '../withRoot'
 import Drawer from "material-ui/Drawer";
 import {withRouter} from 'react-router'
 import AppDrawer from "./AppDrawer";
-import Filter from "./Filter";
 import URLUtils from "../util/URLUtils";
 import APIClient from "../client/APIClient";
 
@@ -115,7 +112,7 @@ class App extends Component {
   }
 
   getTitle() {
-    return window.location.href.includes("bookmark") ? "Bookmarks" : "Gilded";
+    return window.location.href.includes("bookmark") ? "Bookmarks" : "Neek";
   }
 
   handleClickOpen = () => {
@@ -131,13 +128,6 @@ class App extends Component {
     const {classes, theme} = this.props;
     return (
       <div className={classes.root}>
-        <Filter open={this.state.open} classes={classes}
-                years={this.state.years}
-                tuition={this.state.tuition}
-                salary={this.state.salary}
-                interest={this.state.interest}
-                setAppState={(s) => this.setState(s)}
-        />
         <AppBar>
           <Toolbar>
             <IconButton className={classes.menuButton} color="contrast" aria-label="Menu"
@@ -147,8 +137,6 @@ class App extends Component {
             <Typography type="title" color="inherit" className={classes.flex}>
               {this.getTitle()}
             </Typography>
-            {this.state.isAuth ? <Button color="contrast" onClick={this.handleClickOpen}>Filter</Button> :
-              <Button color="contrast" onClick={() => this.props.history.push("/user/signup")}>Login</Button>}
           </Toolbar>
         </AppBar>
         <Drawer open={this.state.left} onRequestClose={this.toggleDrawer('left', false)}>
@@ -163,13 +151,7 @@ class App extends Component {
           </div>
         </Drawer>
         <div>
-          <Route exact path="/" render={(props) => (
-            <LandingScreenComponent {...props}
-                                    open={() => this.setState({open: true})}
-                                    occupations={this.state.occupations}
-                                    id={props.location.hash}
-            />
-          )}/>
+          <Route exact path="/" component={SignUpComponent}/>
         </div>
         <div>
           <Route exact path="/search" component={SearchComponent}/>
@@ -181,8 +163,7 @@ class App extends Component {
           <Route exact path="/occupations/:id/details" component={OccupationsDetailComponent}/>
         </div>
         <div>
-          <Route exact path="/schools/:school_id/programs/:program_id" component={SchoolsDetailComponent} />
-
+          <Route exact path="/schools/:school_id/programs/:program_id" component={SchoolsDetailComponent}/>
         </div>
         <div>
           <Route exact path="/employers/:id/details" component={EmployersDetailComponent}/>

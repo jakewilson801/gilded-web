@@ -64,15 +64,15 @@ let hasRead = false;
 let titles = [];
 fs.readdirSync('pages/').forEach(file => {
   let contents = fs.readFileSync(__dirname + '/pages/' + file, 'utf8');
-    socCodes.forEach(function (d) {
+  socCodes.forEach(function (d) {
     if (contents.includes(d)) {
       let xml = cheerio.load(contents);
       if (!hasRead) {
-        xml('h1').each(function(i, elem) {
+        xml('h1').each(function (i, elem) {
           let title = xml(this).text();
           if (!title.includes('School of Applied Technology and Technical Specialties')) {
-              if (titles.indexOf(title) === -1)
-                  titles.push(title);
+            if (titles.indexOf(title) === -1)
+              titles.push(title);
           }
         });
       }
